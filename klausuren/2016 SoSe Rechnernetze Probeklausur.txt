@@ -1,0 +1,161 @@
+FachbereichMedizintechnik&Technomathematik
+Lehrgebietf¨ urAngewandteInformatik
+Prof.Dr.rer.nat.J¨ orgStriegnitz
+ProbeklausurRechnernetzeSS2016
+Termin: 28.Januar2016
+Bearbeitungszeit: 120min
+Hilfsmittel: Taschenrechner
+BitteinDruckschriftausf¨ ullen:
+Name:
+Vorname:
+Matrikelnummer:
+Studiengruppe AC K J¨ UL
+BeachtenSiefolgendeHinweise:
+•F¨ ullenSiedenoberenTeildiesesDeckblattesbittevollst¨ andigausundversehenSiejedesBlatt
+mindestensmitIhrerMatrikelnummer.
+•BittebeantwortenSiedieAufgabenaufdenAufgabenbl¨ attern(ggf.R¨ uckseiteverwenden).
+•Siem¨ ussendieAufgabennicht indervorgegebenenReihenfolgeabarbeiten!Ambestengehen
+Siewiefolgtvor:–verschaffenSiesicheinen¨ Uberblick¨ uberalleAufgaben;–klassifizierenSiedieAufgabennachSchwierigkeitsgrad;–beginnenSiemitdenAufgaben,dieIhnenameinfachstenerscheinen.
+•SchreibenSiebitte lesbar undverst¨ andlichmit einemdokumentenechtenStift (bitte keinen
+Bleistift/keinerotenStifte).
+•GebenSieamEndederKlausurauchIhreHilfsbl¨ atterab(bitteebenfallsmitMatrikelnummer
+versehen).
+VielErfolg!
+Bewertung
+Aufgabe 1 2 3 4 5 Gesamt Note
+Max.
+Punkte
+20 20 15 18 12 85
+Erreichte
+Punkte
+Pr¨ ufer1:
+Pr¨ ufer2:
+Name:
+Matr.-Nr:
+1. Aufgabe
+(a) Nennen Sie drei Kriterien zur Charakterisierung einer Netzwerktopologie.
+20 Punkte
+(b) Was versteht man unter einem chordalen Ring und welche Vorteile bietet er gegen¨ uber einer nor
+malen Ring-Topologie?
+Name:
+Matr.-Nr:
+(c) Kommunikationsprotokolle werden h¨ aufig in Anlehnung an das ISO/OSI-Schichtenmodell modelliert.
+Z¨ ahlen Sie die einzelnen Schichten in logischer Reihenfolge auf und erl¨ autern Sie kurz die Funktion
+der Vermittlungsschicht.
+Name:
+Matr.-Nr:
+(d) WelcheVereinfachungen wurden im TCP/IP-Referenzmodell gegen¨ uber dem ISO/OSI-Referenzmodell
+gemacht und wie kann man diese rechtfertigen?
+(e) Was versteht man unter verbindungsorientierter Kommunikation?
+Name:
+Matr.-Nr:
+2. Aufgabe
+(a) Wof¨ ur steht die Abk¨ urzung CIDR?
+(b) Gegeben sei die folgende Routing-Tabelle
+Ziel-IP-Adresse Anschluss Ihre Wahl
+192.168.0.0/16
+192.168.128.0/24
+192.168.192.0/26
+1
+2
+3
+137.226.12.0/25
+4
+0.0.0.0/0
+5
+20 Punkte
+Kreuzen Sie an: Auf welchen Anschluss wird ein Paket mit der Zieladresse 192.168.203.10 weit
+ergeleitet?
+(c) Woran kann ein Sender erkennen, dass die Ziel-IP-Adresse eines IP-Pakets sich in seinem eigenen
+IP-Subnetz befindet? Erl¨ autern Sie dies anhand eines konkreten Beispiels.
+Name:
+Matr.-Nr:
+(d) Sie sind Administrator des Netzwerkes 175.224.176.0/20.
+• Wie viele Hosts k¨ onnen Sie in dieses Netzwerk aufnehmen?
+• Welche Subnetzmaske m¨ ussen Sie bei den Hosts konfigurieren?
+• Wie lautet die Broadcast-Adresse f¨ ur dieses Netzwerk?
+• Sie sollen dieses Netz in 7 gleich große Subnetze aufteilen. Welche Netzwerkmaske stellen Sie
+dann an den Rechnern innerhalb dieser Subnetze ein?
+Name:
+Matr.-Nr:
+(e) Rechner A sei ¨ uber einen Router R mit Rechner B verbunden. F¨ ur die Strecke von A zum Router
+gelte MTU=2000, f¨ ur die Strecke vom Router R zu Rechner B sei die MTU 1500:
+AMTU=2000
+←→ RMTU=1500
+←→ B
+Es soll ein Datenpaket der L¨ ange 3800 Byte ¨ ubertragen werden (ohne IP-Header!). Skizzieren Sie
+den Prozess der Fragmentierung, indem sie die folgenden Tabellen ausf¨ ullen:
+AMTU=2000
+←→ R
+ID MF Total Length Offset
+R MTU=1500
+←→ B
+ID MF Total Length Offset
+(f) Nennen Sie mindestens zwei Probleme, die man mit der Einf¨ uhrung von IPV6 l¨ osen bzw. entsch¨ arfen
+wollte.
+Name: Matr.-Nr:
+3.Aufgabe 15Punkte
+(a) AngenommenzweiKommunikationspartnerhabensichzurFehlerkontrolleaufdasVerfahrenSelec
+tiveRepeat verst¨ andigtunddasSlidingWindowhabedieGr¨ oße8.Vereinfachendgehenwirvon
+folgendenAnnahmenaus:
+•alleDatenpaketehabendieselbeL¨ angeundben¨ otigendieselbe ¨ Ubertragungszeit;
+•WennderSenderPaketnsendet,kommtgleichzeitigPaketn−1beimSenderan;
+•dieQuittungf¨ urPaketntrifftgleichzeitigmitdemSendenvonPaketn+5ein;
+•derTimerzumWartenaufdieQuittungf¨ urPaketnl¨ auftnachdemSendenvonPaketn+6
+ab.
+SkizzierenSiedenAblaufderKommunikationf¨ urdiefolgendenF¨ alle:
+•Paket3kommtnichtan;
+•dieQuittungf¨ urPaket3gehtverloren.
+Paket3gehtverloren
+Sender
+Paket#
+Empf.
+Paket#
+Quittungf¨ urPaket3gehtverloren
+Sender
+Paket#
+Empf.
+Paket#
+Hinweis: IndiemittlereSpaltek¨ onnenSieKommentareeintragen(z.B.ACK3, timeout#x);Sie
+k¨ onnenaberaucheinfach,wieindenVorlesungsunterlagen,PfeilezurVerdeutlichungdesAblaufes
+indieTabelleneinzeichnen.AchtenSie injedemFalldarauf,dasseinkorrektesTimingerkennbar
+bleibt!
+Name:
+Matr.-Nr:
+(b) Was versteht man unter einem Congestion Window, welchen Zweck hat es und wie entwickelt sich
+seine Gr¨ oße im Laufe der Kommunikation?
+Hinweis: Gehen Sie von der vereinfachten Darstellung aus der Vorlesung aus.
+(c) Die Fenstergr¨ oße einer TCP-Verbindung sei auf 28.560 Byte festgelegt; die Round-Trip-Time betrage
+14ms.
+1) Berechnen Sie welche Datenrate (in MBit
+s 
+) man unter diesen Bedingungen erreichen kann.
+2) K¨ onnen Sie die ¨ Ubertragungsrate ohne Einsatz der Window Scale Option auf 100 MBit
+s
+Begr¨ unden Sie Ihre Antwort!
+steigern?
+Name:
+Matr.-Nr:
+4. Aufgabe
+18 Punkte
+(a) Welche drei Eigenschaften sollte ein Leitungscode haben? Nennen und erkl¨ aren Sie diese.
+(b) Signaldarstellung:
+1) Stellen Sie die Bitfolge 0 0 1 1 1 0 1 0 0 0 1 0 im Manchester-Code dar.
+1) Stellen Sie die Bitfolge 0 0 1 1 1 0 1 0 0 0 1 0 im differentiellen NRZ-Code dar.
+Name:
+Matr.-Nr:
+(c) QAM ist eine Mischung aus Phasen- und Amplitudenmodulation. Warum verwendet man bei QAM
+keine Frequenzmodulation?
+(d) Wo liegt der Unterschied zwischen einer Basis- und einer Breitband¨ ubertragung?
+Name:
+Matr.-Nr:
+5. Aufgabe
+12 Punkte
+(a) Warum wurde f¨ ur Ethernet die minimale Rahmenl¨ ange auf 64 Byte festgelegt? Stellen Sie zun¨ achst
+allgemein dar, warum man ¨ uberhaupt eine minimale Rahmenl¨ ange braucht und zeigen Sie dann, wie
+sich im Speziellen die 64 Byte errechnen lassen.
+(b) Beim ¨ Ubergang von Ethernet zu Fast-Ethernet hat sich die maximal zul¨ assige Ausdehnung eines
+Netzes dramatisch verschlechtert- warum?
+(c) Nennen Sie zwei Gr¨ unde, warum CSMA/CD bei WLAN nicht zum Einsatz kommt.
+(d) Wir betrachten das CRC-Verfahren am Beispiel des Generatorpolynoms x4 + x3 + 1. Berechen Sie
+dir CRC-Pr¨ ufussme zur Bitfolge 10110101110.

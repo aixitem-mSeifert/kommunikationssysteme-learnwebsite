@@ -1,0 +1,689 @@
+Problemstellung:
+Wir kennen die IP
+Adresse des (Zwischen)Ziels
+Um mit dem Zielsystem oder dem Router über die 
+Sicherungsschicht kommunizieren zu können benötigen 
+aber 
+die entsprechende Adresse im Multi
+Access--
+Netz
+wir 
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  187
+MAC
+Adressen
+Wenn eine Station A Daten an eine Station B senden will, dann benötigt sie zunächst deren 
+IP-Adresse. Allerdings wird für die Kommunikation innerhalb eines (Sub-)Netzes zusätzlich 
+noch die Hardware-Adresse benötigt, denn die Sicherungsschicht stellt einen 
+Übertragungsdienst für Datagramme zur Verfügung, der eine MAC-Adresse als Empfänger 
+benötigt
+Für Multi-Access-Netze mit Broadcast-Eigenschaft gibt es eine 
+standardisierte Vorgehensweise, solche Tabellen dynamisch aufzubauen, die 
+als Address Resolution Protocol (ARP) bezeichnet wird. 
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  188
+Address
+Resolution Protocol
+223.1.1.2
+ARP
+223.1.1.1
+IP
+ARP
+ARP
+(2) „Ich bin Rechner 
+221.1.1.3 und meine 
+MAC-Adresse ist 08
+00-2b-a2-80-dd“
+Übertragung über IP
+Unicast
+Gesucht: Hardware
+Adresse zu 223.1.1.3
+(1) „Rechner 223.1.1.1
+sucht Rechner 223.1.1.3“
+223.1.1.3
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  189
+ARP: Schicht 2 oder Schicht 3?
+Die Literatur weist das Address Resolution Protocol typischerweise der Schicht 2 zu. 
+Allerdings kennt die Netzwerkkarte, also die Schicht 2 das Protokoll nicht. Faktisch führt sie 
+nur den Broadcast aus. Die eigentliche Nachricht wird vom Betriebssystem erzeugt. 
+Folgt man der Systematik der Internet-Referenzarchitektur in der Schicht 1 und 2 
+zusammengefasst auf der Netzwerkkarte implementiert sind, so erscheint eine Zuordnung 
+des Protokolls der Schicht 3 sinnvoller. 
+Umgekehrt kommt IPv6 ohne ARP aus – es bietet einen alternativen Ansatz: 
+Das Neighbor Discovery Protocol
+Manche ordnen ARP daher der Schicht 2.5 zu.
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  190
+Reverse 
+Address
+Resolution Protocol
+Auch für das inverse Problem (eine Station kennt ihre Hardware-Adresse und möchte ihre IP
+Adresse erfahren) gibt es eine standardisierte Vorgehensweise, die als Reverse Address 
+Resolution Protocol (RARP) bezeichnet wird. 
+A sendet RARP-Request als Broadcast
+Z
+Z
+A
+RARP-Server Y antwortet mit RARP-Reply mit IP(A)
+A
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+X
+X
+B
+B
+Vorlesung Kommunikationssysteme   
+Y
+Y
+RARP
+Server
+April 26|  191
+Dynamic Host 
+Configuration
+Protocol
+§ RARP war die alte Idee: „Ich kenne meine MAC, wie lautet meine IP“ 
+§ DHCP dient dem dynamischen Verteilen der IP-Konfiguration
+§ IP-Adresse
+§ Subnetzmaske
+§ Default-Router
+§ DNS-Server
+§ Viele Optionen möglich: Domain-Suffix, Lease-Zeiten, NTP-Server, ...
+§ Oftmals werden die Hardware-Adressen durch eine Whitelist eingeschränkt
+§ Nutzt beim DHCPDISCOVER (Client sucht Server) UDP 
+§ IP: 0.0.0.0:68 → 255.255.255.255:67
+§ Abbildung auf Ethernet-Broadcast
+§ UDP-Antwort geht an noch nicht konfigurierte IP, wird aber über Port und MAC ans Ziel ausgeliefert
+§ Aufgrund der Unsicherheit bei diesem Protokoll wird beispielsweise an der FH Port Security 
+eingesetzt 
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  192
+Wie wird IP datentechnisch repräsentiert?
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  193
+Der IPv4
+Header
+0
+31
+Version
+IHL
+Type of Service
+Total Length
+Total Length
+Gesamtlänge des IP-Pakets in Bytes; maximal 64 kBytes (16 Bits Feldlänge)
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  194
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             Vorlesung Kommunikationssysteme   April 26|  195
+Total Length Type of Service IHL Version
+0 31
+Identification
+Identification Identifiziert zusammengehörende Fragmente; wird von der sendenden 
+Station vergeben und in alle Fragmente eines Pakets kopiert
+Flags
+Flags 1. Bit:  Don't Fragment
+2. Bit:  More Fragments (steuert die Reassemblierung im Empfänger)
+3. Bit:  Unused
+Fragment Offset
+Fragment Offset Fragment Offset gibt die Nummer des ersten Datenbytes im Fragment 
+an (0 beim 1. Fragment)
+Der IP-Header
+Fragmentierung
+Datagrammlängen im IP können die von der Sicherungsschicht unterstützte Rahmenlänge 
+überschreiten. Im Internet wird nur eine Vorgabe über die zwingend von einer 
+Sicherungsschicht unterstützte Datagrammgröße von 576 Bytes gemacht. 
+Sicherungsschichten müssen also Datagramme von 576 Bytes direkt ausliefern können.
+Damit kann es vorkommen, dass IP-Pakete in mehreren Aufrufen der Sicherungsschicht (also 
+mehrere Rahmen) übertragen werden müssen. 
+Diesen Vorgang nennt man Fragmentierung
+Unterstützte Datagrammgrößen gängiger Sicherungsschichten sind: 
+• Ethernet: 1500 Bytes, 
+• Gigabit Ethernet mit Jumbo Frames: 9000 Bytes
+• FDDI: 4500 Bytes, 
+• ATM: 9180 Bytes
+Die Maximum Transmission Unit (MTU) spezifiziert bei einer Netzwerkkarte, wie viele 
+Nutzdaten mit einem Auftrag übertragen werden kann (der Rahmen kommt später dazu
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  196
+Fragmentierung
+Es kann also bei einem IP-Datagramm jederzeit vorkommen, dass es nicht 
+mit einem einzelnen Befehl an die Netzwerkkarte ausgeliefert werden kann. 
+In diesem Fall muss also das Datagramm in mehrere Nachrichten 
+aufgeteilt werden, wobei jede Nachricht ein IP-Datagramm ist.
+Sollte also ein IP-Datagramm fragmentiert werden, so stellt sich die Frage, 
+wo dieses rekonstruiert wird?
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  197
+Fragmentierung
+Transparente Fragmentierung
+Nicht transparente Fragmentierung
+Wird im Internet benutzt
+Im Zielsystem muss aus den Fragmenten wieder die ursprüngliche Dateneinheit hergestellt werden 
+(reassembly).  
+Wenn nicht alle Fragmente eines Datagramms das Zielsystem erreichen, muss das gesamte 
+Datagramm von der Quellstation aus wiederholt werden. 
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  198
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             Vorlesung Kommunikationssysteme   April 26|  199
+Total Length Type of Service IHL Version
+0 31
+Identification
+Identification Identifiziert zusammengehörende Fragmente; wird von der sendenden 
+Station vergeben und in alle Fragmente eines Pakets kopiert
+Flags
+Flags 1. Bit:  Don't Fragment
+2. Bit:  More Fragments (steuert die Reassemblierung im Empfänger)
+3. Bit:  Unused
+Fragment Offset
+Fragment Offset Fragment Offset gibt die Nummer des ersten Datenbytes im Fragment 
+an (0 beim 1. Fragment). Angabe in Vielfachen von 8! Damit kann nur 
+das letzte Fragment eine nicht durch 8 teilbare Nutzdatenlänge haben!
+Der IP-Header
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             Vorlesung Kommunikationssysteme   April 26|  200
+Protocol TTL
+Total Length Type of Service IHL Version
+0 31
+Identification Flags Fragment Offset
+TTL Time-to-Live; ist de facto ein Hop Count; wird vom Sender gesetzt und nach 
+jedem Hop dekrementiert; wenn der Zähler auf 0 gelaufen ist, bevor die 
+Zielstation erreicht ist, wird das Paket vernichtet
+Protocol Identifiziert das Upper Layer Protocol, das die IP-Dienste in Anspruch nimmt,
+z.B. TCP (Protokoll-Nr. 6), UDP (Protokoll-Nr. 17), ICMP (Protokoll-Nr. 1))
+Der IP-Header
+Der Aufbau eines IP
+Datagramms
+32 Bit
+Version
+IHL
+Type of Service
+Identifikation
+Time-to-Live
+Transportprotokoll
+Identifikator
+Quelladresse
+Zieladresse
+Gesamtlänge
+D
+F
+M
+F
+Fragment-Offset
+Prüfsumme über Paketkopf
+Optionen (0 oder mehr Wörter)
+Daten (meistens inkl. TCP/UDP Header)
+Ändert sich in jedem Router
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  201
+1
+IP
+Fragmentierung
+Beispiel
+#1
+host
+router
+MTU = 4000
+Length = 3820, M=0
+IP
+Header
+Mit Length ist hier die Gesamtlänge 
+des IP-Datagrams bezeichnet, also inkl.
+des IP-Headers
+IP
+Data
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  202
+IP
+Fragmentierung
+Beispiel
+#2
+MTU = 
+2000
+router
+Length = 3820, M=0
+IP
+Header
+IP
+Data
+3800 bytes
+router
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Das Identification-Feld
+beider Fragmente ist identisch! 
+Length = 1996, M=1, Offset = 0, Id = x
+IP
+Header
+IP
+Data
+1976 bytes
+Length = 1844, M=0, Offset = 247 (*8), Id = x
+IP
+Header
+Vorlesung Kommunikationssysteme   
+IP
+Data
+1824 bytes
+April 26|  203
+IP
+Fragmentierung
+Beispiel
+#3
+Length = 1500, M=1, Offset = 0 , Id = x
+router
+Length = 1996, M=1, Offset = 0, Id = x
+IP
+Header
+IP
+Data
+1976 bytes
+host
+MTU = 1500
+IP
+Header
+IP
+Data
+1480 bytes
+Length = 516, M=1, Offset = 185 (*8) , Id = x
+IP
+Header
+Length = 1500, M=1, Offset = 247 (*8), Id = x
+Length = 1844, M=0, Offset = 247, Id = x
+IP
+Header
+IP
+Data
+1824 bytes
+IP
+Header
+IP
+Data
+1480 bytes
+Length = 364, M=0, Offset = 432 (*8) , Id = x
+IP
+Header
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+IP
+Data
+496 bytes
+IP
+Data
+344 bytes
+April 26|  204
+Zusammensetzung der Fragmente
+• Fragmente können out-of-order ankommen
+Length = 1500, M=1, Offset = 0 , Id = x
+IP
+Header
+IP
+Data
+Length = 516, M=1, Offset = 185 , Id = x
+IP
+Header
+IP
+Data
+Length = 1500, M=1, Offset = 247 , Id = x
+IP
+Header
+IP
+Data
+Length = 364, M=0, Offset = 432 , Id = x
+IP
+Header
+IP
+Data– Es ist unklar wieviel Speicher verwendet 
+werden muss– MF = 0 kann auch durch Misordered 
+Packets vorab kommen
+• Fragmente  können dupliziert werden– Identifikation und Filtern
+• Einige Fragmente können nie ankommen– Irgendwann muss aufgegeben werden
+IP
+Data
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+IP
+Data
+IP
+Data
+IP
+Data
+Vorlesung Kommunikationssysteme   
+April 26|  205
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             Vorlesung Kommunikationssysteme   April 26|  206
+Destination Address
+Source Address
+Header Checksum Protocol TTL
+Total Length Type of Service IHL Version
+0 31
+Identification Flags Fragment Offset
+Header Checksum 16 Längsparitätsbits, die nur den IP-Header schützen; 
+die Daten bleiben auf dieser Ebene ungeschützt
+Source Address IP-Adresse der sendenden Station 
+Destination Address IP-Adresse der Zielstation
+Der IP-Header
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             Vorlesung Kommunikationssysteme   April 26|  207
+Padding
+Data
+Options
+Destination Address
+Source Address
+Header Checksum Protocol TTL
+Total Length Type of Service IHL Version
+0 31
+Identification Flags Fragment Offset
+Options Optionen, die - falls vorhanden – überwiegend der Paketsteuerung 
+sowie  Messungen und Fehlersuche dienen
+Padding Füllbits, um gegebenenfalls Optionen auf Wortlänge zu bringen
+Data Kontrollinformation höherer Schichten und Anwenderdaten
+Der IP-Header
+Das Internet Control Message Protocol (ICMP)– IP ist nur für den (unzuverlässigen) Datenaustausch zuständig.
+Sender
+Router
+Router
+Router
+• Nachrichtentypen, Beispiele:
+Leitung
+unterbrochen
+Router
+ICMP-Nachrichten– Destination Unreachable: Ziel nicht erreichbar.– Time Exceeded: Time-to-Live-Feld eines Pakets ist abgelaufen.– Echo Request / Reply: Echo Reply wird angefordert ("ping").– Timestamp Request / Reply: Ähnlich Echo Request. Zusätzlich Zeitstempel mit 
+Ankunftszeit der Anfrage/Sendezeit der Antwort.
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Empfänger
+April 26|  208
+ICMP 
+Internet Control Message Protocol
+ICMP ist ein Steuerungsprotokoll der Schicht 3, welches auf IP aufbaut! Dieses Protokoll wird z.B. von 
+Routern verwendet, wenn etwas Unerwartetes passiert.
+Beispiel 1: wenn ein Router ein Paket nicht weiterleiten kann, sollte die Quelle darüber informiert werden. 
+ICMP-Nachrichten sind insbesondere bei Fehlern im Netz hilfreich. 
+Beispiel 2: ping (Frage nach einem Lebenszeichen einer Station) benutzt ICMP-Nachrichten.
+Host
+Router
+ICMP Reply
+ICMP Request
+ICMP Message
+Router
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+ICMP Request: Zustandsabfrage
+ICMP Reply: 
+Host
+Antwort darauf
+ICMP Message: Übermittlung von 
+Zustandsinformationen 
+und Kontrollnachrichten
+Vorlesung Kommunikationssysteme   
+April 26|  209
+ICMP 
+Header
+• Also: ICMP versendet Fehler- und Kontrollnachrichten auf Netzebene. Diese Nachrichten werden in ein 
+IP-Paket verpackt
+• ICMP-Nachrichtenformat:
+Type/Code gibt die Art der Nachricht an, z.B.:
+0 
+3 
+4 
+11 
+12 
+Destination unreachable
+Echo Request/Reply  
+Source Quench
+Time exceeded for Datagram (TTL hat 0 erreicht, das Paket wird verworfen)
+Parameter Problem on Datagram (Ein Header-Feld ist falsch ausgefüllt)
+15/16 Information Request/Reply
+30 
+Traceroute   
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+IP Header......
+Type
+Code
+Checksum
+Identifier
+Sequence Number
+Optional Data
+(Paket kann nicht zugestellt werden)
+(Zustandsabfrage, z.B. beim ping)
+(Choke-Paket, Bitte um Reduktion der Datenrate)
+(Wenn TTL nicht funktioniert)
+Vorlesung Kommunikationssysteme   
+April 26|  210
+IPv6
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  211
+IPv4 (September 1981)
+IPv6 (seit Dezember 1995)
+Warum ein Wechsel, wenn IPv4 gut funktioniert?
+• Dramatisch anwachsender Bedarf für neue IP-Adressen
+• Vereinfachung des Protokolls (weniger Header-Felder)  
+• Erweiterungs- und Sicherheitsmechanismen (Flexible Erweiterungs-Header)
+• IP-Anycast
+• Flow-Label-Feld zur Identifikation von Datenströmen ohne Zugriff auf die Transportschicht
+• ...
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  212
+IPv6 
+Auswahl der Eigenschaften
+§ Adressgröße
+• 128-Bit-Adressen (8 Gruppen zu je 4 Hexadezimal-Zahlen)
+§ Einfacher Header
+• Der Header hat weniger Felder und keine Optionen mehr
+• Checksum entfällt da Handhabung durch Schicht 2 und 4 oder durch Sicherheitsmaßnahmen über 
+Erweiterungsheader (s.u.)
+• Vereinfacht die Verarbeitung von IPv6-Paketen für Router bei den Kernaufgaben
+• IHL: überflüssig, da es keine Optionen mehr gibt
+§ Erweiterbarkeit durch Next-Header Verkettung
+• Flexibilität durch Verkettung optionaler Header und Upper-Layer-Protocol (TCP/UDP)
+• Upper-Layer-Protocol-Feld kennzeichnet quasi jetzt auch den nächsten Header
+§ Verbesserung der Adressflexibilität
+• Anycast Address: Erreiche irgendeinen von mehreren (alle haben die gleiche Adresse)
+• Integration der Mac-Adresse in den Adressraum (wurde aufgegeben)
+• Neighbor Discovery Protocol statt ARP
+§ Identifikation von Datenströmen
+• Sender setzt für jeden Datenstrom ein eindeutiges FlowLabel-Header-Feld
+§ Sicherheitsmaßnahmen
+• Durch eigene Header-Elemente
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  213
+IPv6: Adressierung
+IPv6-Adressen umfassen 128 Bit–IPv6-Adressen werden in hexadezimaler
+Notation mit Doppelpunkten geschrieben: Format 
+x:x:x:x:x:x:x:x, wobei jede Stelle 16 Bit hexadezimal kodiert – Beispiele: 
+3FFE:400:20::A00:2BFF:FEA3:ADCB
+FF01:0:0:0:0:0:0:101 oder FF01::101
+FEDC:BA98:7600::/40 40 Bit langes Präfix für das Routing– Unterscheidung von Adressklassen:
+> Unicast-, Anycast- (one-to-nearest), Multicast-Adressen– Typ einer Adresse wird durch Präfix (führende Bits) festgelegt:
+> Loopback-Adresse:
+> Multicast-Adresse:
+> Link-local Unicast-Adresse (lokale Adresse)
+> Site-local Unicast-Adresse (obsolet)
+> IPv4-Adresse:
+> Global Unicast-Adresse
+00…01 (128 Bit) 
+11111111
+1111111010 
+1111110
+0….01…1
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+= ::1/128
+= ff00::/8
+= fe80::/10
+= fc00::/7
+= ::ffff:0:0/96
+alles andere
+Vorlesung Kommunikationssysteme   
+April 26|  214
+Adressbeispiel
+• Global Unicast: dreigeteilte Hierarchie
+Global Routing Prefix
+n bit
+Subnet ID
+64-n bit
+Interface ID
+64 bit– Globales Routing-Präfix zur Reduktion des Umfangs von Routing-Tabellen (z.B. 
+geographischer Identifier/Identifier pro Provider). Faktisch folgt man hier grob dem CIDR
+Konzept– Subnet-ID als Adresse eines bestimmten Netzes– Interface-ID als eindeutige Adresse eines Rechners, automatisch generiert, z.B. aus der MAC
+Adresse (wird mittlerweile aus Sicherheitsbedenken nicht mehr empfohlen)
+> MAC-Adresse 00:1D:72:8E:74:6C (48 bit)
+→ Interface ID: 00:1D:72:FF:FF:8E:74:6C (64 bit)
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  215
+IPv4
+Mapped IPv6 Adressen
+• IPv4-Mapped-Adressen ermöglicht die Kommunikation mit End-Systemen, 
+die nur IPv4 können
+• Die IPv6 basiert vollständig auf der IPv4 Adresse
+0000 . . . 0000
+80 bits
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+FFFF
+16 bits
+IPv4 Address
+32 bits
+Vorlesung Kommunikationssysteme   
+April 26|  216
+IPv6 Haupt
+Header
+• Version:  IP Version Nummer. 
+• Priority:  4 Bit für Priorität. 1 - News, 4 - FTP, 6 - Telnet, 
+8 bis 15 - Echtzeitverkehr.
+• FlowLabel:  virtuelle Verbindung mit bestimmten 
+Merkmalen/Anforderungen
+• PayloadLen: Paketlänge nach dem 40-Byte-Header 
+(also ohne Header)
+• NextHeader: 8-Bit-Selektor. Gibt den Typ des folgenden 
+Erweiterungs-Headers an (oder den Transport-Header)
+• HopLimit: Wird bei jedem Knoten dekrementiert. Bei 0 
+wird das Paket verworfen
+• SourceAddress: Die Adresse des ursprünglichen 
+Senders des Pakets 
+• DestinationAddress: Die Adresse des Empfängers 
+(nicht unbedingt das endgültige Ziel, wenn es einen 
+Optional Routing Header gibt)
+1
+4
+8
+Version 
+(4)
+Priority 
+(4)
+PayloadLen (16)
+16
+SourceAddress (128)
+DestinationAddress (128)
+NextHeader/Data
+24
+FlowLabel (24)
+NextHeader (8)
+Das Präfix einer Adresse charakterisiert 
+geographische Bereiche, Provider, lokale 
+interne Bereiche, ...
+32
+HopLimit (8)
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  217
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             Vorlesung Kommunikationssysteme   April 26|  218
+IPv4 vs. IPv6: Header
+Ver
+sion
+4 8 16 32
+Prio
+rity Flow Label
+PayloadLen Next 
+Header Hop Limit
+Source Address
+Source Address
+Source Address
+Source Address
+Destination Address
+Destination Address
+Destination Address
+Destination Address
+NextHeader / DATA
+4 8 16 32
+Ver
+sion IHL Total Length Type of 
+Service
+Identification Fragment Offset
+Time to 
+Live Protocol Header Checksum
+Source Address
+Destination Address
+Options (variable) / Padding
+DATA
+Der IPv6-Header ist zwar länger, doch dies liegt 
+nur an den längeren Adressen. Ansonsten ist er 
+‚besser sortiert‘ und im Router einfacher 
+abzuarbeiten (8 statt 13 Felder)
+Ver
+sion
+4 8 16 32
+Prio
+rity Flow Label
+PayloadLen Next 
+Header Hop Limit
+Source Address
+Source Address
+Source Address
+Source Address
+Destination Address
+Destination Address
+Destination Address
+Destination Address
+NextHeader / DATA
+4 8 16 32
+Ver
+sion IHL Total Length Type of 
+Service
+Identification Fragment Offset
+Time to 
+Live Protocol Header Checksum
+Source Address
+Destination Address
+Options (variable) / Padding
+DATA
+Der IPv6
+Header ist erweiterbar
+Nutzung der Erweiterungs-Header 
+§ Per Hop ausgewertete Header- Hop-by-Hop Options
+(z.B. Jumbogramm Notifier)- Routing Information Header
+§ Nur im Endsystem ausgewertete Header- Fragmentation Header- Authentication Header
+§ Header-Extensions u.U. auf Applikationsniveau 
+direkt nutzbar
+Ver
+Pri.
+Length
+Nxt. Hdr.: 43
+Nxt. Hdr.: 44
+Nxt. Hdr.: 51
+Nxt. Hdr.: 6
+Flow Label
+Nxt. Hdr.: 0.
+Source  Address
+Dest. Address
+Hdr. Length
+Hop-by-Hop Options
+Hdr. Length
+Routing Information
+Reserved
+Hop Limit
+Fragment Offset
+Fragment Identification
+Hdr. Length
+Authentication Data
+TCP Header und Daten
+M
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  219

@@ -1,0 +1,501 @@
+Mehrfachzugriffsprotokolle
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Juni 26|  539
+Ein 
+ideales
+Mehrfachzugriffsprotokoll
+Broadcast-Kanal der Rate R bps
+1. Ein einzelner Knoten kann mit der Rate R übertragen
+2. M Knoten können mit einer mittleren Rate von R/M übertragen
+3. Das Protokoll ist dezentral, d.h. es gibt keine Master-Knoten, die ausfallen und das ganze System 
+zum Absturz bringen können
+4. Das Protokoll ist einfach und kann somit kostengünstig implementiert werden
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Juni 26|  540
+Mehrfachzugriffsprotokolle
+• Verteilter Algorithmus zur Regelung der gemeinsamen Nutzung 
+eines geteilten Übertragungsmediums– Wann kann wer etwas senden?– Störungsfreier Kanalzugriff
+• Hierbei ist zu berücksichtigen, dass die zur Koordination 
+notwendige Kommunikation auch über das geteilte Medium 
+abgewickelt werden muss! – Kontrollnachrichten – Keine out-of-band-Signalisierung
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Juni 26|  541
+MAC
+Protokolle
+: Eine 
+Taxonomie
+Drei grobe Kategorien:
+• Konkurrenzfreie Protokolle / Kanalaufteilungsprotokolle– Aufteilung des Übertragungskanals in kleine Übertragungseinheiten (Zeitfenster, Frequenzen, 
+Kodierung)– Exklusive Nutzung der Übertragungseinheiten für einzelne Knoten
+• Konkurrenzbasierte Protokoll / Zufallszugriffsprotokolle – Keine Unterteilung des Kanals, jeder überträgt mit der gesamte Leitungskapazität. Allerdings 
+sind Kollision von Nachrichten möglich und müssen korrekt behandelt werden
+• Rotationsprotokolle– Der Zeitpunkt, wann ein Knoten senden kann, wird durch eine spezielle Koordinierung nach 
+einem flexiblen Rotationsprinzip im Übertragungsmedium ausgetauscht. 
+• Hybride Protokolle– Nutzen Verfahren zur Vermeidung von Kollisionen (Request-to-Send)/Clear-to-Send
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Juni 26|  542
+Kanalaufteilungsprotokolle
+: 
+Zeitmultiplexing
+TDMA: Time Division Multiple Access 
+• Aufteilung des Kanals in kleine Zeiteinheiten, die sich in Runden wiederholen 
+• Jeder Knoten kann eine bestimmte Anzahl an Zeiteinheiten in jeder Runde Nutzen 
+• Ungenutzte Einheiten (slots) bleiben ungenutzt 
+• Beispiel: 6-Knoten LAN, 1,3,4 haben Daten, Slots 2,5,6 idle
+• Die Zeiteinheiten können meist auch gruppiert angefordert werden
+• Anforderung entspricht Konfiguration der NIC-Karte – hierfür gibt es oft einen 
+speziellen Kommunikationsslot
+• Synchronisation wird vorher initiiert
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Juni 26|  543
+Kanalaufteilungsprotokolle: Frequenzmultiplexing
+FDMA: frequency division multiple access 
+• Aufteilung des Kanals in Frequenzbänder
+• Nach Nyquist kann ein rauschfreier Kanal mit einem Frequenzband der Breite B Hz  
+nicht mit mehr als 2B*Symboltiefe Bits/s übertragen 
+• Jede Station nutzt ein Frequenzband und moduliert die Symbole (Daten) auf diesen 
+unter Anwendung einer Spreizung 
+• Die Kapazität nicht genutzter Frequenzbänder geht verloren
+• Beispiel: 6-Knoten LAN, 1,3,4 haben Daten,  2,5,6 idle 
+frequency bands
+time
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Juni 26|  544
+Zufallszugriffsprotokolle 
+• Sendet ein Knoten, so – nutzt er die vollständige Kanalrate  R.– Keine a priori Koordination
+• Kollisionen treten auf, wenn mehrer Knoten gleichzeitig senden: – Wie werden diese erkannt?– Wie werden diese behandelt (z.B. erneutes Verschicken nach einem zufälligen Zeitintervall) via delayed 
+retransmissions)
+• Beispielprotokolle:– slotted ALOHA– ALOHA– CSMA, CSMA/CD, CSMA/CA
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Juni 26|  545
+CSMA
+Carrier Sense Multiple Access (CSMA)
+•  Prinzip:
+® höre vor der Übertragung das Medium ab
+® sende nur, falls das Medium frei ist
+®Analogie: Unterbreche keine Anderen
+S1
+1. Station S1 sendet
+Nachricht von S1
+2. Station S2 will 
+ebenfalls senden, merkt 
+aber, dass bereits eine 
+Übertragung stattfindet.
+S2
+• Vorteile: einfach, da die Stationen nicht koordiniert werden müssen; mit einigen Erweiterungen 
+trotzdem gute Ausnutzung der Netzkapazität
+• Nachteil: kein garantierter Zugriff, es ist eine große Verzögerung möglich
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Ausdehnung des Signals 
+auf dem Medium
+Juni 26|  546
+Problem bei CSMA
+Problem: die Nachricht, die S1 sendet, breitet sich mit endlicher Geschwindigkeit auf dem Medium aus. 
+Daher kann es sein, dass S2 denkt, das Medium wäre frei, obwohl S1 schon mit der Sendung begonnen 
+hat. Beide Nachrichten überlagern sich auf dem Medium und werden unbrauchbar.
+S1
+1. Station S1 sendet
+Nachricht von S1
+2. Station S2 will 
+ebenfalls senden und 
+denkt, das Medium 
+wäre frei.
+Nachricht von S2
+S2
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Ausdehnung des Signals 
+auf dem Medium
+Juni 26|  547
+Prüfe auf Kollision
+Carrier Sense Multiple Access with Collision Detection (CSMA/CD)
+® wie CSMA, zusätzlich: höre während der Sendung das Medium weiter ab und breche die 
+Übertragung ab, wenn eine Kollision auftritt
+® sende ein Jamming-Signal, damit jede Station weiß, dass eine Kollision aufgetreten ist und die 
+Nachricht nutzlos geworden ist.
+® Wichtig: Man muss so lange senden, dass man ein Jamming -Signalwährend dessen auch 
+mitbekommt
+S1
+S1: Carrier Sense
+S1 hört das 
+Übertragungsmedium 
+weiter ab.
+Zeit
+Maximale Ende-zu-Ende-Laufzeit
+S1 sendet
+S1 entdeckt den Konflikt und 
+weiß, dass die Sendung 
+wiederholt werden muss.
+Anmerkung: mit zunehmender Ausdehnung des Netzes steigt die Gefahr eines Konflikts. 
+Daher ist diese Technik nur für "kleine" Netze geeignet.
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+S2
+S2 sendet
+S2 entdeckt den 
+Konflikt und stoppt
+Juni 26|  548
+Prüfe auf Kollision
+S1
+Zeit
+Maximale Ende-zu-Ende-Laufzeit
+S1 sendet
+S1 entdeckt den Konflikt und 
+weiß, dass die Sendung 
+wiederholt werden muss.
+Damit eine Kollision erkannt werden kann muss ein Sender (S1) mindestens so lange senden, dass er das 
+„Kollisionssignal“ auch eines maximal entfernten Teilnehmers mitbekommt. Somit muss mindestens so lange gesendet 
+werden, wie die Signallaufzeit hin und zurück ist. Die Mindestrahmenlänge ergibt sich somit aus der Übertragungsrate und 
+der Ausbreitungsgeschwindigkeit im Medium
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+S2
+S2 sendet
+S2 entdeckt den 
+Konflikt und stoppt
+Juni 26|  549
+Ethernet
+• basiert auf dem Standard IEEE 802.3 “CSMA/CD” (Carrier Sense Multiple Access/Collision Detection)
+• mehrere (passive) Rechner - ein gemeinsames Medium (Random Access)
+• ursprünglich Bustopologie:
+1. Ist das Medium frei?  
+(Carrier Sense)
+2. Übertragen
+3. Prüfe auf Kollision (Collision Detection)
+Falls ja: sende Jamming und breche ab. 
+Danach weiter mit Binary Exponential 
+Backoff Algorithmus
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+?
+?
+Juni 26|  550
+Vorgehen bei Kollisionen
+Problem:
+Wenn zwei Nachrichten eine Kollision haben, versuchen die Stationen eine erneute Übertragung. Wann 
+sollen die Stationen die Wiederholung starten?
+Binary Exponential Backoff
+Um nach einer Kollision die gleichzeitige Wiederholung der kollidierten Sendungen zu vermeiden 
+(Folgekollision), wird eine zufällige Wartezeit aus einem vorgegebenen Intervall gleichverteilt gezogen. 
+Das Intervall wird klein gehalten, um große Wartezeiten bis zur Wiederholung zu vermeiden. Dadurch ist 
+allerdings das Risiko eines Folgekonflikts groß. Kommt es so zu einer weiteren Kollision, wird das Intervall 
+vor dem nächsten Versuch vergrößert, um mehr Spielraum für alle sendenden Parteien zu schaffen.
+Die Wartezeit wird dabei folgendermaßen ermittelt:
+• Hatte eine Station bereits i Kollisionen, würfelt sie eine Zahl x aus dem Intervall [0, 2i-1]▵t (bei Kollision 10 - 
+15 bleibt das Intervall fix bei [0, 210-1], bei 16. Abbruch)
+• Sobald das Medium frei ist, wartet der Sender x Zeitslots, wobei ein Zeitslot der minimalen Ethernet
+Rahmenlänge von 512 Bit, also bei 10 Mbit/s 51.2 µs, entspricht
+• Nach dem x-ten Zeitslot beginnt die Station erneut mit Carrier Sense
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Juni 26|  551
+Datenübertragung bei Ethernet
+• Verwendet CSMA/CD, bei Kollisionen wird das Binary Exponential Backoff-Verfahren angewendet
+• Ziel: 
+• Realisieren großer Netzwerke, die aber trotzdem eine geringe Kollisionswahrscheinlichkeit haben
+• Resultat: die maximale Ausdehnung wird auf 2800 Meter festgelegt
+• Die maximale Zeit zur Entdeckung einer Kollision ist knapp zweimal so lang wie die 
+Signallaufzeit auf dem Medium
+Bei einer Signalgeschwindigkeit von ungefähr 200000 km/s (5 µs/km) erhält man (unter 
+Berücksichtigung der Zeit in Repeatern) eine maximale Ende-zu-Ende-Signallaufzeit von 25.6 µs. Die 
+maximale Konfliktdauer ist damit ca. 51.2 µs. Um einen Konflikt mit Sicherheit zu erkennen, muss die 
+Station mindestens 51.2 µs auf dem Medium horchen und senden
+• Darauf basierend wurde für eine Senderate von 10 MBit/s eine minimale Rahmenlänge (64 Byte mit 
+10MBit/s benötigen 51.2 µs) definiert, um eine Kollisionserkennung auch im Wort-Case zu 
+ermöglichen
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Juni 26|  552
+Ethernet
+Basiert auf IEEE 802.3 „CSMA/CD“
+4 Klassen von Ethernet-Varianten:
+• Standard Ethernet à 
+• Fast Ethernet 
+10 Mb/s
+à 100 Mb/s
+• Gigabit Ethernet à 
+• 10Gigabit-Ethernet à 
+Kaum noch im Einsatz
+1000 Mb/s
+Ehemals meistverbreitete Variante
+10000 Mb/s
+Heute meist verbreitet
+Standardisiert
+Ethernet hat sich im LAN-Bereich durchgesetzt. Es wird in der überwiegenden 
+Anzahl der LANs als Infrastruktur eingesetzt:
+• Es ist einfach zu verstehen, umzusetzen (passiv) und zu überwachen
+• Das Netzwerk ist in der Anschaffung billig
+• Es gibt keine Kompatibilitäts-Probleme
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Juni 26|  553
+Ethernet
+Varianten
+Angabe der verwendeten Ethernet-Variante durch 3 Namenskomponenten:
+1 – Kapazität in Mb/s (also 10, 100, 1000 oder 10G)
+2 – Übertragungstechnik (z.B. Base für Basisband, Broad für Broadband)
+3 – maximale Segmentlänge in Einheiten von 100 Metern, bzw. Art des 
+verwendeten Mediums
+Beispiele:
+• 10Base-T: 10 Mb/s, Basisband, Twisted-Pair-Kabel
+• 100Base-T2: 100 Mb/s, Basisband, 2 Twisted-Pair-Kabel
+• 1000Base-X: 1000 Mb/s, Basisband, Glasfaser-Kabel
+Von der Variante hängen noch Parameter wie z.B. die minimale Rahmenlänge ab 
+(wegen unterschiedlicher Signallaufzeiten):
+• 1000Base-X: minimale Rahmenlänge 416 Bytes
+• 1000Base-T: minimale Rahmenlänge 520 Bytes
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Juni 26|  554
+Nachrichtenformat bei Ethernet
+Präambel
+1
+SFD
+DA
+2
+3
+SA
+4
+1: 7 Byte Synchronisation 
+Jedes Byte beinhaltet 10101010
+2: 1 Byte Start Frame Delimiter
+Markierung des Rahmenbeginns
+durch das Byte 10101011
+3: 6 Byte Destination Address
+4: 6 Byte Source Address
+Length
+5
+Data
+6
+Padding
+7
+6: ³ 0  (0-1500) Byte Daten
+7: ³ 0 Byte Padding
+FCS
+8
+Auffüllen des Rahmens auf mindestens 
+64 Byte (Kleinere Fragmente werden 
+im Netz verworfen, abgesehen von 
+dem Jamming-Signal)
+8: 4 Byte Frame Check Sequence 
+Verwendung eines CRC
+5: 2 Byte Length/Type
+Angabe der Länge des Datenfelds 
+bzw. Typ des Schicht-3-Protokolls
+Hier steht IP oder ARP wird ACK 
+angezeigt (Sliding Window ähnlich). Der 
+verwendete FCS identifiziert das ACK!
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Juni 26|  555
+Fast Ethernet
+Prinzip: behalte Ethernet bei, aber mache es schneller:
+• Kompatibilität mit existierenden Ethernet-Netzen
+• 100 MBit/s an Übertragungsrate, erreicht durch bessere Technik, effizientere Codes, Nutzung 
+mehrerer Leitungspaare, Switches, ...
+• Resultat: IEEE 802.3u, 1995
+Problem: 
+• Die minimale Rahmenlänge zur Kollisionserkennung bei Ethernet beträgt 64 Byte. Bei 100 Mb/s wird 
+der Rahmen aber ca. 10mal so schnell abgesendet, so dass eine Kollisionserkennung nicht mehr 
+gewährleistet ist. 
+• Resultat: für Fast Ethernet musste die Ausdehnung ca. um den Faktor 10 auf etwas mehr als 
+200 Meter reduziert werden...
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Juni 26|  556
+Wechsel zu Gigabit-Ethernet
+• Gigabit-Ethernet (IEEE 802.3z, 1998)– Kompatibilität zu Fast Ethernet beibehalten!– Problem: zur Kollisionserkennung wäre eine Reduktion der Ausdehnung auf 25m 
+notwendig…
+> Daher: Ausdehnung von Fast Ethernet beibehalten
+> Neue minimale Rahmenlänge von 520 Byte
+> Trotzdem Beibehaltung des alten Rahmenformats: füge zweites Padding-Feld hinter dem 
+Rahmen an (Carrier Extension)
+PRE
+SFD
+DA
+SA
+Length
+/Type
+Data
+Padding auf mindestens 64 Byte
+Padding
+FCS
+Padding auf mindestens 520 Byte
+nodata
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Juni 26|  557
+Daten zu Ethernet
+Parameter
+Maximale 
+Ausdehnung
+Ethernet
+Fast Ethernet
+bis zu 2800 Meter
+Gigabit Ethernet
+205 Meter
+Kapazität
+10 Mb/s
+100 Mb/s
+200 Meter
+1000 Mb/s
+Minimale 
+Rahmenlänge
+Maximale 
+Rahmenlänge
+64 Byte
+64 Byte
+1526 Byte
+1526 Byte
+520 Byte
+1526 Byte
+Signal
+darstellung
+Manchester-Code
+Maximale 
+Anzahl Repeater
+4B/5B-Code, 
+8B/6T-Code, ...
+5
+8B/10B, ...
+2
+Zusätzlich: 
+Ein weiterer „Rahmen“ wird zum „Jamming“ benutzt:
+Dies ist ein 4-Byte-Störsignal zur Kollisionserkennung
+1
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Juni 26|  558
+Wechsel zu Gigabit-Ethernet
+• Auch maximale Rahmenlänge unzureichend– Ermögliche Versenden mehrerer aufeinanderfolgender Rahmen (Frame Bursting) 
+ohne wiederholt CSMA/CD anzuwenden– Versendung von bis zu 5 Rahmen in Folge, getrennt durch „Inter-Frame Gaps“ (IFGs)
+> Spezielles Bitmuster, Medium bleibt für andere Stationen belegt
+MAC-Rahmen (mit nodata 
+falls < 520 Byte)
+IFG
+MAC-Rahmen– Im Normalfall werden nur noch Switches eingesetzt
+IFG
+.....
+MAC-Rahmen
+> Es treten keine Kollisionen mehr auf
+> Maximale Kabellänge nur noch durch die Signalabschwächung bestimmt
+> Trotzdem ist CSMA/CD noch implementiert (half duplex erlaubt!)
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Juni 26|  559
+Neuere Entwicklungen
+• 10-Gigabit Ethernet (IEEE 802.3ae)– Erst nur für Glasfaser spezifiziert (LX oder SX), bis 40km– Mittlerweile auch für Twisted Pair (Kat. 6 oder 7)
+> Wüste Trickserei auf Schicht 1, um trotz Dämpfung und Verzerrung 50 bzw. 100m Reichweite zu 
+erreichen– Verzicht auf CSMA/CD, da sowieso keine Kollisionen mehr auftreten können (Sterntopologie 
+mit Switch)
+• Mittlerweile– 40G-Ethernet, 100G-Ethernet (802.3ba)
+> Beibehaltung der Rahmenformate…
+> 7 Meter über Twisted Pair, bis zu 40 km über Glasfaser
+• Gibt es auch Alternativen zu Ethernet?
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Juni 26|  560
+Token Ring (IEEE 802.5)
+• Ursprüngliche Konkurrenz zu Ethernet– “Token“-Verfahren, nur wer ein bestimmtes Token (=Bitfolge) besitzt, darf senden– Die Rechner teilen sich einen Ring aus Punkt-zu-Punkt-Verbindungen– Das Token wird zyklisch weitergegeben
+• Eigenschaften:– Garantierter Zugriff, keine Kollisionen– Sehr gute Ausnutzung der Netzkapazität, 
+hohe Effizienz– Fair, garantierte Antwortzeiten– Aber: aufwändig und teuer
+Weitergabe des Tokens
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Juni 26|  561
+Token Ring
+• Parameter– Twisted Pair, Koaxialkabel 
+oder Glasfaser– Datenrate von 4 bzw. 16 MBit/s
+(100MBit/s mit Glasfaser)– Differentieller Manchester-Code– Stationen sind aktiv angeschlossen
+> Empfangene Signale werden 
+regeneriert (wie bei 
+Repeatern, daher prinzipiell 
+keine Beschränkung 
+der Ausdehnung)
+1
+Station
+2
+vom Ring
+3
+Punkt-zu-Punkt
+Verbindung
+4
+Aktiver Anschluss
+Empfänger Sender
+zur
+Station
+zum Ring
+von der 
+Station
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Juni 26|  562
+Senden und Empfangen
+• Grundzustand– Daten werden vom Ring seriell empfangen– An Station gerichtete Daten
+werden kopiert– Daten werden seriell 
+weitergeleitet
+• Sendezustand– Der Ring wird aufgetrennt– Eigene Daten werden 
+seriell gesendet– Vom Ring kommende 
+Daten werden nicht weitergeleitet, 
+sondern in der Station ausgewertet
+Empfänger
+vom Ring
+zur
+Station
+vom Ring
+Empfänger
+zur
+Station
+Sender
+zum Ring
+von der
+Station
+Sender
+zum Ring
+von der
+Station
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Juni 26|  563
+Zugriff beim Token Ring
+• Beispiel: Station 2 sendet an Station 1
+1. Station 2 wartet auf freies Token (Sendeberechtigung, 3-Byte-Token)
+2. Station 2 wandelt freies Token in 
+belegtes um (= Rahmen-Header);
+danach sendet 2 den Rahmen
+(und ggfs. weitere Rahmen, 
+für maximal 10 ms)
+3. Station 2 beendet den Rahmen 
+und wartet, bis dieser wieder 
+bei ihr ankommt
+4. Station 1 kopiert den Rahmen; 
+Station 2 entfernt ihn vom 
+Ring und erzeugt ein neues, 
+freies Token
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Juni 26|  564
+Token Ring als Alternative?
+• Token Ring WAR eine Konkurrenz zu Ethernet:– Fair, garantierte Antwortzeiten, keine Kollisionen– Aber: Verwaltungsaufwand! Was passiert, wenn durch einen Übertragungsfehler das Token 
+verfälscht wird?
+→ Ethernet ist DER Standard für lokale Netze
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Juni 26|  565
+Fazit: Ethernet
+• Standardnetz für LANs– Vielzahl von Varianten, flexible Topologie
+> Heutzutage vorwiegend Stern, teilweise erweitert zu Bäumen– Einschränkungen durch Beibehaltung der Kompatibilität zu älteren Varianten
+> Rahmenformat
+> Kollisionserkennung heute kaum noch nötig– Oft auch im MAN verwendet
+• Wird durch wenige weitere Technologien ergänzt– WLAN im drahtlosen Bereich– DSL zum Anschluss von Heimnetzen an das Internet– SDH im Weitverkehrsbereich
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Juni 26|  566

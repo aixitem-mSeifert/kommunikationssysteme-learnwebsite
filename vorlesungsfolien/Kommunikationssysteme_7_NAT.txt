@@ -1,0 +1,196 @@
+NAT –Network Address Translation
+• Vereinfachter Aufbau von Heimnetzen
+• Elementares Werkzeug zur Behebung der Adressknappheit– Jeder Rechner benötigt eigentlich eine eindeutige IP-Adresse, um mit anderen 
+Rechnern kommunizieren zu können– CIDR ermöglicht zwar die Integration in einen Adressbereich eines Providers, jedoch 
+bleibt die Eindeutigkeit erhalten– Bei 32-Bit-Adressen waren schnell Engpässe absehbar
+• Idee: Sofern ein (Heim-)Netz nur über einen Standard-Router an andere 
+Netze (dem Internet) angeschlossen ist könnte dieser doch alle 
+Netzteilnehmer aus dem inneren mit seiner IP-Adresse repräsentieren
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  160
+NAT –Network Address Translation
+• Wie wäre es, wenn also nur der Default-Router eine offizielle Adresse hat 
+und das interne Netz IP-Adressen mit einem rein lokalen Kontext 
+verwendet?
+• IP definiert spontan nutzbare Adressbereiche bei denen die weltweite 
+Eindeutigkeit aufgegeben wurde: Private Adressen
+• Bei unterschiedlichen Heimnetzen könnten private Adressen wieder 
+verwendet werden, so dass jeder diese nutzen kann. Sobald eine externe 
+Kommunikation stattfindet müsste der Router die relevante Adresse im IP
+Header austauschen und durch eine weltweit eindeutige ersetzen. 
+• Allerdings hätten wir jetzt möglicherweise mehrere interne Rechner und 
+mehrere Anwendungen, die über die Adressumsetzung im Internet nicht 
+unterscheidbar wären. Um Rückantworten zu ermöglichen brauchen wir 
+mehr!
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  161
+NAT –Network Address Translation
+• Standardisiert: private Adressblöcke, die jeder intern völlig frei nutzen 
+kann:
+> 10.0.0.1 - 10.255.255.254
+> 172.16.0.1 - 172.31.255.254
+> 192.168.0.1 – 192.168.255.254– Problem: jeder kann diese privaten Adressen in seinem Netz nutzen
+> Adressen sind nicht mehr weltweit eindeutig, so dass externe Rechner nicht so einfach wissen 
+können, an wen die Pakete zu senden sind
+> Pakete an private Adressen sind ohne weitere Aktionen nicht von externen Netzen 
+versendbar!– Alle Rechner innerhalb des eigenen Netzes können aber problemlos miteinander 
+kommunizieren. Die Adressen haben eine rein lokale Bedeutung.
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  162
+Network Adress Translation (NAT)
+• Prinzip von NAT: – Rechner im lokalen Netz verwenden private Adressen– Das Netz bekommt eine global eindeutige Adresse zugewiesen– Router nimmt transparente Umsetzung zwischen Adressen vor
+> Speicherung in Abbildungstabelle
+> keine Änderungen an Endgeräten erforderlich
+10.0.0.1
+LAN
+10.0.0.3
+Lokale, nur im LAN 
+eindeutige IP-Adressen
+N AT-Router
+Internet-Verkehr
+10.0.0.2
+Global eindeutige IP-Adressen
+137.226.12.4
+Adressen
+übersetzung
+Abbildungs
+tabelle
+Internet
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  163
+NAT –Network Address Translation
+• NAT-Router– Interne Rechner verwenden private Adressen– Soll ein Paket das Netz verlassen, tauscht der NAT-Router die private Absenderadresse mit 
+der global gültigen
+NAT-Router 
+192.168.0.2 192.168.0.3
+Server
+Computer
+Ethernet
+Ziel-Rechner?
+Private IP-Adr.
+an: 137.226.12.32
+Übersetze nach
+192.168.0.2
+137.226.12.32
+Internet
+Computer
+192.168.0.4
+Computer
+192.168.0.5
+192.168.0.3
+192.168.0.4
+192.168.0.5
+137.226.12.32
+137.226.12.32
+137.226.12.32– Problem: wie kann eine Rückübersetzung vorgenommen werden, woran erkennt man den 
+tatsächlichen Emfpänger?
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  164
+NAT –Network Address Translation
+Eigentlich ist Network Address Port Translation korrekt
+• Funktionsweise von NAT– Speichere bei der Adressumsetzung Zusatzinformationen, die eine Rückübersetzung der 
+Adresse bei Empfang einer Antwort ermöglichen
+> Simpel: nutze den Port (TCP/UDP) als zusätzliche Adressinformation– Somit wird beim ersten ausgehenden Paket ein Eintrag in einer Tabelle vorgenommen in 
+der folgendes steht:
+(TCP/UDP,) private-IP, QuellPort, externe-IP, zufällig-freier-Port 
+> Nutze diese Tabelle, um bei ausgehenden und bei eingehenden Paketen die IP-Adressen und 
+die Port-Nummern auszutauschen
+• Auch genannt– Network Address Port Translation (NAPT)– Hiding NAT, NAT-Overloading– Masquerading
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  165
+Adresserweiterung
+• NA(P)T-Prinzip:– Abbildung aller lokalen Adressen auf eine einzige globale Adresse– Zusätzliches  Unterscheidungskriterium zur Identifikation des Kommunukationspartners: 
+Portnummern von TCP – Erzeugen eines „Extended Entry“ in Abbildungstabelle 
+(Transport-Protokoll, Portlokal, IPlokalóIPglobal, Portglobal)
+Protokoll
+TCP
+TCP
+Port 
+(lokal)
+1024
+1500
+I P
+(lokal)
+10.0.0.2
+10.0.0.3
+Port
+(global)
+1024
+1500
+IP
+(global)
+IP
+(Ziel)
+Port
+(Ziel)
+137.22.12.1 207.171.1.2 1234
+137.22.12.1 134.10.99.4 80
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  166
+NAT –Network Address Translation
+• Probleme mit NAT– Interne Rechner nur von außen erreichbar, wenn ein Mapping existiert
+> z.B. bei Webserver im internen Netz: dauerhaftes Mapping für Port 80 nötig– Funktioniert nur, wenn wir auch Port-Nummern haben. Kommunikation nur auf Basis von IP
+Adressen (Pakete ohne Port-Nummern) können nicht abgebildet werden (Hinweis: Probleme 
+bei Fragmentierung)
+• Damit also eine Kommunikation möglich ist muss im Allgemeinen zunächst eine 
+Kommunikation von innen nach außen ablaufen– Hole Punching
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  167
+Network Address (Port) Translation
+• Full Cone NAT
+Sobald die Kombination einer interner IP, interner Port zu einer extern erreichbaren 
+Adresse, Port abgebildet wurden findet die Abbildung automatisch statt. Alle externen 
+Rechner können dann über das extern erreichbare Tupel mit dem internen Rechner 
+kommunizieren
+Aus: A New Method for Symmetric NAT Traversal in UDP and TCP 
+Daisuke Yamada
+, Suguru Yoshida
+, Shigeki Goto
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  168
+Network Address (Port) Translation
+• Restricted Cone NAT
+Dieser Fall ist ähnlich dem Full Cone Fall, allerdings muss hier die Kommunikation vom 
+internen Rechner vorab einmal durchgeführt werden. Damit merkt sich das NAT die 
+Zieladresse. Somit kann nur der externe Rechner mit dem internen Rechner 
+kommunizieren, der vorher adressiert wurde
+Aus: A New Method for Symmetric NAT Traversal in UDP and TCP 
+Daisuke Yamada
+, Suguru Yoshida
+, Shigeki Goto
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  169
+Network Address (Port) Translation
+• Port Restricted Cone NAT
+Dieser Fall erweitert den restricted cone NAT in der Art, dass auch nur der entfernte Port 
+mit dem internen Rechner kommunizieren kann
+Aus: A New Method for Symmetric NAT Traversal in UDP and TCP 
+Daisuke Yamada
+, Suguru Yoshida
+, Shigeki Goto
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  170
+Network Address (Port) Translation
+• Symmetric NAT
+Hier wird noch angefügt, dass für jede Kommunikation aus dem internen Netz eine
+eigene Abbildung durchgeführt wird. Damit würden zwei unterschiedliche
+Kommunikationsströme immer auch verschiedene Ports nutzen. Nur der passende Port 
+wird durchgelassen.
+Aus: A New Method for Symmetric NAT Traversal in UDP and TCP 
+Daisuke Yamada
+, Suguru Yoshida
+, Shigeki Goto
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  171

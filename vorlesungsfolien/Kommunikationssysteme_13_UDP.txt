@@ -1,0 +1,230 @@
+Einführung in das 
+User 
+Datagram
+(UDP)
+Protocol
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Mai 26|  301
+User Datagram Protocol
+Warum überhaupt UDP?
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Mai 26|  302
+UDP: User Datagram Protocol– UDP stellt eine „direkte“ Schnittstelle zur Nutzung von IP dar: Anwendungen können 
+Nachrichten direkt verschicken, ohne Verbindungsaufbau– TCP hat Seiteneffekte
+> Fluss- und Staukontrollmechanismen beeinflussen die Übertragungsrate in erheblichem Umfang
+> Head-of Line-Blocking
+> Je nach Programmierung Skalierungsprobleme auf Server-Seite– Sehr viele Multimedia-Anwendungen verwenden UDP da dort keine zuverlässige 
+Verbindung benötigt wird
+16
+0 31
+Source port                          
+Length     
+Destination port
+Daten ...
+UDP-Checksum
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Paket
+kopf
+Mai 26|  303
+Der UDP
+Header
+Source Port
+Identifiziert den sendenden Prozess, also den Prozess, an den gegebenenfalls Rückmeldungen zu senden sind. 
+Die Angabe ist optional; das Feld soll den Wert null haben, wenn die Option nicht genutzt wird. 
+Destination Port
+Identifiziert den Prozess im Zielsystem, an den die Daten abzuliefern sind. 
+Length
+Im Längenfeld wird die Gesamtlänge des UDP-Datagramms in Bytes angegeben; 
+die Mindestlänge beträgt somit 8 (= Header-Länge) 
+Checksum
+Die Angabe ist optional (0 bedeutet: keine Angabe). Für die Berechnung der Längsparität wird dem UDP-Datagramm 
+ein (nicht mitübertragener) Pseudo-Header von 12 Bytes Länge vorangestellt, der im wesentlichen IP-Source Address, 
+IP-Destination Address und die im IP-Datagramm angegebene Protokoll-Nr. für UDP (17) enthält. 
+Da der Datenteil eines IP-Datagramms nicht durch die IP Header Checksum geschützt ist, bedeutet ein Verzicht auf die 
+UDP-Checksum, dass der Inhalt des UDP-Datagramms (Header und Daten) nicht durch eine Prüfsumme gesichert ist. 
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Mai 26|  304
+UDP Checksum
+Ziel:
+Erkennen von Fehlern (z.B. flipped bits) im übertragenen Segment – optionale Nutzung!
+• Formal über eine Einerkomplementsumme über – Pseudo-Header+Header+Daten beschrieben
+• Einfachere Interpretation: – Der Pseudoheader dient der Absicherung der IP-Adressen und beinhaltet Wesentlichen die Quell und 
+Zieladresse; Faktisch: Quell-IP-Adresse (32 Bit), Ziel-IP-Adresse (32 Bit), 8 Bit Leerfeld, 8 Bit Protokoll-ID 
+(UDP hat die ID 17) und der Länge des UDP-Datagramms (16 Bit)– Optionales Auffüllen der Daten (wenn ungerade Byteanzahl) durch 0en– Berechnung der Prüfsumme durch Interpretation der Daten als 16-Bit Werte. Aufaddieren der 16-Bit-Werte im 
+Einer-Komplement; Etwaiger Übertrag wird durch Addieren des Wertes 1 mit eingebaut
+• Einfügen der Prüfsumme in den UDP-Header
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Mai 26|  305
+Wozu
+UDP?
+Multimedia:
+Die digitale Übertragung von Audio- und Videodaten besitzt andere Anforderungen
+• Geringe Verlustraten stören nicht
+• Isochrones Abspielen
+• Latzenzzeiten müssen insbesondere bei interaktiven Anwendungen gering sein– Kriterien für gute Telefonie erfordern eine maximale Latzenz von 150ms– Jitter: Die Variation der Laufzeit sollte ebenso beschränkt sein
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Mai 26|  306
+Continuous Media: Digitalisierung der Daten
+• Abtasten
+• Quantisieren
+• Kodieren
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Mai 26|  307
+Abtastung
+• Signalstärke wird regelmäßig gemessen
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Mai 26|  308
+Sampling Rate
+Nyquist Theorem: 
+Sampling-Frequenz >= 
+2 * maximale Frequenz
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Mai 26|  309
+Quantisierung
+• Umwandlung Spannungswerte > Zahlenwerte
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Mai 26|  310
+Kodierung
+• Zahlenwerte werden binär kodiert
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Mai 26|  311
+Qualität
+• Abhängig von– Anzahl der Quantisierungsstufen (Auflösung der einzelnen 
+Niveaus / Lautstärken)– Abtastrate (liefert Bandbreite)
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Mai 26|  312
+Platzbedarf/Übertragungsrate
+• Bitrate/s = Abtastrate/Hz * Bits/Abtastwert
+• Beispiel Audio-CD– 44,1kHz * 2 * 16bit = 1,4 MBit/s– Speicherbedarf bei 60 min : 630 MB
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Mai 26|  313
+Multimediale Netzanwendungen
+Kategorien:
+1) Streaming gespeicherter Audio- und Video-Daten 
+2) Streaming von live Audio und Video
+3) Interaktive Audio und Video Nutzung
+Streaming:
+Das Verwenden (ausliefern) von Daten bevor diese 
+vollständig übertragen wurden
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Mai 26|  314
+Streaming gespeicherter multimedialer Daten
+Cumulative data
+1.  Video
+aufnehmen
+2. Video
+versenden
+Netzwerk
+Latenz
+streaming:
+3. Video-Daten 
+empfangen - abspielen
+Zeit
+zu diesem Zeitpunkt spielt der 
+Client die ersten Teile des Videos ab,
+obwohl der Server noch Daten überträgt
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Mai 26|  315
+Live-Streaming multimedialer Daten
+Beispiel:
+• Internet-Radio
+• IPTV
+Streaming:
+• Playback-Puffer
+• Zeitverschiebung zwischen Wiedergabe und originaler Zeit kann 10 Sekunden 
+sein
+• Zeitkritisch: Playback-Puffer darf nicht leerlaufen
+Interaktiviät
+• Vorspulen kann nicht funktionieren
+• Rückspulen und pausieren ist möglich
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Mai 26|  316
+Streaming gespeicherter multimedialer Daten
+Empfang
+mit variabler
+Bitrate
+Kumulierte Daten
+Senden mit
+konstanter
+Bitrate
+Variable
+Netzwerk
+latenz
+Daten im
+Puffer
+Konstante
+Bitrate bei 
+der Wiedergabe
+Playout
+Latenz
+Zeit
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Mai 26|  317
+Wie kann das jetzt mit UDP realisiert werden?
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Mai 26|  318
+Real-Time Protocols
+RTP/RTCP/RTSP
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Mai 26|  319
+RTP: Eine UDP-Anwendung
+Die RTP-Programmierbibliothek liefert Transportschnittstellen, 
+die UDP erweitern:- UDP liefert Port-Nummern - IP die Adressen der Endpunkte- RTP liefert u.a.
+Ø Kodierungskennung
+Ø Sequenznummern
+Ø Zeitstempel- RTCP liefert Statistiken (auf UDP)-Basis- RTSP  ist unsere Fernbedienung
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Mai 26|  320
+Hinweis
+Auch wenn RTP das eigentlich für Streaming besser konzipierte Protokoll 
+ist, so nutzen aktuelle Streaming-Plattformen eher HTTP Live Streaming 
+(Apple) oder MPEG DASH
+• Skalierbarkeit: HLS ist für große Zuschauerzahlen und verteilte Auslieferung (CDN) 
+optimiert
+• Kompatibilität: Funktioniert auf praktisch allen Endgeräten und hinter Firewalls/NAT, da 
+HTTP genutzt wird
+• Einfache Abmeldung: Der Client muss nur aufhören, Segmente anzufordern, um den 
+Stream zu beenden – keine komplexe Session- oder Verbindungsüberwachung 
+nötig
+• Sicherheit und DRM: HLS unterstützt Verschlüsselung und damit verknüpfte Digital 
+Rights Management-Mechanismen nativ
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Mai 26|  321
+Weitere wichtige UDP-basierte Anwendung
+Das Laden des Betriebssystems (Boot-Vorgang) über das Netzwerk 
+benötigt entsprechende Protokolle– TCP ist aufwendig, jedoch sind die Fähigkeiten der im EEPROM verankerten 
+Mechanismen eher begrenzt– Für den Boot-Zugang nutzt man die Fähigkeiten der Sicherungsschicht ohne 
+über einen Router zu gehen, daher kann von einem zuverlässigen 
+Übertragungskanal ausgegangen werden– Trivial File Transfer Protocol (TFTP)– DHCP
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Mai 26|  322
+Weitere wichtige UDP-basierte Anwendung
+Das Domain Name System nutzt in der Regel UDP
+Treibende Ursache war, dass man die üblichen TCP-Mechanismen nicht 
+wollte und eher an geringen Antwortzeiten interessiert war
+HTTP/3 / QUIC
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Mai 26|  323

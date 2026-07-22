@@ -1,0 +1,441 @@
+Arbeitsweise der Transportschicht
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  221
+Transport- und Vermittlungsschicht
+• Vermittlungsschicht: logische Kommunikation zwischen Rechnern in einem 
+Netz aus Netzen– Anbindung von Rechnern (eigentlich sogar Netzwerkkarten) in die Netze– Regelung des netzübergreifenden Verkehrs:
+> Kopplung von lokalen Netzen
+> Globale Adressierung
+> Routing von Datenpaketen
+• Transportschicht: logische Kommunikation zwischen Prozessen – Adressierung der Anwendungen, Segmentierung der Datenströme– Benutzt und erweitert die Dienste der Vermittlungsschicht– Das erzielbare Dienstangebot wird daher von den Fähigkeiten der Vermittlungsschicht 
+beeinflusst!
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  222
+Die Transportschicht ist eine Endsystemschicht
+Application Process
+7
+6
+5
+4
+3
+2
+1
+APPLICATION
+PRESENTATION
+SESSION
+TRANSPORT
+NETWORK
+DATA LINK
+PHYSICAL
+Netzwerk
+NETWORK
+DATA LINK
+PHYSICAL
+Anwendungsprozess
+ANWENDUNG
+DARSTELLUNG
+SITZUNG
+TRANSPORT
+VERMITTLUNG
+SICHERUNG
+BITÜBERTRAGUNG
+7
+6
+5
+4
+3
+2
+1
+Physical Medium
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  223
+Aufgrund der besonderen Struktur (Store
+and
+Autonome Systeme) gilt:
+Forward, kooperierende 
+Im Internet kann eine zuverlässige Kommunikation zwischen Prozessen 
+nur auf Transport
+oder auf Anwendungsebene realisiert werden!
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  224
+Internet-Protokolle – TCP und UDP
+• Transportprotokolle im Internet (im Betriebssystem implementiert)– Verbindungsorientierte Kommunikation– Verbindungslose Kommunikation
+• Transmission Control Protocol (TCP) -> zuverlässig– Kommunikationsprimitive, Sockets, Ports– Virtuelle Verbindungsorientierung: Modell zweier Streams, die die Prozesse miteinander 
+verbinden; „Open“-“Close“ der Streams sind die virtuellen Verbindungen– Flusskontrolle, Staukontrolle
+• User Datagram Protocol (UDP) -> unzuverlässig– Kommunikationsprimitive, Sockets, Ports– Postkartenmodell: Ein Empfangspunkt (Port) für alle Nachrichten, versenden ohne Absprache 
+mit dem Empfänger
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  225
+Zuverlässiges Transportprotokoll
+Sender
+Byte 0
+Byte 1
+Byte 2
+Byte 3
+Byte 80
+Empfänger
+Byte 0
+Byte 1
+Byte 2
+Byte 3
+Byte 80
+Zuverlässiger
+Kanal
+Sender
+Segment
+Zuverlässiges
+Transportprotokoll
+Empfänger
+Byte 0
+Byte 1
+Byte 2
+Byte 3
+Byte 80
+Byte 0
+Byte 1
+Byte 2
+Byte 3
+Byte 80
+Zuverlässiges
+Transportprotokoll
+Unzuverlässiger
+Kanal
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  226
+Ausgangspunkt
+• Wie können eigentlich zuverlässige Protokolle über dem unsicheren IP 
+implementiert werden?– Pakete können verloren gehen– Die Reihenfolge der Pakete kann sich ändern– Pakete können fehlerhaft empfangen werden
+• Anmerkung– Bei der folgenden Darstellung gehen wir von einer existierenden 
+„Verbindung“ zwischen Sender und Empfänger aus– Sender und Empfänger haben also bereits Nachrichten ausgetauscht 
+und wissen voneinander 
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  227
+Zuverlässige
+Transportprotokolle
+• Erforderliche Mechanismen
+1. Aufteilen des Byte-Streams in Nachrichteneinheiten (Segmente)
+2. Erkennen der Position einer empgangenen Nachricht im logischen Byte-Stream - 
+Nummerierung der Segmente (Sequenznummern) 
+3. Empfänger-Feedback
+> Quittierungsnachrichten zwischen Empfänger und Sender
+> Positive ACKnowledgment (ACK)– Empfänger bestätigt den korrekten Erhalt eines Segments mit einem ACK– Hierbei sollte der Empfänger vorher auf Bitfehler geprüft haben
+> Optional: Negative AcKnowledgment (NAK)– Empfänger informiert Sender über „Lücken“ oder Fehler– Ursprungslänge der Nachricht muss abgeleitet werden können
+4. Neuübertragung
+> Sender überträgt Nachrichten (Segmente) erneut
+> Timer-gesteuert: Wenn bis zum Ablauf des Timers keine Bestätigung erhalten wurde, dann 
+wird das Segment erneut übertragen
+> Optional: Bei Erhalt eines NAK
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  228
+Das 
+“Stop
+and Wait
+”
+Protokoll
+§Automatic Repeat-reQuest  (ARQ)
+• Empfänger verschickt Bestätigungen  (ACKs) bei korrektem 
+Empfang 
+• Fehlerhafte Übertragungen werden durch ausbleiben der 
+Bestätigung erkannt und vom Sender durch erneute 
+Übertragung behoben
+§Einfachstes ARQ-Protokoll 
+• Segmentweises Vorgehen
+• Timer zur Fehleridentifikation
+§ Verschicke ein Segment und warte auf den Empfang des ACKs
+§ Bei Empfang eines ACKs wird das nächste Segment verschickt
+§ Springt der Timer an, so wird die Übertragung wiederholt
+Segment
+Sender
+Timeout
+Zeit
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+Empfänger
+ACK
+April 26|  229
+Schlechter Nutzungsgrad der Verbindungskapazität
+• Jeder Datenstrom wird in Segmente unterteilt, z.B. 1460 Bytes Nutzdaten
+• Nach jedem gesendeten Segment wird auf eine Bestätigung gewartet; während der 
+Wartezeit werden somit keine weiteren Segmente übertragen
+Begrenzung auf ein Paket pro Zyklus (Round-Trip)!!!!
+• Nutzungsgrad: Verhältnis von genutzter Übertragungszeit zu 
+gesamter Übertragungsdauer (inkl. der Wartezeit)
+ρ = (genutzte Übertragungszeit) / (genutzte Übertragungszeit + Wartezeit)
+Sei L die Länge eines Segmentes
+Sei R die Übertragungsrate des Kanals
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  230
+Schlechter Nutzungsgrad der Verbindungskapazität
+Sender
+Hinweis: 
+T
+atsächlich startet die
+Round
+Trip
+Time
+ab
+dem
+Senden, also aber dem 
+Übertragen des ersten 
+Bytes und sie endet mit 
+dem vollständigen Empfang 
+der Antwort
+t = 0
+t = L / R
+RTT
+Empfänger
+t = RTT + L/R
+t
+ρ = (L/R) / (L/R + RTT)   
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+Ankunft des 1. Bits
+Ankunft des L. Bits, sende ACK
+t
+April 26|  231
+Schlechter Nutzungsgrad der Verbindungskapazität
+Beispiel: FastEthernet im LAN
+R = 100 Mbit/s 
+L = 1460 Byte    L/R = 0,0001168
+RTT = 3 ms 
+ρ = (L/R) / (L/R + RTT) = 0,037474 = 3,74%
+Beispiel: Kommunikation mit Kalifornien
+R = 100 Mbit/s 
+L = 1460 Byte    
+RTT = 200 ms  
+L/R = 0,0001168
+ρ = (L/R) / (L/R + RTT) = 0,000584 = 0,058%
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  232
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             Vorlesung Kommunikationssysteme  April 26|  233
+Schlechter Nutzungsgrad der Verbindungskapazität
+Nutzungsgrad vs. Kenngrößen  
+0
+0,01
+0,02
+0,03
+0,04
+0,05
+0,06
+0,07
+0,08
+0,09
+0,1
+0 0,05 0,1 0,15 0,2 0,25 0,3
+RTT
+Nutzungsgrad
+L=500 Byte, R=100Mbps 
+L=1000 Byte, R=100Mbps 
+L=1500 Byte, R=100Mbps 
+L=500 Byte, R=1Gbps
+Eins nach dem Anderen: Stop-and-Wait
+• Sender überträgt ein Segment und startet einen Timer– Trifft eine Quittung ein: sende das nächste Segment– Tritt ein Timeout ein (d.h. läuft der Timer ab): wiederhole das vorherige Segment
+• Lange Wartezeiten zwischen den Segmenten! Dadurch Verschwendung 
+von Übertragungskapazität!
+Wartezeit
+Sender
+1
+2
+2
+Time-out
+Empfänger
+1
+3
+F
+2
+3
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+ACK
+ACK
+April 26|  234
+Verfahren
+bei
+Fehler/
+Sonderfällen
+Welche Ereignisse können den geschilderten 
+Ablauf stören?
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  235
+Verfahren
+bei
+Fehler
+/
+Sonderfällen
+Segment
+Sender Empfänger
+Segment
+Welche Bestätigung 
+haben wir hier 
+empfangen?
+Timeout
+Zeit
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+Welches Segment
+haben wir hier 
+empfangen?
+April 26|  236
+ACK
+Konsequenz
+• Wir benötigen eine eindeutige Identifikation der Nachrichten
+• Damit müssen wir die Segmente und die dazugehörigen Bestätigungen mit 
+einer eindeutigen Nummer versehen
+Lösungsansätze:
+• Wir verwenden den Byte-Offset im Stream in der Art, dass für das aktuelle 
+Segment angezeigt wird, in welcher Position das 1. Byte liegt 
+Alternative: Wir nummerieren die Nachrichten durch 
+• Die Nummerierung sollte zyklisch sein, da der Zahlenraum bei Protokollen 
+begrenzt ist
+• Bestätigungen verweisen entweder auf das nächste erwartete 
+Byte/Nummer oder auf das zuletzt empfangene
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  237
+Idee
+: Segmentnummern können
+doch 
+auch 
+fü
+r
+Bestätigungen 
+verwendet 
+Die Segmente und die Bestätigungen werden also einfach 
+werden. 
+nummeriert
+. 
+Eine Bestätigung zeigt so entweder an, welche Segmentnummer 
+gerade empfangen wurde oder welche als nächstes erwartet wird.
+In 
+der Realität 
+wird 
+zumeist der Byte
+Offset im Stream verwendet
+.
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  238
+Wie 
+kann
+man das 
+Netz
+besser
+auslasten
+?
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  239
+Flusskontrolle
+folgt
+dem
+Pipelining
+Prinzip
+Sender
+t = 0
+t = L / R
+Empfänger
+RTT
+t = 4 L / R
+t = RTT + L/R
+RTT
+t = RTT + 4L/R
+Ankunft des 1. Bits
+Ankunft des L. Bits, sende ACK
+t
+t
+ρ = (4L/R) / (4L/R + (RTT + L/R- 4L/R))  = (4 L/R) / (L/R + RTT)  
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  240
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             Vorlesung Kommunikationssysteme  April 26|  241
+Schlechter Nutzungsgrad der Verbindungskapazität
+Nutzungsgrad bei Pipelining (100Mbps Kanal)  
+0
+0,01
+0,02
+0,03
+0,04
+0,05
+0,06
+0,07
+0,08
+0,09
+0,1
+0 0,05 0,1 0,15 0,2 0,25 0,3
+RTT
+Nutzungsgrad
+L=500 Byte, W=1 
+L=1000 Byte, W=1 
+L=500 Byte, W=10
+L=1000 Byte, W = 10
+Wir 
+erhöh
+ens
+oaber
+die 
+Komplexität
+Einfachste
+Lösung
+: Go
+Back
+der 
+Behandlung
+von 
+Fehlern
+N
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  242
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             Vorlesung Kommunikationssysteme  April 26|  243
+Go-Back-N
+Sender Receiver
+1
+2
+3
+4
+5
+ACK 2
+6
+7
+8
+9
+10
+11
+2
+3
+4
+5
+6
+7
+8
+Go-Back-N
+Timeout interval
+9
+10
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+ACK 3
+ACK 4
+Die Bestätigung zeigt bei dieser 
+Beispieldarstellung an,
+welche Segmentnummer
+als nächstes erwartet wird 

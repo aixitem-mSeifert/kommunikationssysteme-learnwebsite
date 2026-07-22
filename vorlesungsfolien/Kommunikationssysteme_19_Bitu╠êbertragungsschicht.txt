@@ -1,0 +1,764 @@
+Die Bitübertragungsschicht
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  530
+Kodierung von Informationen
+Shannon:
+„Das grundlegende Problem der Kommunikation besteht darin, an einer Stelle genau oder 
+angenähert eine Nachricht wiederzugeben, die an einer anderen Stelle ausgewählt worden ist.“
+Ziel: sinnvolle Darstellung der Information
+Codierungsarten:
+• Kanalcodierung
+(Schicht 2 und 4)
+Darstellung der zu übertragenden Daten in Codewörtern, die 
+den Eigenschaften des Übertragungskanals angepasst sind 
+(Redundanz).
+• Leitungscodierung
+(Schicht 1)
+à Sicherung gegen Übertragungsfehler durch
+fehlererkennende bzw. -korrigierende Codes
+Physikalische Darstellung von Digitalsignalen
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  531
+Basis
+und Breitband
+Die Übertragung von Informationen kann entweder auf dem Basisband oder auf Breitband erfolgen. 
+Dies bedeutet:
+Basisband
+Die digitalen Informationen werden so über die Leitung übertragen, wie sie sind.
+Hierzu sind Kodierungsverfahren notwendig, die festlegen, wie bei der Übertragung eine 0 bzw. 
+eine 1 repräsentiert werden. Es kann nur je ein Signal übertragen werden
+Breitband
+Die die Information repräsentierenden Signale werden auf eine Trägerwelle aufmoduliert. 
+Durch die Verwendung verschiedener Trägerwellen (Frequenzen) können daher mehrere 
+Informationen gleichzeitig übermittelt werden
+Erst durch optische Übertragungstechniken, DSL und Funknetze wurde die Breitbandtechnik 
+verbreitet
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  532
+Leitungscodes im Basisband: Anforderungen
+Wie sollen digitale Signale z.B. auf Kupferkabel elektrisch repräsentiert werden?
+• Möglichst hohe Widerstandsfähigkeit gegen Dämpfung
+1
+0
+0 T 2T 3T 4T 5T 7T
+Übertragung
+6T
+t
+• Effizienz: möglichst hohe Übertragungsraten durch Codewörter
+binärer Code:        
++5V / -5V ?  
+ternärer Code:       +5 V / 0V / -5V ?
+quaternärer Code: 4 Zustände (Codierung von 2 Bit gleichzeitig)
+• Taktrückgewinnung beim Empfänger (Synchronisation), dazu möglichst häufige Pegelwechsel
+• Gleichstromfreiheit: positive und negative Signale treten ungefähr gleich oft auf
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+1
+0
+0 T 2T 3T 4T 5T 7T
+6T
+t
+Juni 26|  533
+Baud
+Rate vs. Bit
+Rate– Wenn die Zeitdauer (Schrittdauer) eines Codeelements T (Symbol) ist,  ist die    
+Schrittgeschwindigkeit 
+=
+=
+( Einheit: Baud)– Die Übertragungsgeschwindigkeit (äquivalente Bitrate) ist dann 
+(n = Anzahl diskreter Kennzustände des Codeelements) 
+Bei binären Codeelementen stimmen somit 
+Bitrate
+und Baudrate
+(Schrittgeschwindigkeit/Symbolrate) überein.
+Wichtig: Wir übertragen also nicht die Datenbits direkt, sondern Symbolbits! 
+Hierbei handelt es sich um eine Codierung! 
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  534
+Leitungscodes
+NRZ: Non-Return-to-Zero (d.h. eine Spannung von 0 kommt nie vor)
+0   
+Þ negative Spannung (konstant -5V)
+1   
+Þ positive Spannung (konstant +5V)
+Nachteil: bei langen 0- oder 1-Folgen Taktverlust und keine Gleichstromfreiheit
+Wenn hier aber Symbole (Line Coding) verwendet werden ist die Taktrückgewinnung möglich
+Differentieller NRZ-Code
+0   
+1   
+Þ kein Polaritätswechsel
+Þ Polaritätswechsel
+Nachteil: Taktverlust und keine Gleichstromfreiheit bei langen 0-Folgen (Line Coding als Lösung)
+Manchester-Code (1B/2B-Code)  - hier nach Tanenbaum
+Lange Folgen gleicher Signale werden durch einen Pegelwechsel in der Mitte jedes Bits verhindert. Damit: 
+Taktrückgewinnung und Gleichstromfreiheit, das Ende einer Übertragung wird leicht erkannt.
+0   
+Þ Polaritätswechsel von negativ (-5V) nach positiv (+5V)
+1   
+Þ Polaritätswechsel von positiv (+5V) nach negativ (-5V)
+Nachteil: durch Pegelwechsel in der Mitte wird die Kapazität nur zur Hälfte genutzt
+Differentieller Manchester-Code
+Wie beim Manchester-Code erfolgt ein Pegelwechsel in der Bitmitte, zusätzlich allerdings:
+0   
+Þ Pegelwechsel am Anfang eines Bits
+1   
+Þ kein Pegelwechsel zwischen aufeinanderfolgenden Bits
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  535
+RZ
+Codes (Ohne Line
+Coding)
+NRZ-Code (Non-Return-to-Zero) 
+'0' Û UL
+'1' Û UH
+Æ nicht gleichstromfrei, 
+keine Taktrückgewinnung  
+Takt
+Binäre 
+Symbolen
+UH
+UL
+NRZI-Code (Non-Return-to-Zero Inverted) 
+Wie NRZ, jedoch Umkehrung der Wertzuordnung
+Æ nicht gleichstromfrei, keine Taktrückgewinnung  
+Unipolare RZ-Code (Return-to-Zero) 
+'0' Û UL
+'1' Û UH  UL  nach T/2
+Æ nicht gleichstromfrei, 
+keine Taktrückgewinnung
+Taktinformation in '1'-Folgen  
+Takt
+Binäre 
+Symbolen
+UH
+UL
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+1
+1 1
+0 1 0 0 0 0 0 0 0 0 0
+1 1
+1 1 1
+1
+1 1
+0 1 0 0 0 0 0 0 0 0 0
+1 1
+1 1 1
+Juni 26|  536
+Manchester
+Code  (Darstellung gemäß IEEE802.3)
+Manchester-Code 
+Zwei um 180° phasenverschobene 
+Signalelemente S1 und S2
+Codierungsvorschrift:
+'0' Û UH -UH  nach T/2   (S1)
+'1' Û -UH  
+UH  nach T/2  (S2)
+Æ gleichstromfrei, selbsttaktend*
+Differential Manchester-Code 
+Signalelemente S1 und S2
+Codierungsvorschrift:
+'0' Û Polaritätswechsel am Taktanfang
+'1' Û Kein Polaritätswechsel am Taktanfang
+Æ gleichstromfrei, selbsttaktend*
+*Taktrate = 2 ´ Schrittgeschwindigkeit 
+Þ höhere Bandbreite erforderlich
+Takt
+Binäre 
+Symbolen
+UH
+0-UH  
+Takt
+Binäre 
+Symbolen
+UH
+0-UH  
+1
+1 1
+0 1 0 0 0 0 0 0 0 0 0
+1 1
+Signalelemente 
+der Manchester
+Codes 
+1
+1 1
+UH
+0-UH  
+S1
+1 1 1
+S2
+UH
+0-UH  
+0 1 0 0 0 0 0 0 0 0 0
+1 1
+1 1 1
+Codeverletzungen beim 
+Differential Manchester-Code 
+(keine Polaritätswechsel in 
+Taktmitte, dieser muss also 
+stattfinden!!!!)
+UH
+0-UH  
+0 J K J K
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  537
+Verbessertes Line
+Coding: 4B/5B
+Code
+Nachteil des Manchester-Codes:
+® 50% Effizienz, d.h. 1B/2B-Code (ein Bit wird auf zwei „Baud“ kodiert)
+Eine Verbesserung stellt der 4B/5B-Code dar:
+® vier Daten-Bit werden in fünf Symbolbits („Baud“) kodiert: 80% Effizienz
+Arbeitsweise:
+® Pegelwechsel bei 1, kein Pegelwechsel bei 0 (Differentieller NRZ-Code mit Line Encoding)
+® Kodierung von hexadezimalen Zeichen: 0, 1, ..., 9, A, B, ..., F (4 Bit)
+in 5 Bit, so dass lange Nullblöcke vermieden werden
+® Auswahl der günstigsten 16 der möglichen 32 Codewörter
+(maximal 3 Nullen in Folge)
+® Weitere 5 Bit-Kombinationen für Steuerinformationen
+® Taktrückgewinnung über zeitlichen Abstand der Flanken, spätestens nach 4 Bit gibt es einen 
+Wechsel
+® MLT-3 verwendet drei Spannungspegel: positiv, null und negativ. Die Signalpegel wechseln 
+zyklisch, aber nur bei einer logischen 1 im Datenstrom
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  538
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             Vorlesung Kommunikationssysteme   Juni 26|  539
+Beispiel für eine 4B/5B-Codetabelle
+AB D
+E D HIJAK
+KBA
+QRBSTDK
+QRBSTDVKKA B
+A DA K HK K
+DA
+DA
+DA
+I D DA K HK K
+a DA
+b DA
+c ddK HDT A D T TD H T TD
+e DA
+DA
+g A DABA H T TD
+I
+a
+b DA
+c K A DABA H T TD
+e
+I iK A DABA H T TD
+a Q K HDT A D T TD H T TD
+b
+c
+e
+D DA K HK K
+Worst case: 
+11100|01110
+3 Nullen
+8B/10B
+Code
+Einsatz beim Gigabit Ethernet.
+Auch wenn hier die Effizienz der des 4B/5B Codes entspricht hat diese Form 
+Vorteile:
+• Gleichstromfreiheit (DC-Balance)
+• Einfache Taktrückgewinnung durch regelmäßige Flanken
+• Fehlererkennung durch ungültige Codes
+• Einfache Hardware-Implementierung
+Wie 4B/5B gilt auch hier:
+• Begrenzte Lauflänge (maximale Folge gleicher Bits)
+• Unterstützung von Steuerzeichen für Protokollfunktionen
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  540
+Breitbandkommunikation
+Bei der Breitbandkommunikation muss das digitale Signal auf ein 
+analoges Trägersignal aufmoduliert werden
+Daten werden physikalisch als elektromagnetische Wellen dargestellt:
+s(t) = A·sin(2·p f t + j)
+A: Amplitude
+f:  Frequenz
+j: Phase
+A
+j
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+0
+1/f
+Juni 26|  541
+Modulation digitaler Signale
+Wert
+1
+Zeit
+0
+1
+1
+0
+Die Umwandlung der digitalen Signale kann auf verschiedene Arten erfolgen, 
+basierend auf den Parametern einer analogen Welle:
+s(t) = A·sin(2·p f t + j)
+Amplitude
+Frequenz
+Amplitudenmodulation (Amplitude Shift Keying, ASK)
+Phase
+• Bei einer 1 wird eine große Amplitude ausgestrahlt, bei einer 0 eine kleine
+• Technisch einfach zu realisieren, wird üblicherweise bei optischer Übertragung verwendet
+• Störanfällig wegen Abschwächung des Signals
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  542
+Modulation digitaler Signale
+Wert
+1
+Zeit
+0
+1
+1
+0
+Die Umwandlung der digitalen Signale kann auf verschiedene Arten erfolgen, 
+basierend auf den Parametern einer analogen Welle:
+s(t) = A·sin(2·p f t + j)
+Amplitude
+Frequenz
+Frequenzmodulation (Frequency Shift Keying, FSK)
+Phase
+• Für 0 und 1 werden verschiedene Frequenzen ausgestrahlt
+• Verschwenderischer Umgang mit Frequenzen
+• Für Telefonübertragung
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  543
+Modulation digitaler Signale
+Wert
+1
+Zeit
+0
+1
+1
+0
+Die Umwandlung dieser digitalen Signale kann auf verschiedene Arten erfolgen, 
+basierend auf den Parametern einer analogen Welle:
+s(t) = A·sin(2·p f t + j)
+Amplitude
+Frequenz
+Phasenmodulation (Phase Shift Keying, PSK)
+Phase
+180° Phasenshift
+• Verwendung unterschiedlicher Phasenlagen für 0 und 1
+• Komplexe Demodulation
+• Störungssicher
+• In der drahtlosen Kommunikation oft bevorzugt
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  544
+Es gibt keine eierlegende Wollmilchsau– Die in einem Abtastvorgang modulierbare Information hängt von einem ausreichenden 
+Signal-Rauschabstand ab. Dieser kann zwar durch eine erhöhte Sendeleistung verstärkt 
+werden, jedoch ist die Leistungsflussdichte selbst im freien Raum umgekehrt proportional 
+zum Quadrat der Entfernung
+Dies bedeutet, dass sie bei Verdoppelung der Distanz bereits auf ein Viertel, bei Verzehnfachung 
+des Abstandes sogar auf ein Hundertstel des Ausgangswertes abfällt. – Nach Shannon ist die Bandbreite begrenzt durch den Faktor log2(1+Signalrauschabstand)
+Beispiel: Eine Telefonleitung mit 30 db Rauschabstand und einer Bandbreite von 3 KHz kann 
+maximal 30000 Bit/s übertragen – Höhere Frequenzen verhalten sich ähnlich wie Licht. Damit wird dann eine Sichtverbindung 
+benötigt
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  545
+Fortgeschrittene Phasenmodulation
+• BPSK (Binary Phase Shift Keying):– = einfaches PSK
+> Bitwert 0: Sinuswelle
+> Bitwert 1: invertierte Sinuswelle– Niedrige Datenraten– Robuste Übertragung– Auch oft als differentieller Code (DBPSK)
+• QPSK (Quaternary Phase Shift Keying):– Zwei Bit werden gemeinsam codiert– Vier unterschiedliche Phasenlagen– Doppelte Datenraten verglichen mit BPSK
+Q
+1
+01
+00
+Q
+0
+I
+11
+I
+10
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  546
+Fortgeschrittene PSK
+Verfahren
+Die Umtastung kann auch mehr als 2 Phasen umfassen: es kann zwischen M verschiedenen Phasen 
+umgetastet werden, wobei M eine Zweierpotenz sein muss. Dadurch können mehr Informationen 
+gleichzeitig übermittelt werden.
+Beispiel: QPSK (Quaternary Phase Shift Keying)
+• Umtastung zwischen 4 Phasen
+• 4 Phasen erlauben 4 Zustände: kodiere 2 Bit auf einmal
+• Damit doppelte Übertragungsrate
+Q = A sinj
+01
+00
+j
+11
+10
+I = A cosj
+A = Amplitude des Signals
+11
+I = In-Phase, Signalkomponente (in Phase mit Trägersignal)
+Q = Quadratur-Phase, Quadraturkomponente (senkrecht zur Trägerphase)
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+10
+01
+11
+00
+10
+01
+00
+11
+Vorlesung Kommunikationssysteme   
+Juni 26|  547
+Fortgeschrittene PSK
+Verfahren
+Quadraturamplitudenmodulation (Quadrature Amplitude Modulation, QAM)
+• Kombination aus ASK und QPSK
+• n Bit können gleichzeitig übertragen werden (n=2 ist QPSK)
+• Bitfehlerrate steigt mit zunehmendem n, aber weniger als bei vergleichbaren PSK-Verfahren
+010 101 000 111
+011
+010
+101
+100
+110
+111
+000 001
+0010 0001
+0011 0000
+16-QAM: 4 Bit pro Signal:
+• 0011 und 0001 haben gleiche Phase, aber unterschiedliche 
+Amplitude
+• 0000 und 0010 haben gleiche Amplitude, aber 
+unterschiedliche Phase
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+011
+110
+001 100
+Vorlesung Kommunikationssysteme   
+Juni 26|  548
+Signalausbreitung
+• In freiem Raum geradlinige Ausbreitung
+• die Empfangsleistung ist proportional zu 1/da (d = Abstand zwischen Sender und Empfänger, a = 2 
+im freien Raum, 2.7-5 in der Stadt, 4-6 im Gebäude)
+• Werte für a größer als 2 ergeben sich durch Dämpfung, Reflektion, Streuung, Beugung, …
+Basierend auf der Empfangsleistung ergeben sich verschiedene Bereiche:
+Übertragungsbereich
+• Kommunikation möglich
+• Akzeptable Fehlerrate
+Erkennungsbereich
+• Signalerkennung ist noch möglich
+• Zu hohe Fehlerrate für Identifikation des Signals
+Interferenzbereich
+• Keine Signalerkennung
+• Störung anderer Übertragungen
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Interferenz
+Erkennung
+Übertragung
+Sender
+Vorlesung Kommunikationssysteme   
+Entfernung
+Juni 26|  549
+Mehrwegausbreitung
+Faktoren, die die Ausbreitung beeinflussen:
+• natürliche Umgebung: Gebirge, Wasser, Vegetation, Regen, Schnee
+• künstliche Umgebung: Gebäude etc.
+Ausbreitungsmechanismus:
+• Dämpfung, Abschattung (Regen, Vegetation)
+• Beugung/Ablenkung: scharfe und runde 
+Kanten
+• Reflektion an großen Flächen
+• Streuung an kleinen Hindernissen
+• Brechung: Brechungsindex wird mit 
+zunehmender Höhe kleiner
+Wirkung: - der Empfänger erhält ein Signal auf mehreren Wegen zugleich- Abschwächung der Sendeleistung bei Reflektion, Beugung, …- dasselbe Signal wird mit verschiedenen Phasenlagen empfangen,
+Interferenz findet statt- Das Signal wird zeitlich gestreut, Interferenz mit Nachbarsymbolen
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Dämpfung
+Beugung
+direkter Weg
+Vorlesung Kommunikationssysteme   
+Streuung
+Reflektion
+Juni 26|  550
+Konsequenz
+Bedingt durch diese Effekte benötigen drahtlose Kommunikationsnetze 
+ausgeklügelte Mechanismen, insbesondere auch  zur Fehlerkorrektur und 
+Behebung (Forward Error Correction). Dies bedeutet jedoch, dass hierfür 
+Kanalleistung zur Verfügung gestellt werden muss. Der Kommunikations
+Overhead liegt damit erheblich über dem kabelgebundener Übertragung!
+Daumenregel: 
+Protokolle zur zuverlässigen Datenübertragung können oft nur  2/3 
+der verfügbaren drahtlosen Übertragungsrate auch nutzen 
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  551
+Drahtloses Ethernet
+• Drahtloses Äquivalent zu Ethernet: "Wireless LAN" (WLAN)
+• Ausschließlich datenorientierte, breitbandige Internetzugangslösung
+• Standardisiert von der IEEE als IEEE 802.11
+Ø 1997: IEEE 802.11 (Bandbreiten von maximal 2 Mb/s)
+Ø IEEE 802.11a mit 54 Mb/s durch Verwendung eines (störanfälligeren) Frequenzbandes (5 
+GHz)mit größerer Kapazität
+Ø 1999: IEEE 802.11b (Bruttodatenrate von 11 MB/s bei einem Nutzdatenanteil von bis zu 6 
+Mb/s)
+Ø IEEE 802.11g: höhere Datenraten von bis zu 54 Mb/s im 2.4 GHz-Band auf Basis orthogonaler 
+Frequenzbereiche
+Ø 802.11.n: MIMO-Technik nutzt Spatial Diversity (Mehrwegausbreitung) über drei Antennen und 
+erreicht so bis 600 Mb/s. Optionale Nutzung des 5 GHz-Bandes
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  552
+Aufbau eines WLAN
+1. Netze mit fester Infrastruktur
+• Infrastruktur bedeutet: feststehendes Netz, z.B. 
+Ethernet oder Satellitenstrecken
+• Zentraler Access Point (AP), drahtlose 
+Geräte kommunizieren nur mit dem AP
+• Kontrollfunktionalitäten (Medienzugriff, 
+Mobilitätsmanagement, Authentisierung, …) sind in der Infrastruktur realisiert
+AP
+AP
+• Komplexität liegt in den Infrastrukturkomponenten, drahtlose Geräte brauchen nur ein Minimum 
+an Funktionalität zu realisieren
+2. Ad-hoc-Netze
+• Keine Infrastruktur – die drahtlosen Geräte 
+kommunizieren direkt miteinander
+• Höhere Komplexität der Geräte, da jedes 
+Gerät alle Zugriffs- und Kontrollmechanismen implementieren muss
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Infrastruktur
+AP
+Juni 26|  553
+Übertragungskanäle
+• Das gesamte Frequenzspektrum wird in feste Bereiche (Kanäle) unterteilt, die zur Übertragung 
+verwendet werden können. Um Interferenzen zu vermeiden, müssen Schutzabstände zwischen den 
+Kanälen eingehalten werden.
+• Damit bei Übertragungen keine Signalüberlagerungen auftreten, wird einem Access Point bei der 
+Übertragung ein Kanal zugewiesen.
+Aber: wie soll auf diesem Kanal übertragen werden? Adaptive Modulation (QAM)
+→Signalspreizung: überlagere die Sendung mit einem Code, der das eigentliche Signal über den 
+gesamten Bereich von 22 MHz „verschmiert“, also faktisch auf mehreren Frequenzen übertragen. Dies 
+ist ein Schutz gegen Störeinflüsse bei der Übertragung.
+Kanal 1 802.11b
+22 MHz
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Nutzen: wenn ein Teil des Frequenzbereichs gestört ist, 
+kommt doch noch genug vom Signal durch, um die 
+Nachricht zu erkennen. 
+Hinweis: Benachbarte Subkanäle senden in orthogonal 
+zueinander stehenden Wellen
+Vorlesung Kommunikationssysteme   
+Juni 26|  554
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             Vorlesung Kommunikationssysteme   Juni 26|  555
+Kanäle bei IEEE 802.11b  (g und n haben andere Breiten)
+2400 [MHz] 2412 2483.5 2442 2472
+Kanal 1 Kanal 7 Kanal 13
+22 MHz
+•Würden alle APs auf der gleichen Frequenz senden, würden in den Überlappungsbereichen Störungen 
+auftreten.
+•Daher: Aufteilung des gesamten Frequenzbereichs in Kanäle
+•Kanäle belegen nie genau eine Frequenz, sondern „streuen“ auf die benachbarten Frequenzen. In 
+IEEE 802.11b sind die Kanäle je 22 MHz breit
+• 13 Kanäle in Deutschland (2412, 2417, 2422, …, 2472 MHz), 11 in USA/Kanada
+•Kanäle überlappen! Nicht-überlappende Kanalwahl:
+• Im Idealfall: vergebe nur Kanäle 1, 7und 13:
+1
+3 7
+1
+7
+1
+3
+1
+WLAN: IEEE 802.11g
+• Datenraten– 1, 2, 5.5, 11, 6, 9, 12, 18, 24, 36, 48, 54, ... MBit/s Bruttodatenrate– Abhängig von Signalqualität wird die bestmögliche Datenrate gewählt– Nutzdatenrate wenig mehr als die Hälfte der jeweiligen Bruttodatenrate
+• Kommunikationsbereich– 100m Außen-, 10m Innenbereich (Vergrößerung der Reichweite durch externe Antennen; auch möglich: 
+Richtfunk über mehre km)– Max. Datenrate bis ~5m 
+• Frequenzbereich– Freies 2.4 GHz-Band (2.4 - 2.4835 GHz) ISM = Industrial – Scientific – Medical– Optional 5 GHz-Band
+• Sendeleistung– Weniger als 1000 mW, häufig aber aufgrund der Regulative (in D) nur 100mW
+• lizenzfrei
+• Starke Störungen auf dem Frequenzband (Mikrowellenherde, analoge TV-Übertragung, Überwachung, 
+lizenzfreie Stadtnetze), keine Qualitätsgarantien
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  556
+Durchsatz eines WLAN
+Mit wachsender Entfernung nimmt die Durchsatzrate in einem WLAN ab
+• Faktisch wird die Modulationsart angepasst
+• Hohe Übertragungsraten nur in Radien von 10m
+• Bereits bei etwa 30m liegt die 802.11g-Rate bei 11 MBit/s
+• Bautechnische Hindernisse reduzieren dies zusätzlich
+• Keine Mobilität (relative Geschwindigkeit etwa 50km/h – 802.11p)
+Erneut muss erwähnt werden, dass diese Datenraten niemals der Anwendung zukommen
+Mit der Multiple-Inputs-Multiple-Outputs-Technik (MIMO) kann die Datenrate deutlich gesteigert 
+werden 802.11n
+• Durch den Einsatz mehrere Antennen als Gruppe kann ein stärkeres Empfangssignal empfangen werden
+• Größere Distanzen bei gleichem Durchsatz
+• Höhere Datenraten bei gleicher Entfernung
+• Zusätzlich wird versucht eine Richtwirkung zu nutzen
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  557
+Medienzugriff in drahtlosen Netzen
+• Verwendung von CSMA/CD?– Horche vor der Übertragung, ob bereits jemand sendet– Horche während der Übertragung, ob jemand anderes parallel sendet
+• Probleme bei drahtloser Kommunikation– Sehr schwierig (teuer), gleichzeitig zu senden und zu empfangen
+> Kollisionserkennung kann nicht durchgeführt werden– Kollision tritt beim Empfänger auf, aber nicht notwendigerweise beim Sender
+> “Broadcastnetz” ohne garantierten Empfang aller Übertragungen: Hidden Station
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  558
+Hidden-Station-Problem
+• Hidden Station– A sendet an B, C empfängt A nicht– C will an B senden, stellt freies Medium fest (CS schlägt fehl)– Kollision bei B, A bemerkt sie nicht (CD schlägt fehl)– A ist hidden (versteckt) für C
+A
+B
+C
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  559
+Exposed-Station-Problem
+Exposed Station
+• B sendet zu A, C will zu D senden
+• C muss warten, da CS ein „besetztes“ Medium signalisiert
+• da A aber außerhalb der Reichweite von C ist, ist dies unnötig, denn 
+das Signal von C würde auf dem Weg zu A im Rauschen untergehen
+A
+B
+C
+D
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  560
+Medienzugriff bei WLAN
+• CSMA/CA– Carrier Sense Multiple Access with Collision Avoidance– Kollisionen können nicht erkannt werden, darum wird versucht, sie zu vermeiden– Carrier Sense mit zufällsgetriebenen Backoff-Mechanismus
+• Hier nicht relevant (Hybrides Kanalzuteilungsverfahren)– RTS/CTS-Handshake (Request to Send / Clear to Send)– Polling durch den AP
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  561
+Medienzugriff durch gestaffelte Zugriffskonzepte
+• Prioritäten durch Staffelung von Zugriffszeitpunkten– Keine garantierten Prioritäten, aber wichtige Nachrichten bekommen eher 
+Zugriff – Einteilung in Zyklen: Drei Intervalle (Inter Frame Space, IFS)
+> Short IFS (SIFS) für Bestätigungsnachrichten, 10 – 16 µs
+> Point Controlled IFS (PIFS) für Aktionen des AP beim Polling, 19 – 30 µs
+> Distributed Control IFS (DIFS) für Datenübertragung, 28–50 µs– Beacon-Frames werden regelmäßig zur Synchronisation verschickt
+DIFS
+DIFS
+PIFS
+Medium belegt
+SIFS
+Wettbewerb
+Nächster Rahmen
+Direkter Zugriff, falls Medium frei für ³ DIFS
+t
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  562
+Kollisionsvermeidung durch Wartezeitverteilung
+DIFS
+• Idee
+DIFS
+PIFS
+Medium belegt
+Wartezeit
+SIFS
+Wettbewerbsfenster
+(zufälliger Backoff
+Mechanismus)
+Nächster Rahmen
+Zeitslot (9/20 µs)
+t– Vor Beginn des Sendens: Carrier Sense– Falls Medium frei für mindestens eine Zeit von DIFS, starte direkt mit Übertragung– Falls Medium belegt: warte bei Freiwerden erneut für DIFS, wähle dann eine 
+Backoff-Zeit vor nächsten Zugriffsversuch (Kollisionsvermeidung)
+> Backoff-Zeit ist Vielfaches eines Zeitslots
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  563
+Kollisionsvermeidung durch Wartezeitverteilung
+DIFS
+• Vorgehen
+DIFS
+PIFS
+Medium belegt
+Wartezeit
+SIFS
+Wettbewerbsfenster
+(zufälliger Backoff
+Mechanismus)
+Nächster Rahmen
+Zeitslot (9/20 µs)
+t– Falls Medium nach Ablauf der Backoff-Zeit noch immer frei, starte mit Übertragung– Falls Medium eher belegt wird:
+> Stoppe Backoff-Zähler
+> Verwende aktuellen Wert beim nächsten Versuch weiter
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  564
+CSMA/CA - Quittungen
+• Quittierung jeder Übertragung, da Kollisionen nicht erkannt werden 
+können– Direkte Bestätigung jedes korrekten Datenrahmens
+> Wichtige Kontrollinformation, daher werden diese bereits nach SIFS ohne jegliches 
+Backoff versendet
+DIFS
+Sender
+Empfänger
+weitere
+Stationen
+Daten
+SIFS
+Wartezeit
+Ack
+DIFS
+Wettbewerb
+Daten
+t
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  565
+Erweiterung (optional): echte Kollisionsvermeidung
+• Informiere alle Stationen in Reichweite von einer anstehenden 
+Übertragung– RTS/CTS-Handshake vor der Übertragung– Vermeidung des Hidden-Station-Problems– Request to Send (RTS)
+> Sender fragt bei Empfänger an, ob Übertragung möglich ist– Clear to Send (CTS)
+> Empfänger informiert Sender, dass Übertragung möglich ist
+• In der Praxis oft deaktiviert
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  566
+RTS/CTS-Handshake (Adressiert Hidden Terminal)
+A
+B
+C
+D
+• Beispiel:– B fragt C, ob C zum Empfang bereit ist (RTS)– C ist bereit, sendet CTS zurück– Potentielle Störer hören entweder RTS oder
+CTS und wissen, dass sie für bestimmte Zeit 
+warten müssen (Wartezeit in RTS und CTS 
+enthalten)– B kann ohne Kollisionen senden
+• Aber: Es könnten ja mehrere RTS/CTS 
+senden wollen– Der AP ist der Abritrar – er lässt nur einen 
+Client gleichzeitig ein RTS senden und 
+bestätigt dies mit CTS. Alle anderen warten
+RTS
+RTS indicates 
+busy medium
+CTS
+Data
+CTS indicates 
+busy medium
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  567
+Was ist implementiert?
+• Muss: Backoff-Mechanismus– RTS/CTS-Mechanismus optional (ebenso Polling)
+• RTS/CTS meist implementiert aber deaktiviert– Vorgehen:
+> RTS/CTS erzeugt Overhead, darum schlecht geeignet für kleine Rahmen
+> Schwellwert definiert: Rahmen, die größer sind, werden mit RTS/CTS übertragen
+> Schwellwert auf maximale Rahmengröße gesetzt
+> Änderung des Schwellwerts aktiviert RTS/CTS
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  568

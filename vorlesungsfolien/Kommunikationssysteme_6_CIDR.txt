@@ -1,0 +1,192 @@
+Flexiblere Adressierung
+„Durch das Vorgehen, den Adressraum in nur drei Klassen zu organisieren, 
+gehen Millionen von Adressen durch Fragmentierung verloren. Insbesondere 
+fanden sich faktisch nur im Bereich der Class-C-Netze noch Freiräume. 
+Lösung: Classless Inter-Domain Routing (CIDR)
+• Auflösen der starren Klasseneinteilung durch Netzwerk-Präfixe variabler Länge, völlig analog zur 
+Subnetzmaske
+• Notation in der Dotted-Decimal-Notation durch Angabe der Länge der 1-Folge zur Bestimmung des 
+Netzteils der Adresse 
+147.142.128.0/17 = betrachte die ersten 17 Bit als Netzadresse
+Oben wird zugleich auch die Netzadresse angegeben (Host-Teil = 0!)
+• Router merken sich in ihrer Routing-Tabelle zusätzlich zu den IP-Adressen die Präfixlänge
+• Ermöglicht sogar eine flexiblere Gestaltung der Routing-Tabellen möglich
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  149
+CIDR 
+assless InterDomain Routing–Cl
+Einige Beispieladressen
+5-59
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  150
+Problem
+Bisher war jedes Netz eindeutig adressiert, Router konnten demnach die Routing-Tabelle sehr einfach 
+durchsuchen
+CIDR ermöglicht jedoch, dass es mehrere gültige Einträge geben kann
+Beispiel:
+Die Zieladresse 134.94.80.2 ist
+für 134.94.0.0/16 als auch für 134.94.80.0/24 zutreffend
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  151
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             Vorlesung Kommunikationssysteme   April 26|  152
+Wegewahl: Longest Prefix Match
+128.143.71.21
+Der longest prefix match für 
+128.143.71.21 wirdfür 24 bits 
+mitdem Eintrag
+128.143.71.0/24 erreicht. 
+DatengrammwirdnachR4 
+verschickt
+Destination addressNext hop
+10.0.0.0/8
+128.143.0.0/16
+128.143.64.0/20
+128.143.192.0/20
+128.143.71.0/24
+128.143.71.55/32
+default
+R1
+R2
+R3
+R3
+R4
+R3
+R5
+Suchenach dem Routing-Eintragmitder größten
+Überdeckungder Zieladresse
+GgfbefindensichauchEinträgefür einzelneRechner 
+in der Tabelle(Host Route, loopback entry)  
+à32-bit prefix match
+Default route wirdals0.0.0.0/0 repräsentiert
+à0-bit prefix match
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             Vorlesung Kommunikationssysteme   April 26|  153
+Ziel 11.1.2.5 = 00001011.0000001.00000010.00000101
+Route #1 11.1.2.0/24 = 00001011.0000001.00000010.00000000
+Route #2 11.1.0.0/16 = 00001011.0000001.00000000.00000000
+Route #3 11.0.0.0/8 = 00001011.0000000.00000000.00000000
+Es wird der Weg ermittelt, welcher am genausten spezifiziert wurd (most specific)
+Longest Prefix Match: Ein Beispiel
+Ziel 11.1.2.5 = 00001011.0000001.00000010.00000101
+Route #1 11.1.2.0/24 = 00001011.0000001.00000010.00000000
+Route #2 11.1.0.0/16 = 00001011.0000001.00000000.00000000
+Route #3 11.0.0.0/8 = 00001011.0000000.00000000.00000000
+Es wird der Weg ermittelt, welcher am genausten spezifiziert wurd (most specific)
+CIDR hilft dabei, die für das Routing 
+notwendige Anzahl der bekannten Netze 
+durch „verstecken“ zu reduzieren
+Faktisch ist eine Art “Untervermietung“, 
+also Delegation von Adressbereichen 
+möglich
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  154
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             Vorlesung Kommunikationssysteme   April 26|  155
+CIDR und Routing
+206.0.64.0/18
+204.188.0.0/15
+209.88.232.0/21 Internet Backbone
+ISP X:
+Firma X :
+206.0.68.0/22
+ISP y :
+209.88.237.0/24
+Organisation z1 :
+209.88.237.192/26
+Organisation z2 :
+209.88.237.0/26
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             Vorlesung Kommunikationssysteme   April 26|  156
+CIDR und Routing
+206.0.64.0/18
+204.188.0.0/15
+209.88.232.0/21 Internet Backbone
+ISP X owns:
+Firma X :
+206.0.68.0/22
+ISP y :
+209.88.237.0/24
+Organisation z1 :
+209.88.237.192/26
+Organisation z2 :
+209.88.237.0/26
+Backbone versendet alle 
+Datagramme mit dem Präfix
+206.0.64.0/18, 204.188.0.0/15, 
+209.88.232.0/21 an ISP X.
+ISP X versendet alle 
+Datagramme mit dem Präfix: 
+206.0.68.0/22  Firma X und
+209.88.237.0/24 an ISP y
+Backbone Router kennen weder 
+Firma X noch ISP Y oder die 
+Organisationen z1 und z2.
+ISP X kennt werder die 
+Organisation z1 noch z2.
+ISP y versendet alle Datagramme mit 
+dem Präfix: 
+209.88.237.192/26 an Organisations z1
+209.88.237.0/26 an Organisation z2
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             Vorlesung Kommunikationssysteme   April 26|  157
+Verkleinerungder Routing-TabelledurchCIDR
+• Der Longest Prefix Match Algorithmus erlaubt das Zusammenfassen von Routes –Es reicht, wenn die genaue Adresse erst nahe am Ziel bekannt ist–Signifikante Beitrag zur Reduktion der Größe der Routing-Tabellen im Internet
+Destination Next Hop
+10.1.0.0/24
+10.1.2.0/24
+10.2.1.0/24
+10.3.1.0/24
+20.0.0.0/8
+R3
+direct
+direct
+R3
+R2
+Destination Next Hop
+10.1.0.0/24
+10.1.2.0/24
+10.2.1.0/24
+10.3.1.0/24
+20.2.0.0/16
+20.1.1.0/28 
+R3
+direct
+direct
+R3
+R2
+R2
+Vorsicht: Durch das Zusammenfassen von Routing-Einträgen dürfen keine 
+fehlerhaften Regeln entstehen
+1. Ein Zusammenfassen in nur möglich, wenn gleiche Ziele (Next Hop) 
+benannt werden
+2. Sofern nicht direkt im Adressraum benachbarte Einträge zusammen 
+gefasst werden können nicht gewollte Zwischenadressen hiervon auch 
+betroffen sein. Wenn diese durch das Zusammenfassen einen anderen 
+Weg als z.B. durch das Default-Route nehmen würden, so hätten wir 
+einen Fehler. Dem kann durch die Longest Match Regel entgegen 
+gewirkt werden. Hierzu müsste aber der “Zwischenbereich“ einen Präfix 
+erhalten, der länger ist als die zusammengefasste Regel
+3. 0.0.0.0/0 ist ein Default-Route
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  158
+Ein 
+Beispiel
+10.0.0.0/24  -> 192.0.2.1
+10.0.1.0/24  -> 192.0.2.1
+10.0.2.0/24  -> 192.0.2.1
+0.0.0.0/0    -> 203.0.113.1   (Default-Route)
+10.0.0.0/24  -> 192.0.2.1
+10.0.1.0/24  -> 192.0.2.1
+10.0.2.0/24  -> 192.0.2.1
+10.0.4.0/24
+0.0.0.0/0    -> 203.0.113.1   (Default-Route)
+10.0.0.0/23 -> 192.0.2.1
+0.0.0.0/0    -> 203.0.113.1   (Default-Route)
+10.0.0.0/22 -> 192.0.2.1
+0.0.0.0/0    -> 203.0.113.1   (Default-Route)
+Das “Zwischennetz“ 10.0.3.0 würde jetzt nach 192.0.2.1
+Geroutet werden und nicht nach 203.0.113.1
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  159

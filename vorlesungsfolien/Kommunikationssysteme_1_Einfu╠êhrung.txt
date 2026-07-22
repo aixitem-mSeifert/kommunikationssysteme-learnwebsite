@@ -1,0 +1,347 @@
+Kommunikationssysteme
+Prof. Dr. Volker Sander
+v.sander-at-fh-aachen.de
+Heinrich-Mußmannstr. 1
+52428 Jülich
+Raum 01G05
+0241 6009 53757
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationsysteme    
+März 26|  1
+Lehrziele
+Sie werden am Ende der Vorlesung
+• Die Grundlagen der Datenkommunikation beherrschen
+• Die Funktionsweise der Internetprotokolle beschreiben und spezifische Eigenschaften 
+begründen können
+• Die gängigen Techniken zum Aufbau lokaler Netze kennen und anwenden können
+Sie werden zum Ende des Praktikums
+• Erste Client-Server-Anwendungen entwerfen und implementieren können und erste 
+Kommunikationsmuster verstehen
+• TLS anwenden können
+• XML verarbeiten und Multithreading anwenden können
+• Die Topologie von IP-Netzen kennen
+• TCP und UDP verstehen
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  2
+Literatur
+Computer Networking
+A Top
+Down
+6th
+Approach 
+Edition
+J.F. Kurose / K.W. Ross 
+Pearson
+Computer Networks
+5th
+Edition
+A.S. Tanenbaum
+Pearson
+Computernetzwerke und 
+Internets
+3
+te
+Auflage 
+Douglas E. Comer
+Pearson Studium
+€ 29,95
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  3
+Informationsquellen
+http://www.ietf.org/
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  4
+Struktur der Vorlesung
+1. Grundlagen der Datenkommunikation
+2. Einfache Client-Server-Anwendungen
+3. Internet-Protokolle 
+4. Netzwerke
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  5
+Zunächst aber einige 
+elementarer Grundbegriffe 
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  6
+Der Begriff „(Daten
+)Kommunikation
+“
+Die Datenkommunikation beschäftigt sich mit dem immateriellen 
+Transport digitaler Daten zwischen Endgeräten
+Wir behandeln hierzu die benötigten Verfahren und Vereinbarungen
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  7
+Bedeutung der Datenkommunikation
+• Die Datenkommunikation ermöglicht den Zugriff auf fremde/entfernte Ressourcen und 
+Dienste
+• Erforderlich dazu:
+• Effiziente Methoden zum Datenaustausch
+• Absprachen/Regeln
+Viele Vorteile, u.a.:
+• Nutzung lokal nicht verfügbarer Ressourcen
+• Kostensenkung durch gemeinsame Nutzung von Betriebsmitteln
+• ...
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  8
+Ausprägungen/Rollen der 
+beteiligten Systeme
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  9
+Das klassische Client
+Server
+Kommunikationsmodell
+• Server-Prozess: Langlebige Anwendung, die kontinuierlich auf Anfragen wartet, diese 
+verarbeitet und - wenn erforderlich - beantwortet
+• Client-Prozess: Zumeist kurzlebige Anwendung die Anfragen an den Server-Prozess 
+stellt und ggf. auf die Antwort wartet. Die Rolle ist damit zumeist beendet 
+Client
+Merke: Ein Server
+kann auch andere 
+Dienste nutzen und 
+somit auch gleichzeitig 
+als Client agieren
+Client
+Initiierender Prozess
+• stellt Anfragen
+Anfrage
+Antwort
+Reagierender Prozess
+• bearbeitet Anfragen
+• erfüllt Aufträge
+• Erbringt somit einen Dienst
+• verarbeitet optionale Antwort
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Server
+April 26|  10
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             Vorlesung Kommunikationssysteme   April 26|  11
+Client-Server-Varianten: Server-Verbund 
+• Dienst wird von einem Verbund von Servern erbracht
+• Erst durch den Verbund ergibt sich die Gesamtsicht, d.h. ein 
+einzelner Server “weiß“ nicht alles um die Anfrage zu beantworten
+• Ggf. merkt der Client nichts von dem Verbund
+Server
+Server
+Server
+Dienst
+Client
+Client
+Client
+Server
+Varianten
+• (Forward) Proxy und Reverse-Proxy Modell– Proxy zum Zwischenspeichern/Anonymisieren der Client-Anfragen (Stellvertreter-Prinzip). 
+Oftmals Stellvertreter für viele Clients – Proxy zum Lastbalancieren von Webseiten. Bildet den Kontakt-Endpunkt, ist aber nicht für 
+die Bearbeitung zuständig, sondern leitet die Anfrage an einen von zumeist mehreren 
+„Workern“
+Forward Proxy
+https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Forward_proxy_h
+2g2bob.svg/500px-Forward_proxy_h2g2bob.svg.png
+https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Reverse_proxy_h2g2
+bob.svg/1280px-Reverse_proxy_h2g2bob.svg.png
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Reverse Proxy
+April 26|  12
+Gleichrangige Prozesse (Peer 
+Processes
+)
+Anwendung
+Lokale 
+Datensicht
+Anwendung
+Lokale 
+Datensicht
+Oft bessere Leistung als Client-Server
+Übergreifender Datenbestand
+Beispiel: File-Sharing, NoSQL, ...
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Anwendung
+Lokale 
+Datensicht
+Vorlesung Kommunikationssysteme   
+April 26|  13
+Kommunikationsarten zwischen den beteiligten
+https://orhanergun.net/unicast-multicast-broadcast-anycast-and-incast-traffic-types
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  14
+Hinweis: Wenn der Client eine Antwort erwartet und nach dem 
+Versenden der Anfrage auf diese (
+man von einer 
+blockierend
+) wartet, so spricht 
+synchronen Kommunikation
+. 
+Eine 
+asynchrone Kommunikation 
+bedeutet, dass nach dem 
+Versenden der Anfrage anderes erledigt werden kann und man 
+irgendwann (zumeist durch einen Event getriggert) sich mit der 
+Antwort beschäftigt
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  15
+Fokus auch durch das Praktikum dieser Veranstaltung
+Fokus auch durch das Praktikum der Veranstaltung 
+WebEng
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  16
+Es ist die Aufgabe der Datenkommunikation,
+die Information zwischen den beteiligten Systemen gemäß den 
+Anforderungen zu übertragen 
+Datenkommunikation ist somit eine elementarer 
+Funktionalität in verteilten Umgebungen
+Basis sind Kommunikationsnetze 
+(Technologien und deren Nutzung)
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  17
+Klassifikation der Kommunikationsnetze 
+(nach Übertragungstechnik)
+Point-to-Point (Punkt-zu-Punkt)
+• ein Paar von Geräten ist durch eine direkte Leitung verbunden
+• kein anderes Gerät kann diese Leitung nutzen
+• Full-Duplex: Senden und Empfangen gleichzeitig möglich (ggf. kontinuierlich)
+• Half-Duplex: Nur eines von beiden gleichzeitig möglich
+• Simplex: Daten können nur in eine Richtung fließen (ggf. kontinuierlich)
+Multi-Access-Netze
+• Mehrere angeschlossenen Geräte teilen sich einen Übertragungskanal
+• Damit Daten trotzdem an den richtigen Empfänger gesendet werden, müssen sie mit 
+einer Zieladresse versehen werden
+• Aufgrund der gemeinsamen Nutzung werden die Daten in Übertragungseinheiten 
+(Protocol Data Unit PDU) eingeteilt und mit der Adresse des Empfängers ausgewiesen
+• Alle am Netz befindlichen Geräte prüfen, ob die Nachricht für sie ist (aktiver Vorgang!)
+• Sollen alle Stationen die Nachricht erhalten, so werden Broadcast-Adressen (spezielle 
+Adressen zur Adressierung aller Stationen) verwendet
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  18
+Klassifikation der Kommunikationsnetze 
+(nach Verbindungsart)
+statisch
+• Geräte(Knoten) besitzen ggf. mehrere Netzanschlüsse: fest verdrahtete Punkt-zu-Punkt 
+Verbindungen oder Multi-Access-Netze 
+• Es existiert keine inhärent im Netz verankerte Vermittlungsfunktion (keine Forderung 
+nach einer direkten Kommunikation zwischen beliebigen Knoten)
+• Vermittlung über Netzgrenzen hinweg jedoch durch Weiterleiten möglich (Store-and
+Forward-Prinzip)
+• Das Internet basiert auf diesem Prinzip
+dynamisch
+• Verbindungen enthalten konfigurierbare Schaltelemente
+• diese können dynamisch vermitteln (Weg wird geschaltet)
+• direkte Kommunikation zwischen beliebigen Knoten möglich
+• Basis z.B. für CPU-Speicher-Anbindung, Telefonnetz
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  19
+Statische Netze kann man gut als 
+Graph mit Knoten und Kanten modellieren
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  20
+Bewertungskriterien für statische Netze
+• Durchmesser (Diameter)
+Maximaler Abstand zweier Knoten, d.h. die Anzahl von Kanten (über wie viele 
+Hops muss man gehen, bis man zum Ziel kommt?)
+à Ziel: Möglichst klein
+• Bisektionsbreite (Connectivity)
+Minimale Anzahl von Kanten, die man entfernen muss, um das Netzwerk in zwei 
+Hälften zu teilen 
+à Ziel: Möglichst groß zur Verbesserung der Fehlertoleranz
+• Knotengrad
+Anzahl von Verbindungen eines Knotens zu seinen Nachbarn. Ist die Anzahl 
+nicht konstant, so wird der das Maximum aller Knoten genommen
+à Ziel: Möglichst klein, da die Kosten so mit diesem Grad steigen
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  21
+Bewertungskriterien für statische Netze
+Merke: Haben alle Knoten den gleichen Grad, so 
+spricht man von einem regulären Netz 
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  22
+Statische Verbindungsnetze
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  23
+Klassifikation der Kommunikationsnetze 
+(nach Ausdehnung)
+1 m
+10 m  
+100 m  
+1 km  
+Raum
+Gebäude
+Campus
+Personal Area Network (PAN)
+Local Area Network (LAN)
+[Lokale Netze]
+10 km  
+100 km 
+1000 km 
+10000 km 
+Stadt
+Land
+Kontinent
+Planet
+Metropolitan Area Network (MAN)
+Wide Area Network (WAN)
+[Weitverkehrsnetze]
+Internet
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  24
+Local
+Area Networks
+• Kommunikationsinfrastruktur für einen begrenzten geographischen Bereich (10m - wenige km)
+• Bindet typischerweise auch die Endsysteme direkt an
+• Üblicherweise im Besitz einer Organisation
+• Übertragungskapazität bis zu 10,000 Mbit/s
+• Übertragungsdauer einer Nachricht im unteren Millisekundenbereich (<10 ms)
+Wichtigstes Beispiel: (Gigabit-)Ethernet
+Hinweis: Mittels VPN (Virtual Private Network) können Bereiche eines LANs an verschiedenen 
+geographischen Regionen liegen und trotzdem kombiniert werden
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  25
+Metropolitan Area Network (MAN)
+• Überbrücken größere Distanzen als ein LAN,  Einsatz z.B. im Städtebereich
+• Oftmals Zusammenschaltung mehrerer LANs, also somit ohne den 
+Anschluss direkter Endgeräte
+• Wichtiger Unterschied: Wegerechte erforderlich
+Anmerkung: Faktisch geht der Trend zur Nutzung von optischer 
+Ethernet-Techniken (Metro-Ethernet)
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  26
+Wide Area Network (WAN)
+• Gerne Punkt-zu-Punkt Verbindungen zwischen sogenannten Points-of
+Presence
+• Hier: deutsches Forschungsnetz X-WIN– verbindet Universitäten und Forschungseinrichtungen
+in Deutschland
+https://www.dfn.de/fit-fuer-die-zukunft-technik-upgrade-im-x-win/
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  27
+Wide Area Network (WAN)
+Zentraler Kontenpunkt Frankfurt – 
+Anschluss an das europäische 
+Wissenschaftsnetz Geant
+https://www.lrz.de/forschung/projekte/projekte_completed/e2emon/
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  28
+Wide Area Network (WAN)
+https://blogs.helmholtz.de/hejus/2015/07/geant-faster-than-light-almost-european-research-network/
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  29

@@ -1,0 +1,291 @@
+Domain Name System
+Lesbare Adressen im Internet
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Mai 26|  323
+Semantische/mnemonische Namen (DNS)
+• Socket-basierte Kommunikation nutzt IP-Adressen
+• End-Anwender wollen sprechende Bezeichnungen 
+mnemonisch
+Eigenschaften von Bezeichnungen und Namen, wenn sie leicht zu merken sind und 
+Rückschlüsse auf ihre Bedeutung haben. 
+Namen müssen übersetzt und aufgelöst werden
+• DNS = Domain Name System
+hosta.firma1.com
+www.fh-aachen.de
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Mai 26|  324
+Im
+Programmcode
+verankerter
+“
+”
+Lookup
+Adressdaten
+DNS server
+hosta.firma1.com
+149.201.122.100 
+149.201.122.100 !
+www.fh-aachen.de
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+“IP-Addresse von 
+www.fh-aachen.de ?”
+Mai 26|  325
+DNS 
+Domain Name System
+Top Level
+Domain de
+fh-aachen
+Eigenständig verwaltet
+idt
+www.idt.fh-aachen.de
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Internetadressen sind für Menschen schlecht zu 
+merken, aber Rechner können damit perfekt 
+umgehen.
+Symbolische Name sind für Menschen einfacher zu 
+handhaben, aber Maschinen können leider damit 
+nichts anfangen.
+Nicht eigenständig verwaltet
+Mai 26|  326
+149.201.10.30
+DNS 
+Konzept
+1. DNS handhabt die Abbildung von Rechnernamen auf Adressen (und weitere Dienste)
+2. DNS ist eine verteilte Datenbank, d.h. 
+• DNS-Server verwalten nur einen Teil der Rechner im Internet
+• Erst der Verbund aus allen Servern ergibt einen vollständigen Namensraum
+• Die Struktur des verwendeten Namensraums der Datenbank gibt eine administrative Einteilung des Internets 
+wieder – Bereiche (Zonen) verwalten Ihre Adressen
+• die einzelnen Zonen unterliegen somit einer lokalen Kontrolle
+• Zonen sind miteinander verbunden und werden im Namensraum durch Übergangspunkte definiert
+4. Daten jedes lokalen Bereichs werden mittels einer Client/Server-Architektur im gesamten Netzwerk verfügbar gemacht
+5. Robustheit und Geschwindigkeit des Systems werden durch Replikation der Daten und Zwischenspeicherung (Caching) 
+erreicht
+6. Hauptkomponenten:
+• Name Server: Server, die  Informationen über einen Bereich der Datenbank verwalten
+• Resolver: Clients, die Anfragen an die Server stellen
+Anfrage
+Resolver
+Antwort
+Name
+Server
+Name
+Server
+Name
+Server
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Mai 26|  327
+DNS
+Server
+• Server-Prozess im Netz
+• Wartet auf Anfragen (Standard ist UDP!)
+• Enthält eine Tabelle mit Namen von Hosts und zugehörigen IP-Adressen 
+(nicht injektiv)
+• Wird von den Klienten über Konfigurationsdatei oder DHCP gefunden
+• Zusammenspiel mit lokaler Datei 
+/etc/hosts (UNIX) c:\WINDOWS\system32\drivers\etc (Windows)
+• Reihenfolge bei manchen Systemen einstellbar: 
+/etc/resolv.conf /etc/nsswitch.conf (UNIX) 
+www.fh-aachen.de
+149.201.10.100
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Mai 26|  328
+Struktur der Datenbank
+§ Strukturierung aller Informationen kann als Baum verstanden werden
+§ jeder Knoten im DNS-Baum ist ein durch einen „Label“ gekennzeichnet, das relativ zu seinem Vater-Knoten 
+(Parent) definiert ist. 
+§ jeder (innere) Knoten ist wiederum selber Wurzel eines Teilbaums (Domäne/Subdomäne)
+§ Das Label durch „.“ verknüpft mit allen übergeordneten Labels bildet den vollständigen, absoluten Namen 
+(Fully Qualified Domain Name, FQDN)
+Domäne
+com
+Subdomäne
+“ “
+edu
+cs
+gov
+Oxford
+Generic
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+mil
+se
+Mai 26|  329
+de
+fh-aachen
+juelich
+Länder
+Die 
+Informatio
+n
+• Ein DNS-Knoten ist ein Datencontainer, der über Resource Records beliebige (aber 
+standardisierte) Informationen zu einer Namenskomponente speichert
+• IP-Adressen (A/AAAA) oder Zonengrenzen (definiert durch SOA+NS) sind klassische Beispiele
+• Zonengrenzen sind Übergangspunkte zwischen administrativen Einheiten- Zonen haben eigene DNS-Server- fh-aachen.de ist eine Zone- .de ist eine Zone, die den DNS-Server der FH-Aachen faktisch verlinkt
+• In den Blättern stehen typischerweise die IP-Adressen einzelner Rechner
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Mai 26|  330
+Die Information
+fh-aachen
+idt
+logischer Name:
+www.idt.fh-aachen.de
+www
+“ “
+de
+Zone
+Zone
+Zone
+Zugehörige IP-Adresse:
+149.201.10.30
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Mai 26|  331
+Domänen und Zonen
+§ Jeder Name Server verwaltet nur einen kleinen Teil der Informationen, eine Zone
+§ Domäne und Zone sind unterschiedliche Konzepte:
+com
+“ “
+edu
+edu Zone
+berkeley
+berkeley.edu Zone
+nwu
+edu Domäne
+§ Zonen sind definierte Bereiche im Namensraum, die von von einem separaten Name Server verwaltet werden. 
+§ Die de-Domäne ist eine Zone, die nur Verweise auf die Institutionen oder die root-Server enthält 
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+org
+purdue
+purdue.edu Zone
+Mai 26|  332
+Delegation
+DNS
+Zonen
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Mai 26|  333
+DNS
+Zonen
+• Eine Zone ist ein autarker Bereich im DNS-Namensraum
+• Zur Einrichtung einer Zone muss der übergeordnete Knoten davon 
+überzeugt werden, die Verwaltung zu delegieren
+• Eine Zone ist ein kontinuierlicher Namensraum mit eigener Datenbank - Knoten im Baum (Bezeichnung darf maximal 63 Zeichen lang sein)- Bis zu 127 Ebenen (ohne Bezeichnung)
+• Jede Zone hat einen primären und beliebig viele sekundäre 
+Nameserver (NS)- Jeder NS kennt zunächst nur (s)einen Ausschnitt des gesamten Namensraums - Jeder NS kennt alle IP-Adressen seiner direkt untergeordneten Sub-Domains der eigenen 
+Zone- Sekundäre NS führen ein periodisches Update („Zonentransfer“) ihrer Datenbasis durch 
+(vollständige Datenbestand des primären NS wird transferiert)    (Master-Slave-Prinzip)
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Mai 26|  334
+DNS: Root
+Name
+Server
+• Bilden die Wurzel der hierarchischen DNS-Struktur
+• Es gibt weltweit 13 Root-Name-Server–z.Zt. {a-m}.root-servers.net–Die tatsächliche Anzahl der Server ist deutlich größer, da mit IPv6 hier Anycast-Adressen 
+greifen können, so dass mehrere physikalische Server einen DNS-Root-Server realisieren 
+können
+• Root-Server müssen hohe Anforderungen an die bearbeitbaren Lasten erfüllen
+• Name-Server der anderen Hierarchien werden mit festen Root-Servern 
+konfiguriert 
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Mai 26|  335
+Die Auflösung: Rekursive und Iterative Anfragen
+• Rekursive Anfragen 
+Server schickt Anfrage zum nächsten Server weiter (oder Fehlermeldung). 
+→Client-Server-Anfragen
+• Iterative Anfragen 
+Server antwortet dem Fragenden direkt mit IP-Adresse des nächsten 
+Servers. → Server-Server-Anfragen
+Name
+rekursiv
+nicht-rekursiv
+Info
+Name
+Info
+Name
+Name
+Info
+Info
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Mai 26|  336
+Namensauflösung
+Beispiel: 
+Name
+Server
+Antwort
+Anfrage
+Resolver
+Anfrage nach Adresse von
+girigiri.gbrmpa.gov.au
+Verweis auf au
+Name Server
+Anfrage nach Adresse von
+girigiri.gbrmpa.gov.au
+Verweis auf gov.au
+Name Server
+Anfrage nach Adresse von
+girigiri.gbrmpa.gov.au
+Verweis auf gbrmpa.gov.au
+Name Server
+Anfrage nach Adresse von
+girigiri.gbrmpa.gov.au
+Adresse von
+girigiri.gbrmpa.gov.au
+“ “
+“ “
+Name Server
+au
+Name Server
+gov.au
+Name Server
+au
+gov
+gbrmpa.gov.au
+Name Server
+sa
+ips gbrmpa
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Mai 26|  337
+nz
+edu
+sg
+DNS
+Dienste
+• DNS leistet mehr als nur die Auflösung von Namen
+• Der Mail-Exchange-Record liefert zu einer Zone den Mail-Server (so erhält 
+man das wissen, wer bei der FH-Aachen die Mails empfängt)
+• Weitere Informationen können z.B. im Zusammenhang mit der IP-Telefonie 
+geliefert werden
+• Jeder DNS-Server besitzt auch einen Cache. Dieser hält vor kurzem 
+aufgelöste Anfragen vor. Den Zeitraum liefert der Server, der diese Adresse 
+ursprünglich einmal aufgelöst hat
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Mai 26|  338
+DNS
+Attacken
+• DNS ist ein durchaus kritischer Dienst
+• Da er zumeist nur UDP verwendet, ist er häufig Angriffsziel:
+• DNS ID Hacking: Anfragen werden oft nur über eine Query ID geschützt, d.h. der Client 
+erwartet nicht nur die Auflösung, sondern auch noch eine spezielle assoziierte ID. Wenn 
+diese nicht vom Netz abgegriffen werden kann, so muss man sie erraten
+• DNS spoofing: Hier beantwortet ein falscher DNS-Server die Anfrage. Hier muss die ID 
+verwendet werden. Auch wird die falsche IP, also die des eigentlich richtigen Servers 
+angegeben (was von den Providern zu unterbinden ist)
+• DNS Cache Poisoning: Hier wird versucht, einen eigentlich korrekten DNS-Server zu 
+„verseuchen“. Idee ist, den Cache falsch zu füllen
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme 
+Mai 26|  339

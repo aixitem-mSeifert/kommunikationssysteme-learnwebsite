@@ -1,0 +1,789 @@
+Wie genau funktioniert das Internet?
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  108
+Basis sind autonome Systeme
+Durch das Store
+and
+Forward
+Prinzip statischer Netze können wir 
+Übergangspunkte zwischen den einzelnen Providern bauen (Punkt
+Punkt--
+zu
+Leitungen zwischen Routern, die unterschiedliche Eigentümer haben)
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  109
+Aufbau des Internets
+• “Tier-1” ISPs (Internet Service Provider, z.B. Deutsche Telekom, British Telecom, 
+Qwest) mit nationaler und internationaler Überdeckung– Treten gleichberechtigt auf– Übergangspunkte an bestimmten Orten
+Vertraglich 
+regulierte 
+Verbindungen
+Tier 1 ISP
+Tier 1 ISP
+Verbindung zwischen Providern in speziellen
+Rechenzentren: Network Access Point (NAP) 
+/ Internet Exchange Point (IXP)
+NAP
+Tier 1 ISP
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  110
+Aufbau des Internets
+• “Tier-2” ISPs: kleinerer (oft nur regional tätiger) ISPs– Anbindung an einen oder mehrerer Tier-1 ISPs– Ggf. Anbindung an weitere Tier-2 ISPs
+Tier-2 ISP
+Tier-2 ISP bezahlt 
+Tier-1 ISP für die 
+Anbindung an das  
+weitere Internet
+Tier 1 ISP
+Tier-2 ISP
+Tier 1 ISP
+NAP
+Tier 1 ISP
+Tier-2 ISP
+Tier-2 ISP
+Tier-2 ISPs 
+können auch 
+direkt 
+miteinander 
+Verbindungen 
+haben, oder 
+nutzen NAPs
+Tier-2 ISP
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  111
+Aufbau des Internets
+• “Tier-3” ISPs und lokale ISPs – Binden die Kunden an (“Access Network” – DSL)– Dienst nahe den Endsystemen
+local
+ISP
+Tier 3
+ISP
+Lokaler und Tier- 3 
+ISPs treten gegenüber 
+den höheren ISPs als 
+Kunde auf
+Tier-2 ISP
+local
+ISP
+local
+ISP
+local
+ISP
+Tier-2 ISP
+Tier 1 ISP
+Tier 1 ISP
+NAP
+Tier 1 ISP
+Tier-2 ISP
+local
+ISP
+local
+ISP
+Tier-2 ISP
+local
+ISP
+Tier-2 ISP
+local
+ISP
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  112
+Nachrichtenzustellung
+local
+ISP
+Tier 3
+ISP
+Tier-2 ISP
+local
+ISP
+local
+ISP
+local
+ISP
+Tier-2 ISP
+Tier 1 ISP
+Tier 1 ISP
+NAP
+Tier 1 ISP
+Tier-2 ISP
+local
+ISP
+local
+ISP
+Tier-2 ISP
+local
+ISP
+Tier-2 ISP
+local
+ISP
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  113
+Konsequenz
+Das Internet setzt sich aus vielen Eigentümern zusammen, sogenannte 
+Autonomous Systems (AS)
+Diese verfolgen ihr eigenes Geschäftsmodell
+Vertragswerke regulieren somit das Internet
+Wenn ein AS höhere Datenraten bei seinem Partner-AS einspeist, als dies die 
+vertragliche Regelung eigentlich erlaubt, dann sollten man davon ausgehen, dass 
+dieser das nicht akzeptieren wird
+Alleine daraus folgt: Datagramme (die Nachrichteneinheiten in statischen 
+Netzen) können im Internet verworfen werden...
+Die Internet-Standards regeln recht wenig, verlangen aber, dass alle die 
+gleiche Vermittlungsschicht besitzen
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  114
+Die (Kern
+)
+Vermittlungsschicht
+im
+Internet
+Transport layer: TCP, UDP
+Routing-Protokoll
+• Wegewahl
+Vermittlungs
+schicht
+• RIP, OSPF, BGP
+IP-Protokoll
+• Adressierung
+• Paketormat
+forwarding
+table
+• Regeln zur Paketbehandlung
+ICMP-Protokoll
+• Fehlermeldung
+• Signalisierung
+Link layer
+physical layer
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  115
+Das Internet
+Protokoll 
+• IP bietet eine Ende-zu-Ende-Kommunikation zwischen Rechnern in einem Netz aus Netzen
+• Derzeit flächendeckend eingesetzt werden IPv4 und IPv6– Wir fokussieren uns zunächst auf IPv4
+• IP folgt der Store-and-Forward-Idee– Nachrichten werden in Einheiten Pakete/Datagramme übermittelt– Weiterleitung geschieht immer zu einem direkt verbundenen System unter Verwendung der 
+Sicherungsschicht (also innerhalb des gleichen Netzes)– Bei mehreren möglichen erreichbaren Zwischenzielen muss eine Wegwahl entscheiden, an wen 
+das Datagramm geschickt wird– Hierbei agiert IP verbindungslos, d.h. die Entscheidung wird für jedes Datagramm separat 
+getroffen
+Ø Datagramme können verloren gehen
+Ø Datagramme können durch unterschiedliche Wegwahl einander überholen
+Ø Durch Neuübertragungen können Datagramme auch mehrfach ankommen
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  116
+Das Internet
+Protokoll 
+• Basis der Wegwahl sind die IP-Adressen
+• IP-Adressen adressieren also Endpunkte in einem Netz aus Netzen
+• Für jede Datagramm/Paket wird die Wegwahl anhand der dort notierten Zieladresse 
+getroffen
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  117
+Zusammenspiel der Protokollinstanzen– Jede Schicht hat eigene Protokollfelder (Header)– TCP/UDP fügen Prozessadressierung (Ports) zu IP hinzu– TCP sichert darüber hinaus die Datenübertragung– IP leitet Datenpakete durch das Netzwerk zum Empfänger
+Daten
+TCP-Header
+bzw.
+Daten
+UDP-Header
+Daten
+IP-Header
+MAC/LLC-Header
+TCP/UDP-Header
+IP-Header
+Daten
+TCP/UDP-Header
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+Benutzer
+Transportschicht
+Vermittlungsschicht
+Daten
+Trailer
+Sicherungs
+schicht
+April 26|  118
+IP – Internet Protocol: Aufgaben
+• Ende-zu-Ende-Kommunikation zwischen Rechnern auch über Netzgrenzen 
+hinweg– Bereitstellung (weltweit) eindeutiger Adressen 
+> IPv4: 32 Bit, IPv6: 128 Bit
+> Topologische Struktur der Adressen– Definition eines Paketformats
+> Header mit Kontrollinformationen
+> Maximale Paketgröße: 64 KByte (in der Praxis gerne auch: 1500 Byte)– Wegewahl durch Routing-Tabellen (gepflegt durch Routing-Protokolle)– Zusammenspiel mit den tieferen Schichten, d.h. der Netzwerkkarte (ARP, Fragmentierung)– Anbindung an die höheren Schichten (UDP/TCP)
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  119
+IP nutzt die Sicherungsschicht zur Übertragung des Datagramms (wenn das 
+gesamte Datagramm passt). 
+Die Sicherungsschicht kann aber nur Daten an Systeme ausliefern, wenn 
+diese im gleichen Netz sind.
+Fragestellung
+: 
+Woher weiß IP, ob das Ziel im gleichen Netz ist und wenn nein, an wen wird 
+ein IP
+Paket innerhalb des gleichen Netzes sonst übertragen?
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  120
+Die Wegwahl im Internet
+Protokoll 
+• Die IP-Implementierung eines Rechners oder Router-Systems entscheidet, wohin ein 
+Datagramm übertragen wird
+• Basis für diese Entscheidung sind Routing/Forwarding-Tabellen
+• Diese Tabellen werden mittels der Informationen aus dem IP-Header durchsucht
+• Normalerweise wird hierbei ausschließlich die Zieladresse des Datagramms verwendet
+Merke: Jeder Router trifft diese Entscheidung für jedes Paket/Datagramm und zwar 
+unabhängig von den anderen Routern. Basis ist die Zieladresse des Datagramms.
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  121
+Die 
+Funktionsweise
+eines
+IP
+Netzes
+R3
+R1
+A
+R4
+1
+4
+Ver
+HLen
+T.Service
+16 32
+Total Packet Length
+B
+20 bytes 
+C
+Fragment ID
+Flags
+Fragment Offset
+TTL
+Protocol
+Header Checksum
+R2
+Source Address
+D
+Destination
+Destination Address
+Next Hop
+R5
+D
+Options (if any)
+R3
+E
+Data
+R3
+F
+R5
+D
+E
+F
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  122
+Den Header schauen wir uns noch zu einem späteren Zeitpunkt an
+Hier interessiert uns zunächst die Ziel
+ermittelt wird
+IP
+Adresse, anhand derer der Weg 
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  123
+Fallunterscheidung innerhalb eines Systems oder Routers
+• Kann das Datagramm direkt über Verfahren der Sicherungsschicht an das Zielsystem 
+ausgeliefert werden, so wird das Paket zur Übertragung an die Sicherungsschicht 
+übergeben– Beide Systeme befinden sich im „gleichen Netz“ sein – Der Router/Sender muss  die HW-Adresse der Schicht 2 in Erfahrung bringen, um der Netzwerkkarte 
+mitzuteilen, an wen das Datagramm übertragen werden soll
+• Kann man nicht direkt mit dem Zielsystem kommunizieren, so muss die Nachricht an einen 
+“Router“ weiter geleitet werden, der sich im gleichen Netz befindet– Das Zielsystem befindet sich in einem anderen Netz– Mittels einer bei jedem Internetteilnehmer gepflegten speziellen Routing-Tabelle ermittelt das System, welcher 
+direkt erreichbare Router das Paket zur Weiterleitung erhält (analog zum ersten Fall)– Das Paket wird an die Sicherungsschicht zur Übertragung an den selektierten Router geleitet (indirekte 
+Übertragung – Store-and-Forward)
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  124
+Damit muss die IP
+Vermittlungsschicht entscheiden, ob sich ein 
+Zielrechner im gleichen Netz befindet!
+Da die Entscheidung über die Zieladresse getroffen wird muss somit 
+eine 
+topologische Struktur in der IP
+Adresse kodiert 
+sein
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  125
+Merke: 
+• Router haben mehr als eine Netzwerkkarte und somit mehr als eine IP-Adresse. IP
+Adressen adressieren somit eigentlich nicht Rechner als singuläre Entität, sondern einen 
+Netzwerkzugang eines Rechners
+• Auch End-Systeme können über mehrere IP-Adressen verfügen. Anschaulich ist die IP
+Adresse die Betriebssystemanbindung der Netzwerkkarte an ein IP-(Teil)netz
+• Auch wenn eine Netzwerkkarte eine IP-Adresse hat, so besitzt sie trotzdem auch eine HW
+Adresse, über die die Kommunikation der Sicherungsschicht läuft. Diese ist eindeutig (im 
+konkreten Netz) und unabhängig von der Einbettung in die IP-Topologie
+• Faktisch haben wir also eine Adresse, die die Kommunikation innerhalb eines Netzes für 
+eine bestimmte Sicherungsschicht regelt und eine Adresse, die die Ziele topologisch 
+systematisiert und so Netze und Endsysteme in Netzen adressiert 
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  126
+IP
+Adressierung (v4) 
+Topologische Struktur
+• Am Internet angeschlossene Systeme werden über eine weltweit eindeutige 
+IP-Adresse identifiziert (Ausnahme: private Netze, Multicast und Anycast
+Adressen)
+• IPv4-Adressen sind 32 Bit lang 
+• IPv4-Adressen haben eine bestimmte Struktur: 
+• Der vordere Teil bestimmt die Netzwerk-Adresse für das Netz (z.B. 140.201.10 
+.100), in dem sich der Rechner befindet. Innerhalb dieses Netzes kann eine direkte 
+Kommunikation mittels der Sicherungsschicht geschehen
+• Der hintere Teil bestimmt die Rechner-Adresse im gegebenen Netz für einen 
+Kommunikationsendpunkt, einen Host (z.B. 140.201.10 .100)
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  127
+IP-Adressen
+Um unterschiedlich große Netze zu unterstützen, wurden mehrere 
+Adressklassen definiert
+(Heute wird zwar noch die Terminologie verwendet, aber nicht mehr die 
+recht statische Klassenaufteilung!)
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  128
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             Vorlesung Kommunikationssysteme  April 26|  129
+0   1 2 4            8                        16                        24                                  31
+0
+01 Netz-ID
+Netz-ID
+011 Netz-ID Knoten-ID
+Knoten-ID
+Knoten-ID
+0 11 11 reserviert für zukünftige Anwendungen
+IP-Adressklassen: Der ursprüngliche Ansatz via Präfix
+ 1. Class A für Netze mit bis zu 16 Mio. Knoten (0-127)
+ 2. Class B für Netze mit bis zu 65.536 Knoten (128-191)
+ 3. Class C für Netze mit bis zu 256 Knoten (192-223)
+ 4. Class D für Gruppenkommunikation (Multicast) (224)
+ 
+ 5. Class E, reserviert für zukünftige Anwendungen
+01 11 Multicast-Adresse
+Hinweis
+Bei der Interpretation der IP-Adressen sind für den Rechnerteil (Knoten-ID im 
+Netz) zwei Adressen reserviert, die nicht für Rechner in diesem Netz zur 
+Verfügung stehen:
+Knoten-ID = 0...0  bezeichnet das Netz selber
+Knoten-ID = 1...1  bezeichnet ein Broadcast im Netz
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  130
+IP
+Adressen / Adressklassen
+Class Start
+Ende
+Anzahl  
+Netze
+Rechner / 
+Netz
+A
+B
+C
+D
+E
+1.0.0.0
+128.0.0.0
+192.0.0.0
+224.0.0.0
+240.0.0.0
+127.255.255.255
+191.255.255.255
+223.255.255.255
+239.255.255.255
+255.255.255.254
+127
+16384
+2.097.152
+16.777.214
+65534
+254
+Spezielle Adressen:
+127.x.x.x ist reserviert (loopback  localhost = 127.0.0.1)
+10.x.x.x, 172.16.0.0 - 172.31.255.255 192.168.0.0  - 192.168.255.255
+werden für private Netze verwendet 
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  131
+Die Loopback-Adresse
+Merke: Auch wenn man verschwenderisch für das Loopback eine Class-A-Adresse 
+vorgesehen hat, so schreibt der Standard RFC3330 doch, dass die Adresse 127.0.0.1 
+das (virtuelle) Loopback-Interface bezeichnet. Faktisch ist aber der gesamte 127.x.x.x
+Raum für Loopback-Zwecke, also für virtuelle Netzwerkkarten reserviert.
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  132
+IP
+Adresse
+137.226.0.0
+137.226.1.1
+137.226.12.21
+Binärformat
+Dotted Decimal Notation
+137.130.0.0
+zwingend in 
+unterschiedlichen 
+Netzen
+137.130.1.1
+Router
+10001001 11100010 00001100 00010101
+137.226.12.21
+• jeder am Internet angeschlossene Rechner hat (wenigstens) eine weltweit eindeutige IP-Adresse
+• Ausnahme: private Adressen
+• Router, die mehrere Netze miteinander verknüpfen, haben für jedes angeschlossene Netz eine IP
+Adresse, bei der sich der Netzwerkadressteil zwingend ändern muss
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+137.130.112.78
+April 26|  133
+IP
+Adressierung–Ro
+uter 
+haben
+multiple 
+Netzwerkadressen
+221.1.1.2
+221.1.1.1
+221.1.1.3
+222.1.9.2
+222.1.9.1
+221.1.1.4
+223.1.7.0
+223.1.7.1
+224.1.8.1
+Netzwerk, welches
+aus sechs Netzen
+besteht
+225.1.2.6
+225.1.2.1
+225.1.2.2
+224.1.8.0
+226.1.3.1
+226.1.3.27
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+226.1.3.2
+April 26|  134
+IP
+Adressierung 
+Beispiele (historisch)
+Die Darstellung der 32-Bit-Adresse erfolgt in 4 Teilstücken zu je 8 Bit:
+134.94.5.225
+10000010
+Class B-Adresse
+01011110
+Class B-Adresse 
+des Forschungszentrums 
+00000101
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+11100001
+Rechner
+April 26|  135
+IP-Adressen 
+DBA
+Aufteilung des Adressraums:
+A
+DBA
+B
+CB
+A
+A
+E K
+E
+E
+E
+E
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  136
+IP
+Adressen wurden knapp...
+Problem
+• Niemand hatte damals mit einem derart starken Wachstum des Internets gerechnet (sonst hätte 
+man von Anfang an längere Adressen definiert)
+• Allzu viele Class A-Adressen wurden in den ersten Internetjahren vergeben
+• Ineffiziente Nutzung des Adressraums
+Beispiel
+: wenn 500 Geräte in einem Unternehmen angeschlossen werden sollen,
+so braucht man eine Class B-Adresse, die unnötigerweise mehr als 65.000
+Rechneradressen blockiert. 
+Lösungsversuch
+Erweiterung des Adressraums bei IPv6 gegenüber der aktuellen Version IPv4
+Þ IP Version 6 hat 128 Bit-Adressen
+Þ 7 x 1023 IP-Adressen.  Jeder Quadratmilimeter der Erdoberfläche (inkl. der Ozeane!) kann so 
+eine IP-Adresse erhalten
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  137
+Ein weiteres Problem...
+• Router verbinden immer Netze, wodurch beispielsweise unterschiedliche Netztechniken in den einzelnen 
+Netzen eingesetzt werden können
+• Damit erfordern sie aber auch eine Änderung der IP-Netzwerkadresse, wenn sie in mehreren Netzen sein 
+sollen
+• Router trennen damit Netze, was diesen eine verbesserte Struktur gibt
+• Erst durch Router können also relativ einfach und skalierbar unterschiedlichste Netztechnologien eingesetzt 
+werden
+• Institutionen mit größeren Netzen möchten auch intern Router verwenden (strukturierte Netzplanung)
+• Noch haben diese Institution aber immer nur „eine“ an sie vergebene Netzadresse 
+Merke: 
+Möchte man unterschiedliche Netztechnologien (Schicht 1-2) einsetzen, die nicht einfach miteinander kombiniert 
+werden können, so sind Router eine sinnige Lösung hierfür und damit mehrere IP-Netzwerkadressen
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  138
+IP
+Adressierung–Su
+bnetze
+Idee
+• Typischerweise haben End-Domänen genau einen Zugang zu einem Internet-Service
+Provider
+• Es gibt somit von außen betrachtet einen definierten Übergangspunkt in das lokale Netz
+• Könnte man nicht durch interne Konfiguration die fest-stehende starre IP-Klassenstruktur 
+aufbrechen?
+• Während die Außenwelt nur die der IP-Adresse des Eingangs-Routers zugeordnete 
+Netzwerkadresse sieht – gemäß Klassenstruktur – könnte doch intern eine andere, flexiblere 
+Interpretation stattfinden
+• Beispiel: Ein Class-B-Netzwerk wird intern durch eine einheitliche Konfiguration der IP-Systeme 
+als Class-C-Netz behandelt
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  139
+IP
+Subnetze
+Problem: Class C-Netze sind sehr klein, Class B-Netze oft aber schon wieder zu groß, um sie 
+ohne Router zu konzipieren. Daher gibt es die Möglichkeit, ein durch die IP-Adresse 
+identifiziertes Netz in so genannte Subnetze zu zerlegen.
+Beispiele für Subnetze: 
+Rest
+Aller
+Verkehr
+für 128.10.0.0
+des
+Internet
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Subnetz-Maske 255.255.255.0
+Ethernet A 128.10.1.0
+128.10.1.3
+Router
+128.10.1.8 128.10.1.70 128.10.1.26
+Ethernet 
+A
+Host
+128.10.2.1
+Ethernet 
+A
+Host
+Ethernet B 128.10.2.0
+Ethernet 
+B
+Host
+Ethernet 
+B
+Host
+Ethernet 
+A
+Host
+128.10.2.3 128.10.2.133 128.10.2.18
+Ethernet 
+B
+Host
+Vorlesung Kommunikationssysteme  
+April 26|  140
+IP
+Adressierung 
+Subnetze
+Die Darstellung der 32-Bit-Adresse erfolgt in 4 Teilstücken zu je 8 Bit:
+134.94.5.225
+10000010
+Class B-Adresse
+01011110
+Class B-Adresse 
+Des Forschungszentrums 
+Mittels der Subnetzmaske wird eine Folge zusammenhängender Bits der Adresse 
+angegeben, die den Netzwerkadressteil bestimmt.
+Format: Erst Einsen, dann Nullen  
+1...10...0
+Angabe in Dotted-Decimal-Notation  - Beispiel: 255.255.240.0
+11 11 11 11.  11 11 11 11. 1111 0000. 0000 0000
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+00000101
+Subnetz
+11100001
+Dozentenrechner
+Vorlesung Kommunikationssysteme  
+April 26|  141
+IP
+Subnetz
+Adressen
+•IP-Adresse (hier Klasse B):
+Netzwerk-Teil
+Netzwerk-Teil
+Lokaler Teil
+Subnetz-Teil    Endsystem
+•Subnetzmasken kennzeichnen den Bereich der IP-Adresse, der das 
+Netzwerk und das Subnetzwerk beschreibt. Dieser Bereich wird dabei durch 
+Einsen („1“) in der binären Form der Subnetzmaske festgestellt.– Beispiel: 
+Netzwerk:  
+Subnetz:    
+Endsystem:                      
+140. 
+255. 
+140. 
+201. 
+255. 
+201.
+10. 
+255. 
+10.
+100
+0
+100– Der Netzwerk-Teil kann aus der Adressklasse abgeleitet werden– Überdeckt die Subnetzmaske nur den Netzwerk-Teil, dann gibt es keinen 
+Subnetz-Teil (z.B. 255.255.0.0)
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  142
+1
+Beachten Sie...
+• Die Subnetzmaske ist faktisch eine binäre Maske
+• Sie beginnt mit einer 1 und es gibt nur einen Wechsel auf 0
+• Sie wird über die Binärdarstellung der Zieladresse gelegt
+• Die UND-Verknüpfung liefert die Netzwerkadresse 
+• Beachten Sie: 
+• Knoten-ID = 0...0 bezeichnet das Netzwerk 
+• Knoten-ID = 1...1  bezeichnet eine Broadcast-Adresse
+• Beide Adressen stehen somit nicht für Rechner zur Verfügung
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  143
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             Vorlesung Kommunikationssysteme  April 26|  144
+IP-Subnetze - Berechnung des Zielhosts
+0111 1000 10001100
+140 .          201                             .         10     .        100
+11101001 00001010 11000100
+255        . 255        . 255          . 0          
+10          . 0          140        . 201          .
+0000 0000
+0000 0000
+1111 1111
+0000 1010
+1111 1111
+11101001
+1111 1111
+10001100
+IP-Adresse
+Subnetz-Maske
+Netzwerk des bezeichneten Hosts
+nach Anwendung des Subnetz-Regel
+AND
+IP
+Subnetze 
+Berechnung des Zielhosts
+Keine Aufteilung in Subnetze, es liegt ein virtuelles Class-B-Netz vor:
+120        
+0111 1000
+.       
+2                             
+.         35     
+.        210
+0000 0010 0010 0011 1101 0010
+AND
+255        
+1111 1111
+.
+255        
+1111 1111
+.
+0          
+0000 0000
+IP-Adresse
+.
+0          
+0000 0000
+Subnetz-Maske
+120        
+0111 1000
+.
+2          
+0000 0010
+.
+0          
+0000 0000
+.
+0          
+0000 0000
+Netzwerk des bezeichneten Hosts
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  145
+Beachten Sie...
+• Subnetzmasken 
+• können Netze unterteilen
+• erschweren ggf. das Erkennen der Netzadressteile (nicht für den Rechner)
+• haben lokale Bedeutung (auf dem System auf dem sie konfiguriert sind)
+• gehören zur systematischen Netzplanung hinzu  
+• Innerhalb eines Subnetzes sollte die Rechneradresse (binär) „0...0“ und die Rechneradresse 
+(binär)  „1....1“ nicht verwendet werden 
+Falsch konfigurierte Subnetzmasken führen dazu, dass die IP-Kommunikation zumeist nicht mehr 
+möglich ist
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  146
+Aufgabe
+:
+Sie haben die Class-B-Adresse 134.94.0.0 erhalten
+Bestimmen Sie eine Subnetzmaske, mit der Sie dieses Netz
+in 16 Subnetze untergliedern
+Geben Sie für die ersten beiden Netze den Adressbereich für
+Rechner in diesem Netz an
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme  
+April 26|  147
+Aufgabe
+:
+Sie haben die Class-B-Adresse 134.94.0.0 erhalten
+Bestimmen Sie eine Subnetzmaske, mit der Sie dieses Netz
+in 16 Subnetze untergliedern
+Geben Sie für die ersten beiden Netze den Adressbereich für
+Rechner in diesem Netz an
+16 Subnetze  =>   4 Bit 
+Subnetzmaske:     255.255.1111 0000. 0000 0000  
+128 + 64 + 32  + 16
+255.255.240.0
+Adressbereich 134.94.   0000 0000. 0000 0001 – 0000 1111 . 1111 1110
+0        
+.                
+16      
+.                
+1 -             
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+15  .   254
+1 -              
+31 .   254
+Vorlesung Kommunikationssysteme  
+April 26|  148
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             Vorlesung Kommunikationssysteme  April 26|  149
+Frage:
+Sie haben die Class-B-Adresse 134.94.0.0 erhalten
+Welche Subnetzmaske müssen Sie nehmen, wenn Sie das
+Netz in 8 Unternetze aufteilen wollen?
+Welchen Adressbereich haben die ersten beiden Netze
+255.255.224.0    134.94.0.0/19
+134.94.0.1  - 134.94.31.254
+134.94.32.1 – 134.94.63.254
+0.0.0.0/0

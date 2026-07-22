@@ -1,0 +1,62 @@
+Gedächtnisprotokoll Rechnernetzeklausur SS2018 (Phase 1) 
+Fr.20.07.2018 
+A1) Allgemeine Fragen 
+ Warum wird im TCP/IP Layer 5-7 als Anwendungsschicht zusammengefasst? 
+ Was beschreibt der Bisektionsgrad? Hoher oder niedriger Bisektionsgrad gut? 
+ Nennen Sie ein Beispiel bei dem die klassische Schichtung aus ISO/OSI verletzt wird 
+ Netztopologien nach Ausdehnung sortieren: LAN, WAN, PAN, MAN 
+A2) IP 
+a) Was ist CIDRE? Welche Probleme versucht CIDRE zu lösen? Was bedeutet das für die ISP 
+(Internet Service Provider)? Welche Auswirkungen auf die Routing Tabellen? 
+b) Routing Einträge zusammenfassen: 
+192.168.202.0/24 
+192.168.80.0/24 
+R1 
+R1 
+192.168.0.0/16 
+192.168.3.0/24 
+R2 
+R3 
+192.168.64.0/24 
+0.0.0.0/0 
+R4 
+R3 
+c) 3 Unterschiede zwischen IPv4 und IPc6 nennen 
+d) Routing Aufgabe 2, wohin werden die Pakete weitergeleitet 
+e) Welche Felder im IP Header werden vom Router verändert, wenn keine Fragmentierung 
+stattfindet? 
+f) 
+Fragmentierung, Datenpaket aus 4200 Byte, Senden von A nach B über R, A -> R MTU 1800, 
+R->B MTU 1200 
+A3) Programmierung 
+a) Code für SSLEchoClient mit Keystore gegeben und  für SSLEchoServer mit Keystore 
+ Wird Verschlüsselung für Client Server Umgebung zwingend benötigt? 
+ Welche Informationen sind im Keystore gespeichert? 
+ Warum wird für das Serverzertifikat kein TrustStore benötigt? 
+ Was müsste man am Code ändern, wenn das Serverzertifikat als ungültig erkannt würde? 
+ Welche Inhalte werden verschlüsselt? 
+o IP 
+o Port 
+o System.in Nachrichteninhalt 
+b) Erklären Sie anhand eines Beispiels die einfache Serialisierung eines Objektes als Output. 
+Worauf muss beim Vergleich deserialisierter Objekte geachtet werden? 
+A4) TCP / Transportschicht 
+a) Sliding Window Fehlerkorrektur mit Go Back N, eintreffen von Paket n beim Sender bei n-1, 
+Quttung zeitgleich mit Senden von n+4, Timeout nach Senden von n+5 
+a. Fehler beim Senden von Paket 2 
+b. Fehler beim Senden der Quittung von Paket 2 
+b) Was ist eine kumulative ACK? 
+A5) Sicherungssicht / Bitübertragungsschicht 
+a) Leitungscodes im Breitband aufzählen und erklären 
+b) Zwei Rechner befinden sich in verschiedenen Netzen die über Brücke verbinden sind. Brücke 
+erlaubt kein Broadcast. Können beide kommunizieren? 
+c) Warum ist die Ausdehung von Ethernet zu FastEthernet rapide gesunken? 
+d) Wie viel Zeit hat der Sender ein Jamming zu schicken, wenn folgende Werte gegeben sind: 
+i. 
+Datenrate 100Mbit/s 
+ii. 
+iii. 
+Leitungsgeschwindigkeit 200.000.000 m/s 
+Ausdehung 80.000m 
+ Wie groß müsste der Ethernetrahmen sein? 
+e) CRC Code berechnen für 10110101110 und Generatorpolynom x^4 + x^3+1 

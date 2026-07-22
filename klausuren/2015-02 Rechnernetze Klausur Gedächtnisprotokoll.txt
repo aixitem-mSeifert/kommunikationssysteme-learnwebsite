@@ -1,0 +1,30 @@
+Erste Aufgabe 
+Merkmale für Netzwerke 
+Verschiedene Topologien 
+Zwei Schichtenmodelle und Unterschiede und die Funktionen der einzelnen Schichten und 
+erklären warum man das TCP/IP Modell rechtfertigen kann 
+Verbindungslose und verbindungsorientierte Kommunikation 
+Zweite Aufgabe 
+IP Adressen ausrechnen; wie viele Host, welche Class Netzwerk, Subnetzmaske, Netzwerkmaske 
+CIDR 
+Welche IP Adresse wählt der Router 
+Wie findet IP raus, dass es im eigenen Netzwerk ist 
+Fragmentierung (siehe M Laufwerk Vorbereitungsaufgabe) 
+Zwei Vorteile von IPV6 
+Dritte Aufgabe 
+Zweite Vorbereitungsaufgabe (siehe M Laufwerk) Selective Repeat oder Reject oder Go Back N 
+Windows Scale Option 
+Windows Size gegeben und Round Trip Time 
+Bit/s ausrechnen 
+Kann man es aufstocken auf 100 Bit/s ohne Windows Size? Begründung 
+Vierte Aufgabe 
+Welche drei Eigenschaften sollten Leitungscodes haben 
+Zwei Leitungscodes zeichnen (diff NRZ oder NRZ oder diff Manchester oder Manchester) 
+Warum QAM nicht Frequenzen benutzt 
+Unterschied Basis und Breitbandverbindung 
+Fünfte Aufgabe 
+Warum Ethernet auf 60 Byte begrenzt ist und erklären, wie man dies berechnet 
+Nachteile von Fast Ethernet mit Begründungen 
+Zwei Gründe warum CSMA/CD bei Wlan nicht anwendbar ist 
+Erklären und erläutern anhand eines gegebenen Beispiels wie man mit Paritäts und Querbits prüfen 
+kann 

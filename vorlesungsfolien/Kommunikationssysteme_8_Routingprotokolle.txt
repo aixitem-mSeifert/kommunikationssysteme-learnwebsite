@@ -1,0 +1,176 @@
+Routing Protokolle:
+Wie wird ein Weg im Internet gefunden?
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  171
+Routing
+„Das Weiterleiten (Routing) erfüllt die wichtige Aufgabe, einzelne Teilstrecken des statischen 
+Kommunikationsnetzes so zu verbinden, dass eine Ende-zu-Ende-Kommunikation zwischen 
+den angeschlossenen Teilnehmern über Netzgrenzen hinweg möglich wird.“
+• „Control-Plane“ ist verantwortlich für die Logik der Wegwahl
+• „Data-Plane“ für das Weiterleiten der Pakete gemäß den Vorgaben der Control-Plane
+• Wie geschieht diese Entscheidung üblicherweise?
+• Ausschließlich auf Basis der Zieladresse (Longest-Prefix-Match)
+• Unabhängig von vorherigen Entscheidungen
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  172
+Routing
+• Vorgehen beim Übertragen von Datagrammen– Jeder Rechner und jeder Router hat eigene Routing/Forwarding-Tabelle
+> Diese wird für jedes einzelne Paket/Datagramm konsultiert
+> Zieladresse bestimmt den relevanten Eintrag (Longest Prefix Match)– Die Tabelle kann statisch/manuell konfiguriert werden (z.B. im eigenen lokalen Netz via DHCP 
+oder mittels Kommandos). Dies ist dann sinnvoll, wenn die Wegewahl einfach ist (Stub
+Network)– Ist die Wegwahl komplexer Natur ist ein manuelles/statisches Vorgehen nicht sinnvoll. Router 
+im Backbone müssen komplexe Szenarien abdecken und sollten auf Änderungen im Netz 
+reagieren können
+> Statische Konfiguration nicht praktikabel und insbesondere nicht ausfallsicher
+> Wie kommen die Router dynamisch zu ihren Tabellen?
+→ Routing-Protokolle
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  173
+Wie
+erhält
+das Internet die Routing
+?
+Tabellen
+• Dies kann nur automatisch realisiert werden
+• Router kommunizieren untereinander und tauschen dabei Informationen über 
+angeschlossene Netze und aktuellen Erreichbarkeitsinformationen aus (Routing-Protokolle)
+• Anschaulich laufen also der Control-Plane zugehörige Anwendungen auf den Routern, die 
+miteinander kommunizieren 
+• Routing Protokolle sind ein wichtiger Bestandteil der Wegwahl
+• Sie entsprechen faktisch der Control-Plane
+• Abgestuftes System:- Innerhalb eines Autonomen Systems kann man die gesamte Topologie wissen. Anhand derer 
+kann dann der kürzeste Weg ermittelt werden- Zwischen Autonomen Systemen muss ein anderer Lösungsansatz her. Wieso sollte ein 
+Autonomes System einem Konkurrenten die Details seiner Infrastruktur mitteilen?
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  174
+Routing im Internet
+Internes 
+Protokoll 1
+Internes 
+Protokoll 2
+Externes Protokoll
+Internes 
+Protokoll 3
+Autonome Systeme
+Interne Protokolle – Intra-AS (OSPF, RIP, IS-IS)
+Externe Protokolle – Inter-AS (BGP)
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  175
+Verbindung  Autonomer Systeme
+3b
+3c
+3a
+AS3
+Intra-AS bestimmt die 
+Einträge für interne Ziele–Vollständige Kenntnis der 
+Topologie -> Dijkstra
+2a
+2c
+1c
+1a
+1d
+Intra-AS
+Routing 
+algorithm
+Forwarding
+table
+AS2
+1b
+AS1
+Inter-AS
+Routing 
+algorithm
+2b
+Inter-AS & Intra-As bestimmt die 
+Einträge für externe Ziele-Zusammenfassen der Netze durch CIDR -Exterior Gateway Protocol–Wird auch mit Interior 
+Gateway Protocol bezeichnet
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+• Forwarding-Tabelle 
+wird von zwei 
+verschiedenen 
+Routing-Algorithmen 
+beeinflusst
+April 26|  176
+Link
+State 
+Protokolle
+(
+innerhalb
+einer
+/AS)
+Organisation
+Ansatz
+• Router kommunizieren mit ihren direkten Nachbarn
+• Diesen teilen sie ihre existierenden Verbindungen und Nachbarn mit, mit denen sie 
+verbunden sind. Dabei werden den Verbindungen Kosten zugewiesen (z.B. eins für einen 
+Hop-Count oder umgekehrt proportional zur Bandbreite)
+• Da Nachbarn die Kenntnisse an Nachbarn weiter leiten flutet („Flooding“) so die Kenntnis 
+über die Topologie durch das Netz und alle erlernen die Netztopologie der eigenen 
+Organisation
+• Auf dieser Basis kann jetzt jeder Router den Dijkstra-Algorithmus durchführen
+Vorteil: Da die Router sich kontinuierlich abstimmen werden Änderungen an der 
+Topologie gelernt und entsprechend andere Wege gesucht
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  177
+Der Dijkstra 
+Algrorithmus
+Ansatz
+• Ausgehend von der Quelle wird mit jedem Schritt ein neuer Knoten hinzugenommen
+• Die Auswahl des Knotens geschieht so, dass der Knoten selektiert wird, der die günstigste 
+Anbindung erlaubt
+• Damit teilt sich der Graph in zwei Teile auf:
+o Eine Menge N‘ von Knoten für die der günstigste Weg schon ermittelt wurde
+o Eine Menge von Knoten, für die der Weg noch zu ermitteln ist
+• Ordnung innerhalb der direkten Verbindungen zwischen diesen zwei Mengen bringt die 
+Lösung
+o Auswahl des kleinsten Wertes
+o Es kann keinen günstigeren Weg geben
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  178
+Dezentralisierte Routing
+Algorithmen ohne Kenntnis der 
+vollständigen 
+Topologie werden zwischen Autonomen 
+Systemen eingesetzt
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  179
+Distance-Vektor-Algorithmus (1): Ansatz– Verwaltung von Entfernungstabellen
+> Jeder Knoten verwaltet die vermuteten Entfernungen zu allen Knoten 
+> Hierbei handelt es sich um Schätzungen, die auf den Entfernungstabellen der direkten 
+Nachbarn basieren
+> Kennt ein Router zu einem Weg noch keine vermutete Entfernung, so wird unendlich als Wert 
+angenommen– Zu Beginn kennt jeder Router nur den Weg zu seinen Nachbarn, mit denen er eine 
+Kommunikation pflegt. Alle anderen Entfernungen sind zunächst auf unendlich gesetzt– Jetzt tauschen benachbarte Router ihrer Tabellen aus, so dass der Router die 
+vermuteten Entfernungen seiner Nachbarn lernt– Somit können auch die Nachbarn der direkten Nachbarn erreicht werden– Die Bestimmung des kürzesten Wegs zu einem nicht direkt benachbarten Netz/Knoten 
+wird über den direkten Nachbarn gewählt, dessen Kosten für die direkte Verbindung zzgl. 
+des von ihn mitgeteilten Kosten für das Erreichen des Ziels minimal ist– Durch den Abgleich der Entfernungstabellen der Nachbarn ergibt sich sukzessive ein 
+konsistentes Bild im Netz 
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  180
+Übersicht Routing
+Pro
+tokolle
+Internet Routing-Protokolle:
+• RIP, RIP2:  
+• OSPF:  
+• IS-IS
+(Shortest Path First)
+• BGP  
+Intra-AS, Distance-Vector
+Intra-AS, Link-State, Unicast 
+(Shortest Path First)
+Intra-AS, Intermediate Systems to Intermediate System Routing Protocol 
+Inter-AS, Distance-Vector
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+April 26|  181

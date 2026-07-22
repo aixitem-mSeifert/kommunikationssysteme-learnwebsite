@@ -1,0 +1,473 @@
+Netztechniken:
+Verfahren der Sicherungs
+und Bitübertragungsschicht
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  510
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             Vorlesung Kommunikationssysteme   Juni 26|  511
+Sicherungsschicht: Die Link-Layer
+“link”
+Die Sicherungsschicht hat die Aufgabe, die 
+Datagramme über das gemeinsame Kommunikations
+medium zu einem anderen Knoten zu transportieren
+Direkte Kommunikation innerhalb einer
+Netzwerktechnologie
+Dienste
+der 
+Sicherungsschicht
+• Framing, Kanalzuteilung: – Fast alle Sicherungsschichten verkapseln die Datagramme der Vermittlungsschicht vor der 
+Übertragung in einen Rahmen. Dieser bettet das Datagramm in Header und Trailer ein (ggf. 
+mehrere Felder), um so beispielsweise im Trailer Fehlerkorrekturbits zu platzieren oder aber auch 
+zur Synchronisation von Anfang und Ende– Das Kanalzugriffsprotokoll beschreibt, nach welchen Regeln ein Rahmen auf der 
+Verbindungsleitung übertragen wird
+> Bei Punkt-zu-Punkt-Verbindungen ist das Leitungszugriffsprotokoll einfach: der Sender kann einen Rahmen 
+senden, wann immer er die Verbindungsleitung nicht bereits verwendet (Full-Duplex)
+> Bei Mehrfachzugriffsprotokollen teilen sich mehrere Teilnehmer eine Verbindungsleitung, z.B. nach dem 
+Bus-Prinzip. Hier übernimmt das Zugriffsprotokoll die Koordination der Leitungsnutzung– Meistens wird im Header-des Rahmens eine separate Zieladresse benutzt, die “MAC”-Adresse   
+> Diese hat zunächst nichts mit der IP-Adresse zu tun
+> Erst mit IPv6 hätte die MAC-Adresse in die IP-Adresse integriert werden können (deprecated)
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  512
+Dienste
+der 
+Sicherungsschicht
+• Zuverlässige Übertragung – Einige Sicherungsschichten sichern die Übertragung eines Frames ohne Fehler zu. Wir haben ja 
+schon gesehen, wie Transportprotokolle dies realisieren, die Sicherungsschicht verfährt dabei ggf. 
+nach ähnlichen Konzepten– Verbindungsleitungen mit niedrigen Fehlerraten verzichten allerdings auf diesen Mehraufwand 
+(besonders im optischen Bereich)
+Wieso gibt es eine zuverlässige Übertragung auf Sicherungs- und Transport-Ebene?
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  513
+Beispiele
+möglicher
+Dienste
+der 
+Sicherungsschicht
+• Flusskontrolle: (hier nicht weiter relevant)– Flusskontrolle kennen wird schon von den Sliding-Window-Protokollen. Auch die Sicherungsschicht 
+passt ggf. die Transmissionsrate den Fähigkeiten des Empfängers an und verhindert so etwaige 
+Pufferüberläufe durch das Signalisieren von freiem Pufferplatz beim Empfänger
+• Fehlererkennung: – Fehler werden z.B. durch elektromagnetische Störungen oder Signaldämpfung verursacht– Durch den Einsatz redundanter Fehlererkennungsbits kann der Empfänger Fehler erkennen
+• Fehlerbehebung:– Je nach Redundanzniveau der Fehlererkennungsbits können einige Fehler sogar ohne erneute 
+Übertragung korrigiert werden – Forward Error Correction (FEC)
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  514
+Verbindung von Rechnern
+• Point-to-Point (Punkt-zu-Punkt)– Ein Paar von Rechnern ist durch eine direkte Leitung (Kupfer, Glasfaser oder Funk) verbunden– Normales Vorgehen in Backbones – Verlegung von Verbindungen zwischen je zwei Stationen 
+zur Datenweiterleitung (Router)– Kann auch in lokalen Netzen verwendet werden
+• Broadcast-Netz (geteilte Leitung mehrerer Teilnehmer)– Eher in lokalen Netzen verwendet– Alle Stationen sind an eine einzige Leitung angeschlossen– Sendet eine Station Daten, werden sie an alle angeschlossenen Stationen ausgeliefert– Jeder Rechner kontrolliert ob ein Paket für ihn bestimmt ist
+Wie können überhaupt mehrere Rechner an eine Leitung angeschlossen werden?
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  515
+Netztopologien: Der Bus
+• Bus: Broadcast-Netz
++ Einfach, preiswert, einfacher Anschluss neuer Knoten
++ Passive Ankopplung der Stationen, der Ausfall eines Knotens ist kein Problem für die anderen 
+Knoten– Nur eine Station zu einem Zeitpunkt kann senden; alle anderen Stationen können nur 
+empfangen– Begrenzung der Zahl anschließbarer Stationen– Passive Ankopplung der Stationen, daher begrenzte Ausdehnung des Busses (aber: Repeater 
+zur Kopplung mehrerer Busse)
+B
+W
+Abschluss
+widerstand
+A
+W
+Beispiel: Ethernet
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  516
+Netztopologien: Der Ring
+• Ring: Broadcast-Netz– Reihe von Punkt-zu-Punkt-Verbindungen– Aktive Knoten: fungieren als Repeater– Ausfall des gesamten Rings bei 
+Unterbrechung einer Verbindung– Ausfall des gesamten Rings bei Ausfall 
+eines Knotens (Bypass als Abhilfe)– Große Ausdehnung möglich 
+(aufgrund der aktiven Knoten)– Einfaches Einfügen neuer Knoten
+• Variante: bidirektionaler Ring– Knoten sind durch zwei gegenläufige 
+Ringe miteinander verbunden
+B
+A
+Beispiel: Token Ring, FDDI
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  517
+Netztopologien: Der Stern
+• Stern (Broadcast Netz)– Ausgezeichneter Knoten als zentrale Station
+> Nachricht von Station A wird durch die zentrale Station an Station B weitergeleitet
+> Punkt-zu-Punkt-Verbindungen (Switch), oder 
+> Broadcast (Hub)– Verwundbarkeit durch zentralen 
+Knoten (Redundanz möglich)
+B
+A
+Beispiel: Fast/Gigabit Ethernet
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  518
+Netzinfrastruktur
+Bei der Planung eines LANs möchte man die Komplexität des Netzes 
+begrenzen (durch Segmentierung)
+Administrative Gründe:
+• Wartbarkeit
+• Flexibilität der Infrastruktur
+• Sicherheit
+Technische Gründe:
+• Maximale Segmentlänge
+• Maximale Knotenanzahl im Netz
+• Erhöhung der Verzögerung des Zugangs bei zu vielen Benutzern
+• Probleme bei zu vielen Broadcasts
+• Erhöhung der Kollisionsgefahr bei zu vielen Benutzern
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  519
+Netzinfrastruktur
+Zur Kopplung von Netzen werden spezielle Netzwerkknoten benötigt.
+Diese lassen sich hierarchisch bzgl. ihrer Funktionalität anordnen:
+Repeater
+Ø vergrößert einzelne lokale Netze gleichen Typs (physikalisch)
+Hub
+Ø Koppelt mehrere gleichen lokale Netze
+Brücke
+Ø Koppelt mehrere eventuell unterschiedliche lokale Netze
+Switch
+Ø Wie Hub, aber 'intelligenter'
+Router
+Ø Verbindet mehrere LANs mit gleichem Netzwerkprotokoll über weite Strecken
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  520
+Infrastrukturkomponenten: Repeater
+Schicht 1
+• Repeater:– Verknüpfung von zwei Netzen zur Vergrößerung der Ausdehnung– Arbeitet auf der Bitübertragungsebene
+> Kann einkommende Signale als „0“ oder „1“ interpretieren
+> Empfang und Auffrischung des Signals – ein empfangenes Bit wird auf der anderen Seite neu 
+als Stromimpuls codiert– Kein Verstehen von Adressen höherer Schichten, alle Daten werden weitergeleitet (das 
+Netz bleibt ein Broadcast-Netz)
+Segment 1
+Segment 2
+Repeater
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  521
+Infrastrukturkomponenten: Hub
+Schicht 1
+• Hub = „Repeater mit mehr als zwei Anschlüssen“– Signalauffrischung wie beim Repeater – An einen Anschluss kann ein einzelner Rechner oder ein ganzer Bus angeschlossen werden– Broadcast-Netz: der Hub gibt ein empfangenes Signal auf allen Anschlüssen wieder aus– Gemeinsamer Übertragungskanal, d.h.
+> Stationen können nicht gleichzeitig 
+senden und empfangen, nur eine 
+Station auf einmal kann senden
+> Geringe Sicherheit, da alle Stationen 
+mithören können
+Hub
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  522
+Infrastrukturkomponenten: Switch
+Schicht 2
+• Wie Hub, aber:– Punkt-zu-Punkt-Kommunikation zwischen zwei Stationen
+> Switch kann Layer-2-Adressen (MAC-Adressen) der angeschlossenen Stationen verstehen, lernt sie 
+und kann Daten gezielt weiterleiten
+> Stationen können gleichzeitig senden und empfangen
+> Nur der adressierte 
+Empfänger erhält die 
+Daten, andere Stationen 
+können nicht mithören
+> Stern-Verkabelung
+Switch– Puffer für jeden Port
+• Hinweis: „Layer-3-Switch“– Integriert mit Routing
+Port
+Port
+Port
+Port
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  523
+Switches – Lernen von Adressen
+• Autokonfiguration von Switches– Zu Beginn unbekannt, welcher Rechner an welchem Port hängt– Werden Daten für eine unbekannte Adresse auf einem Port empfangen: Weiterleitung an alle 
+anderen Ports (Broadcast)– Die Absenderadresse der Daten kann für den Port, über den sie empfangen wurden, 
+gespeichert werden
+Src=x, Dest=y
+Src=x, Dest=y
+Src=x, Dest=y
+Src=x, Dest=y
+Src=y, Dest=x
+Port 1
+Port 2
+Port 3
+Port 4
+x is at Port 3
+y is at Port 4
+Port 5
+Port 6
+Src=x, Dest=y
+Src=x, Dest=y
+Src=y, Dest=x
+Src=x, Dest=y
+Src=x, Dest=y
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  524
+Infrastrukturkomponenten: Brücken (Bridge)
+Schicht 2
+Mit Brücken werden auf der Sicherungsschicht mehrere (u.U. verschiedene) 
+LANs gekoppelt (bzw. die LANs werden voneinander entkoppelt)
+Hauptaufgaben:
+• geeignete Weiterleitung der Daten
+• Anpassung an unterschiedliche LAN-Typen
+• Reduzierung des Verkehrs in einem LAN-Segment, d.h. Pakete, die von A an C 
+gesendet werden, werden von der Brücke nicht in LAN2 durchgelassen. Dadurch kann 
+Station D parallel senden.
+• Aufhebung physikalischer Längenbegrenzungen
+• Erhöhte Zuverlässigkeit durch Abgrenzung der LAN-Segmente
+A
+C
+LAN1
+B1
+D
+LAN
+2
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  525
+Infrastrukturkomponenten: Router
+Warum überhaupt Router innerhalb einer Domäne?
+Obwohl Brücken teilweise geeignet sind, Rechner über mehrere Netze zu verbinden, gibt es auch einige 
+Nachteile:
+• Brücken können maximal einige tausend Stationen unterstützen, was vor allem den Grund hat, dass die 
+Adressen keine hierarchische Struktur und keinen geographischen Bezug haben (ARP erforderlich!)
+• Mit Brücken gekoppelte LANs bilden ein “großes LAN”, obwohl eine 
+Trennung oft wünschenswert wäre (z.B. in Bezug auf Verwaltung oder Fehler)
+• Brücken leiten Broadcast-Frames an alle angeschlossenen LANs weiter, andernfalls würde ARP zwischen 
+den Bereichen ja nicht funktionieren. Somit wäre ggf. tausende von Rechnern in einer Broadcast-Domäne.
+Es kann zu “Broadcast Storms” kommen
+• Brücken kommunizieren nicht mit den angeschlossenen, d.h. es gibt keine Informationen über 
+Überlastsituationen (ICMP Source Quench) oder warum Frames verworfen werden.
+Router beheben diese Schwächen.
+Außerdem stellen Router die Anbindung zum Internet dar!
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  526
+Übertragungsmedien
+Kupferdoppelader (Twisted Pair)
+Kupferader
+Funk
+Isolation
+Koaxialkabel
+Kupferader
+Abschirmung
+Isolation
+Unterschiedliche Medien 
+(verschieden in Übertragungs
+technik, Kapazität und 
+Bitfehlerrate)
+Funkreichweite
+Glaskern
+Glasfaser
+Isolation und 
+mechanische
+Schutzhülle
+Basisstation
+Festnetz
+Kern
+ummantelung
+(Glas)
+Schutz
+hülle
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  527
+Kupferdoppelader (Telefonkabel)
+• Eigenschaften:– Daten werden als Spannungsniveaus übertragen
+> Anfällig für Störungen: Geräte oder andere Kabel in der Umgebung, die elektromagnetische 
+Felder ausstrahlen, verfälschen die Darstellung der Bits auf dem Kupferkabel– Besteht aus zwei gegeneinander isolierten, verdrillten Kabeln
+> Verdrillen reduziert elektromagnetische Interferenzen
+> Trotzdem: Bit Error Rate (BER) ≤ 10-6
+> Einfach (bzgl. Kosten und Wartung)
+> Oft existiert Twisted Pair bereits zur Telefon-Verkabelung; 
+dies senkt die Vernetzungskosten– Kabel dürfen nur wenige hundert Meter Länge 
+haben (das Kupfer wirkt als Widerstand und 
+schwächt das sich ausbreitende Signal ab!)
+Kabel
+Isolierung
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  528
+Twisted Pair bei der Vernetzung
+Kategorie 3
+• Gemeinsame Umhüllung für vier Kupferdoppeladern
+Kategorie 5
+Unterscheidung 
+nach Kategorie
+Unterscheidung 
+nach 
+Abschirmung
+• Wie Kategorie 3, aber mehr Windungen/cm (weitere Reduktion der 
+elektromagnetischen Interferenzen)
+• Umhüllung besteht aus Teflon (bessere Isolierung, Qualität der Signale 
+bleibt auf längere Strecken akzeptabel)
+• Mittlerweile wird bei STP eine Bit Error Rate von 10-10 und besser 
+erreicht
+Kategorie 6,7
+• Die Paare sind zusätzlich einzeln mit Silberfolie umwickelt
+UTP Kabel (Unshielded Twisted Pair)
+• Keine Abschirmung des Kabels
+STP Kabel (Shielded Twisted Pair)
+• Abschirmung des Kabels, dadurch günstigere Eigenschaften
+• Trotzdem in der Praxis oft UTP
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  529
+Kupferdoppelader (Twisted Pair)
+S/UTP-Kabel (cat 5)
+S/STP-Kabel (cat 7) 
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  530
+Koaxialkabel
+• Charakteristika:– Übertragung auch hier durch Spannungsniveaus  – Gut  abgeschirmt und insgesamt robust gegenüber mechanischen Einflüssen: Bit Error 
+Rate  10-9 bis hin zu 10-12
+> Größere Entfernungen überbrückbar
+> Höhere Datenraten möglich
+• Aufbau– Isolierter Kupferdraht im Zentrum (Innenleiter)– Abschirmung besteht aus 
+netzförmigen Kupferdraht– Innere Isolierung trennt 
+Innenleiter von der 
+Abschirmung
+Abschirmung 
+(meist geflochten)
+Innenleiter 
+(Kupferkern)
+innere Isolierung
+äußere Isolierung
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  531
+Glasfaser
+• Charakteristika:– Übertragung durch Lichtpulse im Bereich um 0.85, 1.3 und 1.55 µm
+> Beschränkung auf diese Bänder aufgrund von Absorption des Lichts im Glaskern (ähnlich zu 
+Dämpfung auf Kupferkabel)– Unempfindlich gegenüber elektromagnetischen Störungen
+> Bit Error Rate: ~ 10-12
+> Sehr große Entfernungen mit sehr hohen Datenraten möglich
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  532
+Optische Übertragung
+Aufbau eines optischen Übertragungssystems
+• optische Quelle (konvertiert elektrische in optische Signale; normalerweise in der Form „1 – Lichtpuls“ / 
+„0 – kein Lichtpuls“ – Intensitätsmodulation: Achtung es werden Symbole nicht „Datenbits“ 
+übertragen)
+• Übertragungsmedium 
+• Detektor (konvertiert optische in elektrische Signale)
+elektrisches Signal
+optische Quelle
+optisches Signal
+Glasfaser
+Physikalisches Grundprinzip: Totalreflexion des Lichts an einem anderen Medium
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+elektrisches Signal
+optischer Detektor
+Medium 2
+Medium 1
+Brechungsindex:
+Gibt Brechungs
+wirkung relativ zur 
+Luft an
+Vorlesung Kommunikationssysteme   
+Juni 26|  533
+Glasfaser: Aufbau
+• Aufbau:– Kern: optisches Glas (extrem dünn)– (innere) Glasummantelung – (äußere) Kunststoffhülle
+• Die Übertragung findet im 
+Kern des Kabels statt
+optische Quelle
+(LEDs, Laser)
+Kern (Quarzglas mit 
+Brechungsindex n1)
+Mantel (Quarzglas mit 
+Brechungsindex n2)
+Medium 2
+Medium 1 (Kern)
+Medium 2
+Kunststoff
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  534
+Glasfaser: Dispersion
+• Größtes Problem bei Glasfaser: Dispersion– Begrenzt Übertragungsstrecke– Lichtpuls besteht aus mehreren Wellen (Strahlen)
+> Einfallswinkel dieser Strahlen unterschiedlich– Lichtstrahlen kommen im Medium unterschiedlich schnell vorwärts:
+> Wege (Moden) der Strahlen unterschiedlich lang (abhg. von Einfallswinkel)
+> Strahlen eines Impulses kommen zeitversetzt am Ende des Kabels an
+> Intensität der Impulse nimmt ab, benachbarte Impulse verschwimmen– (Weitere Faktoren können ebenso Dispersion verursachen)
+Glasfaser
+kurzes, starkes Signal
+langes, schwaches Signal
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  535
+Glasfasertypen
+Kennzeichnend bei der Unterscheidung ist das Profil:
+• X-Achse: Größe des Brechungsindex
+• Y-Achse: Dicke des Kerns und der Mantelschicht
+Monomode-Faser
+• Kerndurchmesser: 8 -10 µm
+• Alle Strahlen können nur noch 
+einen Weg nehmen
+• Keine Dispersion (homogene 
+Signalverzögerung)
+• 50 GBit/s über 100 km
+• Teuer wegen geringem 
+Kerndurchmesser
+Achtung: Monomode bedeutet 
+nicht, dass nur eine Welle 
+gleichzeitig unterwegs ist. Es 
+bedeutet, dass alle Wellen „den 
+gleichen Weg“ nehmen. Damit 
+wird Dispersion verhindert.
+r
+n2
+n1
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  536
+Glasfasertypen
+Multimode-Faser mit Stufenindex
+• Kerndurchmesser: 50 µm
+• Unterschiedliche Wege für Lichtwellen, 
+je nach Einfallswinkel
+• Starke Dispersion
+• Bis zu 1 km
+Multimode-Faser mit Gradientenindex
+• Kerndurchmesser: 50 µm
+• Brechungsindex ändert sich fließend
+• Leicht unterschiedliche Wege für 
+Lichtwellen
+• Geringere Dispersion
+• Bis zu 30 km
+r
+z
+z
+r
+n2
+n2
+n1
+n1
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  537
+Strahlungsquellen und 
+empfänger
+Strahlungsquellen
+Leuchtdioden (LED, Light Emitting Diode)
+• billig und zuverlässig (z.B. gegenüber Temperaturschwankungen)
+• breites Wellenlängenspektrum, d.h. hohe Dispersion und somit geringe Reichweite
+• keine sehr hohe Kapazität
+Laserdioden
+• teuer und empfindlich
+• hohe Kapazität
+• geringes Wellenlängenspektrum und damit hohe Reichweite
+Strahlungsempfänger
+Photodioden (mit nachgeschaltetem Verstärker)
+• unterscheiden sich insbesondere bei Signal-to-Noise Ratio
+Durch verbesserte Materialeigenschaften der Fasern, präzisere Lichtquellen und 
+damit Verkleinerung der Abstände zwischen den nutzbaren Wellenlängen wird
+die Anzahl der verfügbaren Kanäle laufen erhöht.
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES                             
+Vorlesung Kommunikationssysteme   
+Juni 26|  538

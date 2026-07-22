@@ -1,0 +1,15 @@
+<?php
+require_once __DIR__ . '/includes/bootstrap.php';
+require_once __DIR__ . '/includes/source-citations.php';
+$pageTitle = 'Klausurtraining';
+$exams = load_data('exams');
+$selectedId = filter_input(INPUT_GET, 'exam', FILTER_UNSAFE_RAW) ?: $exams[0]['id'];
+$exam = find_by($exams, 'id', (string) $selectedId) ?? $exams[0];
+require __DIR__ . '/includes/header.php';
+?>
+<main id="main-content" class="page-shell"><header class="page-header"><p class="eyebrow">Prüfungsvorbereitung</p><h1>Klausurtraining</h1><p>Offene Aufgaben werden anhand transparenter Erwartungshorizonte selbst bewertet. Lösungen erscheinen erst nach der Abgabe.</p></header>
+<nav class="exam-picker" aria-label="Klausursets"><?php foreach ($exams as $item): ?><a href="<?= e(page_url('exam-training.php', ['exam' => $item['id']])) ?>"<?= $item['id'] === $exam['id'] ? ' aria-current="page"' : '' ?>><?= e((string) $item['title']) ?></a><?php endforeach; ?></nav>
+<section class="exam-paper" data-duration="<?= e((string) $exam['durationMinutes']) ?>"><header class="exam-header"><div><p class="eyebrow"><?= e((string) $exam['sourceBasis']) ?></p><h2><?= e((string) $exam['title']) ?></h2><p><?= $exam['sourceStatus'] === 'Gedächtnisprotokoll' ? 'Keine autorisierte Punkte- oder Zeitvorgabe' : e((string) $exam['totalPoints']) . ' Punkte · ' . e((string) $exam['durationMinutes']) . ' Minuten' ?></p></div><?php if ($exam['durationMinutes'] > 0): ?><output id="exam-timer" aria-label="Verbleibende Zeit"></output><?php endif; ?></header>
+<?php if (isset($exam['notice'])): ?><div class="notice notice-warning"><strong><?= e((string) $exam['notice']) ?></strong></div><?php endif; ?>
+<form id="exam-form"><?php foreach ($exam['tasks'] as $index => $task): ?><article class="exam-task"><header><span><?= $index + 1 ?></span><div><h3><?= e((string) $task['title']) ?></h3><small><?= $exam['sourceStatus'] === 'Gedächtnisprotokoll' ? 'ohne autorisierte Punktvorgabe' : e((string) $task['points']) . ' Punkte' ?></small></div></header><p><?= e((string) $task['prompt']) ?></p><label for="answer-<?= e((string) $task['id']) ?>">Ihre Antwort</label><textarea id="answer-<?= e((string) $task['id']) ?>" rows="7"></textarea><section class="exam-solution" hidden><h4>Erwartungshorizont</h4><ul><?php foreach ($task['rubric'] as $criterion): ?><li><label><input type="checkbox" data-rubric> <?= e((string) $criterion) ?></label></li><?php endforeach; ?></ul><p><strong>Lösungshinweis:</strong> <?= e((string) $task['solution']) ?></p><?php render_source_refs($task['sourceRefs'], $task['authoritativeSolution'] ? null : (string) $task['derivation']); ?></section></article><?php endforeach; ?><div class="exam-submit"><button class="button button-dark" type="submit">Klausur abgeben</button><p id="exam-result" aria-live="polite"></p></div></form></section><script src="assets/js/exam-training.js" defer></script></main>
+<?php require __DIR__ . '/includes/footer.php'; ?>

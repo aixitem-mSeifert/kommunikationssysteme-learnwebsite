@@ -1,0 +1,532 @@
+Nun wissen wir, wie die Verbindungsstruktur
+aussehen kann, aber 
+wie kommunizieren Rechner/Geräte 
+und wie die darauf laufenden
+Anwendungen miteinander?
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES             
+Vorlesung Kommunikationssysteme   
+April 26|  27
+Hierzu müssen die Anwendungen
+•
+sich finden 
+•
+sich verstehen
+•
+wissen wann man dran ist zu „sprechen
+“
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES             
+Vorlesung Kommunikationssysteme   
+April 26|  28
+Netzwerkprotokolle
+Um eine Kommunikation durchzuführen, müssen sich die Kommunikationspartner an 
+bestimmte Regeln halten und die gleiche „Sprache“ sprechen
+Auch bei Datennetzen ist eine Vereinbarung über den Austausch von Daten zwingend erforderlich:
+• Übertragungsrichtung (wer redet, wer hört zu?)
+• Datenformat und –kodierung (Sprache)
+• Wegeermittlung (wie kommen die Daten zum Empfänger?)
+• Fehlerbehandlung (was macht man bei Kommunikationsfehlern)?
+• …
+Ein Protokoll ist die Gesamtheit aller Vereinbarungen zwischen 
+Computeranwendungen zum Zweck einer gemeinsamen Kommunikation
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES             
+Vorlesung Kommunikationssysteme   
+April 26|  29
+Der Begriff Netzwerk
+Unter Netzwerk versteht man mehr als 
+nur das verbindende „Kabel“
+• Wie sind die physikalischen Eigenschaften des Übertragungsmediums?
+• Wie werden die Daten als Signal dargestellt?
+• Wie sind die Zugriffsregeln der angeschlossenen Systeme?
+• Welchen Aufbau (Topologie) unterstützt das System?
+• Können unterschiedliche Netztechnologien verbunden werden?
+• Wie können Übertragungsfehler erkannt werden?
+• Wie werden Endpunkte gefunden (adressiert)?
+• Wie können entfernte Systeme in anderen Netzen erreicht werden?
+• Wie werden die Daten bei den End-Systemen übermittelt?
+• Welche Kodierungsregeln und Semantiken gibt es hierbei?
+• …
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES             
+Vorlesung Kommunikationssysteme   
+April 26|  30
+Protokolle regeln diese Fragen und
+können sehr komplex sein!
+Hierbei ist das Hilfsmittel 
+der Abstraktion von Bedeutung
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES             
+Vorlesung Kommunikationssysteme   
+April 26|  31
+Wie implementiere ich Datenkommunikation?
+• Lösung 1: „Naives“ Konzept– Schreibe ein großes “Kommunikationsprogramm”, welches allen beschriebenen 
+Anforderungen genügt– Vorteil: Für eine gegebene Anwendung optimal und effizient– Nachteil: Nicht flexibel! Änderungen erfordern hohen Aufwand
+• Lösung 2: Modularisierung– Schreibe kleinere, für eine Aufgabe spezialisierte Programme, die sich 
+kombinieren lassen– Vorteil: Sehr flexibel, da einzelne Komponenten austauschbar– Nachteil: Durch vorgegebene Struktur wird vieles umständlich; dadurch nicht so effizient
+Realisiert durch Schichtenmodelle
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES             
+Vorlesung Kommunikationssysteme   
+April 26|  32
+Systemschichtung
+Schicht n
+Schrittweise Verfeinerung
+Zerlegung der Aufgabe in Funktionen,
+die einen Dienst auf einem bestimmten 
+Abstraktionsniveau erbringen. Hierbei 
+nutzt ein Dienst einer Schicht den 
+Dienst der darunterliegenden  Schicht
+Schicht n-1
+Schicht n-2
+Schnittstelle  n 
+(Nutzerschnittstelle)
+Schnittstelle  n-1
+Schnittstelle  n-2
+Schicht 0
+Schnittstelle 0 
+(Geräteschnittstelle)
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES             
+Vorlesung Kommunikationssysteme   
+April 26|  33
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES             Vorlesung Kommunikationssysteme   April 26|  34
+Systemschichtung
+Schicht n
+Schnittstelle 0 
+(Geräteschnittstelle)
+Schnittstelle  n-2
+Schnittstelle  n-1
+Schnittstelle  n 
+(Nutzerschnittstelle)
+Schicht n-1
+Schicht n-2
+Schrittweise Vergröberung
+Zusammenfassung von
+Dienstfunktionen einer unteren 
+Schicht
+in Bausteine, die gemeinsam den
+Dienst der oberen Schicht schaffen
+Schicht 0
+Beispiel: Gedankenaustausch von Philosophen
+Philosoph
+A
+Sprache:
+chinesisch
+Dolmetscher
+A
+Gedanken zur Weltpolitik
+Protokolle
+Philosoph
+B
+Sprache:
+spanisch
+Dolmetscher
+B
+Sprache:
+chinesisch
+zusätzlich:
+englisch
+Techniker
+A
+Erkennt einzelne
+Buchstaben und
+morst diese.
+Uninterpretierte Sätze,
+d.h. ohne Kenntnis der Weltpolitik
+Uninterpretierte Zeichen
+in korrekter Reihenfolge
+elektrische Signale
+Netz
+Sprache:
+spanisch
+zusätzlich:
+englisch
+Techniker
+B
+Erkennt einzelne
+Buchstaben und
+morst diese.
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES             
+Vorlesung Kommunikationssysteme   
+April 26|  35
+Netzwerk
+Protokolle sollten also unterschiedliche
+Abstraktionsebenen adressieren
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES             
+Vorlesung Kommunikationssysteme   
+April 26|  36
+Standardisierung der Protokolle
+Ziel ist die offene Kommunikation, d.h. die im technischen Sinne 
+unlimitierte Kommunikation zwischen kommunikationswilligen Partnern
+Ein offener Standard heißt, dass jeder Zugang zu der Spezifikation hat, ohne 
+Kosten
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES             
+Vorlesung Kommunikationssysteme   
+April 26|  37
+Bedeutung von Standards (ironische Sichtweise)
+Source: http://xkcd.com/927/
+38
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES             
+Vorlesung Kommunikationssysteme   
+April 26|  38
+Standardisierungsgremien
+Auswahl
+www.iso.ch
+International Standards Organization - ISO
+• Organisation, die auf freiwilliger Basis arbeitet (seit 1946).
+• Mitglieder: Standardisierungsorganisationen von ca. 90 Ländern.
+• Beschäftigt sich mit einem sehr
+weiten Spektrum von Standards
+• Hat 200 Technical Committees (TC) mit spezifischen Aufgaben (z.B. TC97 
+für Computer und Informationsverarbeitung)
+• TC haben Subkomitees, die wiederum in Arbeitsgruppen unterteilt sind.
+• Zusammenarbeit mit ITU-T bzgl. Telekommunikationsstandards, (ISO ist 
+Mitglied von ITU-T)
+• Bahnbrechende Leistung im Bereich der Datenkommunikation: Das 
+ISO/OSI-Referenzmodell.
+• Bahnbrechend bzgl. des Konzepts, nicht wegen der daraus entstandenen 
+Produkte!
+(OSI: Open Systems Interconnection)
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES             
+Vorlesung Kommunikationssysteme   
+April 26|  39
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES             Vorlesung Kommunikationssysteme   April 26|  40
+Physical Medium
+APPLICATION 7
+6
+5
+4
+3
+2
+1
+PRESENTATION
+SESSION
+NETWORK
+DATA LINK
+PHYSICAL
+TRANSPORT
+ANWENDUNG 7
+6
+5
+4
+3
+2
+1
+DARSTELLUNG
+KOMMUNIKATIONS
+STEUERUNG
+VERMITTLUNG
+SICHERUNG
+BITÜBERTRAGUNG
+TRANSPORT
+NETWORK
+DATA LINK
+PHYSICAL
+peer-to-peer
+peer-to-peer
+peer-to-peer
+peer-to-peer
+Application Process Anwendungsprozess
+T
+R
+A
+N
+S
+P
+O
+R
+T
+N
+E
+T
+W
+O
+R
+K
+Source Node Intermediate Node Destination Node
+Das ISO-OSI-Referenzmodell für offene Systeme
+Wechselspiel zwischen den Schichten
+• Interaktion der Schichten
+• Eine Schicht bietet der über ihr liegenden Schicht Dienste an
+• Um dies zu realisieren versieht sie ihre Nachricht mit Kontrollinformationen (Header) und 
+versendet alles zusammen (oftmals Protocol Data Unit (PDU) genannt)
+• Zwei Kommunikationspartner gleichen Schicht nutzen die Information der Header um die 
+Funktionalitäten zu erzielen
+• Die PDU einer Schicht n wird an die Schicht (n-1) geleitet, dort sind dies die zu 
+übertragenden Inhaltsdaten
+• In unteren Schichten muss ein Upper-Layer-Protocol-Feld eingefügt sein, damit die passende 
+obere Schicht ausgewählt werden kann, die die Nutzdaten passend in Header und Inhalt 
+aufsplitten kann
+• Eine obere Schicht muss die untere Schicht parametrisieren
+Merke: Schicht 2 wird hiervon abweichen. Tatsächlich findet hier ein Framing statt, welches 
+Fehlererkennung/-korrektur und Synchronisation (wo ist die Nachricht sicher zu Ende) vereinfacht
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES             
+Vorlesung Kommunikationssysteme   
+April 26|  41
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES             Vorlesung Kommunikationssysteme   April 26|  42
+1
+2
+3
+4
+5
+6
+7
+Source Node Destination Node
+Physical Medium
+Application Process
+L1 USER L7 L6 L5 L4 L3 L2 L2
+USER L7 L6 L5 L4 L3 L2 L2
+USER L7 L6 L5 L4 L3
+USER L7 L6 L5 L4
+USER L7 L6 L5
+USER L7 L6
+USER L7
+USER Application 
+Process
+1
+2
+3
+4
+5
+6
+7
+USER
+USER L7
+USER L7 L6
+USER L7 L6 L5
+USER L7 L6 L5 L4
+USER L7 L6 L5 L4 L3
+USER L7 L2 L6 L5 L4 L3 L2
+USER L7 L2 L6 L5 L4 L3 L2 L1
+Das ISO-OSI-Referenzmodell für offene Systeme
+Aufgaben der Schichten
+• Schicht  7: Anwendungsschicht (Application Layer)
+• In dieser Ebene werden (Standard-)Schnittstellen/Bausteine zur Verfügung gestellt, die 
+bestimmten Anwendungstypen ganze Kommunikationsdienste (Grunddienste) 
+bereitstellen
+• Ein Beispiel hierfür wäre ein allgemeingültiges Protokoll zur Übertragung von 
+Webseiten samt fest definierter Schnittstelle (GET, POST, DELETE, …). Wer einen 
+Webbrowser oder einen Webserver implementieren will könnte dann diese Schnittstelle 
+zur Kommunikation mit den Produkten anderer verwenden
+Merke: Die Anwendungsschicht kann eher als Bibliothek verstanden werden, mit der die 
+Anwendungen geschrieben werden. Es sind nicht die Anwendungen selber
+Merke: Das Internet realisiert dies anders
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES             
+Vorlesung Kommunikationssysteme   
+April 26|  43
+Aufgaben der Schichten
+• Schicht  6: Darstellungsschicht (Presentation Layer)
+• Beschäftigt sich damit, die zu übertragenden Daten so darzustellen, dass sie von 
+unterschiedlichen Plattformen und Anwendungen gehandhabt werden können
+• Beispielsweise codieren manche Programme einen String mit ASCII-Zeichen, andere 
+benutzen Unicode, manche benutzen 32-Bit Größen, andere 64. Problematisch ist auch 
+die Byteordnung des Prozessors (Big/Little-Endian)
+• Binäre Daten können Sonderzeichen enthalten, die je nach Verarbeitungsprogramm zu 
+Seiteneffekten führen
+• Formal wird hier das verwendete Format beschrieben werden- Anstatt für jede Anwendung eine eigene Übertragungssyntax und -semantik zu definieren, stellt 
+man mittels der Schicht eine allgemeingültige Lösung bereit- Die spezifischen Daten eines Rechners werden hier eindeutig beschrieben
+Merke: Eine effiziente plattformunabhängige Darstellung ist zwingend erforderlich. 
+Textbasierte Ansätze sind möglich, müssen aber für Binärdaten eine Lösung bieten.
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES             
+Vorlesung Kommunikationssysteme   
+April 26|  44
+Aufgaben der Schichten
+• Schicht  5: Sitzungsschicht (Session Layer)
+• Dialogkontrolle, d.h. es kann festgelegt werden, welcher Kommunikationspartner wann 
+übertragen darf und wer wann liest. Da wir bei ISO/OSI eigentlich eine Steuerung über 
+einen Header benötigen könnte ein Sende-Token vergeben werden, so dass nur einer 
+gleichzeitig senden darf. Bei bestimmten Operationen darf dann nur der 
+Kommunikationspartner, der im Besitz des Tokens ist, diese Operation durchführen
+• Wichtiger Ansatz wäre auch die Bereitstellung von Wiederaufsetzpunkten. Wurde 
+beispielsweise eine 2-stündige Dateiübertragung mittendrin durch einen Ausfall 
+unterbrochen, so braucht nicht die gesamt Übertragung wiederholt werden, sondern man 
+geht nur bis zum letzten Aufsetzpunkt zurück
+Merke: Die Sitzungsschicht regelt den elementaren Kommunikationsablauf
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES             
+Vorlesung Kommunikationssysteme   
+April 26|  45
+Aufgaben der Schichten
+• Schicht  4: Transportschicht (Transport Layer)
+• Ermöglicht die Kommunikation zwischen Anwendungen der Endsysteme - Segmentierung von Datenströmen zur Übertragung der Daten in Einheiten: 
+Segmente/Datagramme (Paketen)- Verbergen wesentlicher Charakteristika der Netzinfrastruktur
+• Aufgabe: Transport der Daten zwischen den Kommunikationspartnern mit bestimmten 
+(aushandelbaren) Dienstmerkmalen- Adressierung von Anwendungsprozessen- Etwaige Regeln zur Behandlung von Fehlern - Eventuell Flusskontrolle/Staukontrolle zur Anpassung der Datenrate an die Fähigkeiten des 
+Netzes und des Empfängers
+Merke: Die Transportschicht ermöglicht die Kommunikation zwischen Anwendungen/Prozessen!
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES             
+Vorlesung Kommunikationssysteme   
+April 26|  46
+Aufgaben der Schichten
+• Schicht  3: Vermittlungsschicht (Network Layer)
+• Übertragung der Daten zwischen Rechnern in einem Netz aus Netzen
+• Eine elementare Aufgabe ist dabei, eine geeignete Wegewahl (Routing) zu treffen
+• Eine notwendige Voraussetzung ist u.a. ein gemeinsamer Adressraum für Rechner und 
+eine Einigung auf eine maximale PDU-Größe (Datagramm-Größe)
+• Statisches Netzkonzept: Zwischenknoten speichern ankommende Nachrichten (im 
+Hauptspeicher) zwischen und ermitteln (über Tabellen) den Knoten, der die Daten als 
+nächstes erhält. Mit diesem muss allerdings eine direkte Kommunikation über die untere 
+Schicht 2 möglich sein
+Merke: Die Vermittlungsschicht ermöglicht die Kommunikation zwischen Endgeräten 
+über Netzwerkgrenzen (bei statischen Netzen) hinweg!
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES             
+Vorlesung Kommunikationssysteme   
+April 26|  47
+Aufgaben der Schichten
+• Schicht  2: Sicherungsschicht (Data Link Layer)
+• Kommunikation zwischen Rechnern in einem einzelnen Netz 
+• Logical Link Control (LLC):- Liefert der Vermittlungsschicht eine möglichst fehlerfreie Übertragung der Daten zwischen zwei 
+Rechnern innerhalb eines einzelnen Netzes (einer Technologie)
+o Dazu werden die ankommenden Daten in sog. Rahmen unterteilt, die einzeln übertragen werden
+o Der Empfänger überprüft zumeist, ob die Übertragung korrekt war (z.B. mittels einer Prüfsumme, die sich 
+am Ende der Nachricht befindet). Im Fehlerfall wird der entsprechende Rahmen neu angefordert
+o Weiterhin wird oftmals versucht, durch Flusskontrolle eine Überlastung des Empfängers zu vermeiden
+• Medium Access Control:- Bei Multi-Access-Netzen wird außerdem der konfliktfreie Zugriff auf das Medium geregelt
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES             
+Vorlesung Kommunikationssysteme   
+April 26|  48
+Aufgaben der Schichten
+• Schicht  2: Sicherungsschicht (Data Link Layer)
+Merke: Die Sicherungsschicht ermöglicht die Kommunikation zwischen Rechnern in 
+einem einzelnen Netz und regelt dabei ggf. auch den konfliktfreien Mehrfachzugriff
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES             
+Vorlesung Kommunikationssysteme   
+April 26|  49
+Aufgaben der Schichten
+• Schicht 1: Bitübertragungsschicht (Physical Layer)
+• Transportiert die einzelnen Bits über eine bestimmte physische Leitung (Medium)
+• D.h. es muss festgelegt werden, welchen Leitungstyp man benutzt und wie eine “1” bzw. 
+eine “0” auf der Leitung kodiert werden- Dazu legt man z.B. bei Verwendung von Kupferkabel als Leitung fest, dass Bits als 
+Spannungspulse übertragen werden (z.B. „Übertrage für eine Millisekunde +1 Volt, um eine 1 
+zu transportieren“ – nicht gut)
+• Weiterhin wird definiert:- Stecker (Pinbelegungen),- Übertragungsrichtung (uni-/bidirektional) ,- ...
+Merke: Die Bitübertragungsschicht regelt die Darstellung von Symbolen (Bits) 
+und die Kabel/Drahtlos-technik
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES             
+Vorlesung Kommunikationssysteme   
+April 26|  50
+Schichtenmodelle in der Praxis: Das Internet
+• Orientierung am OSI-Referenzmodell, aber Reduktion des Overheads:
+Anwendungs
+schicht
+Darstellungs
+schicht
+Sitzungsschicht
+Transportschicht
+Vermittlungs
+schicht
+Sicherungs
+schicht
+Bitübertragungs
+schicht
+Wird je nach Bedarf in der konkreten Anwendung implementiert
+Implementierung als IP (Vermittlungsschicht) und TCP/UDP 
+(Transportschicht) als ineinandergreifende Module des 
+Betriebssystems
+Diese beiden Schichten können autark, durch die Netzwerkkarte
+realisiert werden. Das Betriebssystem nutzt die Fähigkeiten der 
+Netzwerkkarte zur Kommunikation. Von daher können die Schichten
+logisch zusammen gefasst werden
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES             
+Vorlesung Kommunikationssysteme   
+April 26|  51
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES             Vorlesung Kommunikationssysteme   April 26|  52
+Das Internet-Referenzmodell
+Host-to-Network-Schicht
+(z.B. durch IEEE standardisiert)
+Anwendungsschicht
+(Application Layer) Anwendungsschicht
+Darstellungsschicht
+(Presentation Layer)
+Sitzungsschicht
+(Session Layer)
+Transportschicht
+(Transport Layer) Transportschicht
+Vermittlungsschicht
+(Network Layer) Internet-Schicht
+Sicherungsschicht
+(Data Link Layer)
+Bitübertragungsschicht
+(Physical Layer)
+ISO/OSI TCP/IP
+existieren nicht, werden bei Bedarf 
+in der Anwendungsebene mit 
+implementiert
+Aufgaben der Schichten
+• Host-to-Network-Schicht (entspricht ISO/OSI 1-2)
+• Idee: die faktische Datenübertragung wird von der Netzwerkkarte des Rechners 
+erledigt- Vorteil bei Multi-Access-Netzen: Die Netzwerkkarte kann aufgrund der Zieladresse selber 
+entscheiden, ob die Daten für den eigenen Rechner sind -> Entlastung des Betriebssystems 
+(da kein Interrupt notwendig)- Starke Entkopplung vom Betriebssystem: IP teilt dem Treiber der Netzwerkkarte mit, dass diese 
+Daten (zuverlässig) an eine gegeben Zieladresse (MAC-Adresse) übertragen soll - Beispiel: Übertrage das IP-Datagramm der Länge 1500 Byte an die MAC-Adresse xyz- Direkte Anbindung des Zielrechners erforderlich
+• Beispiele- Ethernet in kabelgebundenen, lokalen Netzen- WLAN in drahtlosen lokalen Netzen- PPP über Punkt-zu-Punkt-Verbindungen über DSL
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES             
+Vorlesung Kommunikationssysteme   
+April 26|  53
+Aufgaben der Schichten
+• Internet-Schicht (entspricht ISO/OSI 3)
+• Aufgabe dieser Schicht: Kommunikation zwischen Rechnern auch über die eigenen 
+Netzwerkgrenzen hinaus. Die dabei gewählte Übertragungstechnik ist paketvermittelnd, 
+d.h. die Datagramme werden unabhängig voneinander mit Adressinformation versehen 
+vom Sender losgeschickt
+• Im Netz findet ein Store-and-Forward statt. An der Grenze zwischen zwei Netzen sorgen 
+Router für die Weiterleitung der Daten. Nach dem Empfang findet die Entscheidung über 
+den nächsten Router konzeptionell anhand der Zieladresse statt.
+• Datagramme/Pakete können demnach im Netz verloren gehen oder beim Empfänger in einer 
+anderen Reihenfolge ankommen als sie abgesendet wurden. Die Behebung solcher Situation ist 
+der Transportebene vorbehalten
+• Ein wesentlicher Vorteil ist, dass eine „Leitung“ (ein Netz) von vielen Teilnehmern genutzt werden 
+kann, jeweils zur Übertragung eines Datagramms. Dann kann ein anderer Teilnehmer übertragen.
+• Festlegung eines einheitlichen Protokolls zur Kopplung aller Netze im Internet samt 
+Paketformat: das Internet Protocol (IP)
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES             
+Vorlesung Kommunikationssysteme   
+April 26|  54
+Aufgaben der Schichten
+• Transportschicht (entspricht ISO/OSI 4)
+• Kümmert sich um die Kommunikation zwischen Anwendungen. Definiert sind zwei 
+unterschiedliche Ende-zu-Ende Protokolle:- TCP (Transmission Control Protocol), ein zuverlässiges, verbindungsorientiertes Protokoll, 
+welches einen Strom von Bytes sicher zwischen zwei Rechnern überträgt. Dazu wird der Strom 
+segmentiert und in IP-Pakete verkapselt. Auf der Gegenseite werden die ankommenden Pakete 
+in der richtigen Reihenfolge zusammengesetzt, so dass der ursprüngliche Datenstrom entsteht. 
+TCP sorgt u.a. auch für Flusskontrolle, damit der Sender den möglicherweise langsameren 
+Empfänger nicht überlastet und so seine Senderate reduziert. Es wird auch eine Staukontrolle 
+implementiert, um so Überlast zu vermeiden.- UDP (User Datagram Protocol), ein unzuverlässiges (“best effort”) und verbindungsloses 
+Protokoll. UDP wird benutzt, wenn z.B. eine schnelle Lieferung der Daten wichtiger ist als eine 
+absolut zuverlässige (Sprache, Video).
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES             
+Vorlesung Kommunikationssysteme   
+April 26|  55
+Aufgaben der Schichten
+• Anwendungsschicht (entspricht ISO/OSI 5-7 + Anwendung)
+• Die Aufgaben der ISO/OSI-Schichten 5-7 werden im Internet auf die Anwendung 
+verschoben. Damit realisiert eine Anwendung alle Aufgaben von der 
+Kommunikationssteuerung über die Darstellung hin zur konkreten Anwendung. Beispiel 
+Web-Server: httpd
+• Festgelegt werden aber auch Dialoge (Schicht 5: üblicherweise Anfrage – Antwort) und 
+Nachrichtenformate (Schicht 6: Syntax & Semantik)
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES             
+Vorlesung Kommunikationssysteme   
+April 26|  56
+Fazit
+• Datenkommunikation:
+• Sammlung aufeinander aufbauender Protokolle, die gemeinsam die gesamte 
+Funktionalität eines fehlerfreien Datenaustauschs definieren- ISO/OSI-Referenzmodell als Versuch, solche Protokolle zu standardisieren; die Terminologie 
+des Modells wird weiter verwendet- ISO/OSI-Schichten 1 und 2 werden als Treiber für Netzwerkkarten implementiert. Innerhalb 
+eines lokalen Netzes können mittels dieser Funktionalität Rechner kommunizieren- TCP/IP-Referenzmodell baut auf den Netzwerkkartentreibern auf
+o IP und TCP/UDP sind als Teil eines Betriebssystems implementiert
+o Anwendungsprotokolle können als zusätzliche Dienste auf dem System laufen
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES             
+Vorlesung Kommunikationssysteme   
+April 26|  57
+Fazit
+Merke: Während das ISO/OSI-Modell systematisch die Abstraktionsebenen der 
+Datenkommunikation festlegt geht das Internet-Referenzmodell einen pragmatischen Weg:
+• Die Anwendung realisiert die Regeln zur Kommunikation untereinander, Schreib
+Lesesequenzen, Darstellung, Wiederaufsetzpunkte und weiteres. Basis ist hierfür eine 
+Datei/Stream-ähnliche Schnittstelle zum Betriebssystem, respektive eine einfache Datagramm
+Schnittstelle
+• Im Betriebssystem wird die Transportschicht (zugänglich über die oben genannte Schnittstelle) 
+und die Vermittlungsschicht implementiert. Sie Vermittlungsschicht verwendet zur tatsächlichen 
+Kommunikation die Netzwerkkarte
+• Die Netzwerkkarte implementiert die unteren beiden Schichten und liefert bei einem Multi
+Access-Netz somit nur die Nachrichten an das Betriebssystem (IP), die relevant sind. Dies 
+entlastet das Betriebssystem erheblich (sonst wären Interrupts bei jeder Netzwerknachricht 
+notwendig)
+© FH AACHEN UNIVERSITY OF APPLIED SCIENCES             
+Vorlesung Kommunikationssysteme   
+April 26|  58
