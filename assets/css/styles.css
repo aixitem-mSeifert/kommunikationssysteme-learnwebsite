@@ -180,3 +180,114 @@ h2 { font-size: clamp(1.7rem, 3vw, 2.6rem); }
     body { background: white; }
     .page-shell { width: 100%; }
 }
+.glossary-jump-nav {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin: 1.5rem 0 2rem;
+    padding: 0.9rem 1rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+}
+
+.glossary-jump-nav span {
+    margin-right: 0.35rem;
+    font-weight: 700;
+}
+
+.glossary-jump-nav a {
+    min-width: 2rem;
+    padding: 0.35rem 0.5rem;
+    text-align: center;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    text-decoration: none;
+}
+
+.glossary-jump-nav a:hover,
+.glossary-jump-nav a:focus {
+    color: white;
+    background: var(--accent);
+}
+
+.glossary-entry {
+    scroll-margin-top: 90px;
+}
+
+.glossary-entry-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.glossary-aliases {
+    margin: 0.35rem 0 0;
+    color: var(--muted);
+    font-size: 0.95rem;
+}
+
+.glossary-definition {
+    margin-top: 1rem;
+    font-size: 1.05rem;
+}
+
+.glossary-details {
+    margin: 1rem 0;
+    padding: 0.8rem 1rem;
+    background: color-mix(in srgb, var(--surface) 75%, var(--accent) 25%);
+    border-left: 4px solid var(--accent);
+}
+
+.glossary-details summary {
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.glossary-details p {
+    margin-bottom: 0;
+}
+
+.glossary-area {
+    margin: 1rem 0 0;
+    font-size: 0.95rem;
+}
+
+.glossary-related {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+    margin-top: 1rem;
+    font-size: 0.95rem;
+}
+
+.glossary-related a {
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+}
+
+@media (max-width: 640px) {
+    .glossary-entry-header {
+        display: block;
+    }
+
+    .glossary-entry-header .status-badge {
+        margin-top: 0.75rem;
+    }
+
+    .glossary-list {
+        display: block;
+    }
+
+    .glossary-letter {
+        margin-top: 2rem;
+        padding-bottom: 0.4rem;
+    }
+
+    .glossary-entry {
+        margin-bottom: 1rem;
+    }
+}
