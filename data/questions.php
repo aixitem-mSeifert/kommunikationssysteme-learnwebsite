@@ -1,11 +1,20 @@
 <?php
 
-$q = static fn (string $id, string $areaId, string $topicId, string $difficulty, string $prompt, array $options, int $answer, string $explanation, string $sourceId, string $locator, string $status = 'belegt', ?string $note = null): array => [
-    'id' => $id, 'areaId' => $areaId, 'topicId' => $topicId, 'difficulty' => $difficulty, 'type' => 'single-choice', 'prompt' => $prompt,
-    'options' => $options, 'correctAnswer' => $answer, 'explanation' => $explanation, 'points' => 1, 'derivation' => 'Aus den angegebenen Lehrunterlagen erstellt.',
-    'sourceStatus' => $status, 'sourceNote' => $note,
-    'sourceRefs' => [['sourceId' => $sourceId, 'locatorType' => str_starts_with($sourceId, 'e') ? 'examTask' : 'document', 'locator' => $locator, 'sourceStatus' => $status]],
-];
+$q = static function (string $id, string $areaId, string $topicId, string $difficulty, string $prompt, array $options, int $answer, string $explanation, string $sourceId, string $locator, string $status = 'belegt', ?string $note = null): array {
+    $target = crc32($id) % count($options);
+    if ($target !== $answer) {
+        $correctOption = $options[$answer];
+        array_splice($options, $answer, 1);
+        array_splice($options, $target, 0, [$correctOption]);
+    }
+
+    return [
+        'id' => $id, 'areaId' => $areaId, 'topicId' => $topicId, 'difficulty' => $difficulty, 'type' => 'single-choice', 'prompt' => $prompt,
+        'options' => $options, 'correctAnswer' => $target, 'explanation' => $explanation, 'points' => 1, 'derivation' => 'Aus den angegebenen Lehrunterlagen erstellt.',
+        'sourceStatus' => $status, 'sourceNote' => $note,
+        'sourceRefs' => [['sourceId' => $sourceId, 'locatorType' => str_starts_with($sourceId, 'e') ? 'examTask' : 'document', 'locator' => $locator, 'sourceStatus' => $status]],
+    ];
+};
 $qa = static function (string $id, string $areaId, string $topicId, string $difficulty, string $prompt, array $options, int $answer, string $explanation, string $sourceId, string $locator, string $status = 'belegt', ?string $note = null) use ($q): array {
     $question = $q($id, $areaId, $topicId, $difficulty, $prompt, $options, $answer, $explanation, $sourceId, $locator, $status, $note);
     $question['competency'] = 'application';
