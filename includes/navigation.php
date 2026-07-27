@@ -20,9 +20,9 @@ $isLearningAreaPage = in_array(current_page(), $learningAreaPages, true);
                 <summary<?= $isLearningAreaPage ? ' class="is-current"' : '' ?>>Lernbereiche</summary>
                 <ul class="nav-dropdown">
                     <li><a href="learning-areas.php"<?= current_page() === 'learning-areas.php' ? ' aria-current="page"' : '' ?>>Alle Lernbereiche</a></li>
-                    <?php foreach ($learningAreas as $area): ?>
-                        <?php $isCurrentArea = current_page() === 'learning-area.php' && ($_GET['area'] ?? null) === $area['slug']; ?>
-                        <li><a href="<?= e(page_url('learning-area.php', ['area' => $area['slug']])) ?>"<?= $isCurrentArea ? ' aria-current="page"' : '' ?>><?= e((string) $area['title']) ?></a></li>
+                    <?php foreach ($learningAreas as $navigationArea): ?>
+                        <?php $isCurrentArea = current_page() === 'learning-area.php' && ($_GET['area'] ?? null) === $navigationArea['slug']; ?>
+                        <li><a href="<?= e(page_url('learning-area.php', ['area' => $navigationArea['slug']])) ?>"<?= $isCurrentArea ? ' aria-current="page"' : '' ?>><?= e((string) $navigationArea['title']) ?></a></li>
                     <?php endforeach; ?>
                 </ul>
             </details>

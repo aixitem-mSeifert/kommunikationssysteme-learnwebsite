@@ -12,7 +12,7 @@ $pageTitle = (string) $area['title'];
 require __DIR__ . '/includes/header.php';
 ?>
 <main id="main-content" class="page-shell">
-    <header class="page-header"><p class="eyebrow">Lernbereich</p><h1><?= e((string) $area['title']) ?></h1><p><?= e((string) ($area['summary'] ?? '')) ?></p></header>
+    <header class="page-header"><h1><?= e((string) $area['title']) ?></h1><p><?= e((string) ($area['summary'] ?? '')) ?></p></header>
     <section class="objectives"><h2>Lernziele</h2><ul><?php foreach ($area['learningObjectives'] as $objective): ?><li><?= e((string) $objective) ?></li><?php endforeach; ?></ul></section>
     <?php foreach ($topics as $topic): ?>
         <p class="topic-intro"><?= e((string) $topic['intro']) ?></p>
