@@ -49,6 +49,7 @@ h2 { font-size: clamp(1.7rem, 3vw, 2.6rem); }
 .lead { max-width: 65ch; font-size: 1.12rem; color: #e5efec; }
 .eyebrow { margin: 0; color: var(--signal); font: 700 0.78rem 'Trebuchet MS', sans-serif; letter-spacing: 0; text-transform: uppercase; }
 .button { display: inline-flex; margin-top: 1rem; padding: 0.75rem 1rem; color: var(--accent-dark); background: white; border-radius: var(--radius); font: 700 0.95rem 'Trebuchet MS', sans-serif; text-decoration: none; }
+.button[hidden] { display: none !important; }
 .progress-panel { padding: 1.3rem; color: var(--ink); background: var(--surface); border-left: 5px solid var(--signal); box-shadow: var(--shadow); }
 .progress-panel strong { display: block; margin-block: 0.25rem; font-size: 2rem; }
 .progress-label, .progress-panel small { font-family: 'Trebuchet MS', sans-serif; }
