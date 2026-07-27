@@ -4,6 +4,7 @@ require_once __DIR__ . '/includes/source-citations.php';
 
 $pageTitle = 'Glossar';
 $items = load_data('glossary');
+$formulas = load_data('formulas');
 $areas = load_data('learning-areas');
 $termItems = array_values(array_filter(
     $items,
@@ -175,6 +176,73 @@ function render_glossary_entries(array $entries, array $areaById, array $itemByI
     <?php endforeach;
 }
 
+function render_formula_entries(array $formulas, array $areaById): void
+{
+    foreach ($formulas as $formula):
+        $areaId = (string) ($formula['areaId'] ?? '');
+        $area = $areaById[$areaId] ?? null;
+        $searchText = implode(' ', [
+            (string) ($formula['title'] ?? ''),
+            (string) ($formula['formula'] ?? ''),
+            (string) ($formula['description'] ?? ''),
+            implode(' ', array_keys($formula['variables'] ?? [])),
+            implode(' ', array_values($formula['variables'] ?? [])),
+        ]);
+        ?>
+        <article
+            class="glossary-entry glossary-formula-entry"
+            data-filter-text="<?= e($searchText) ?>"
+            data-area-id="<?= e($areaId) ?>"
+        >
+            <div class="glossary-entry-header">
+                <h3 id="glossary-<?= e((string) ($formula['id'] ?? '')) ?>">
+                    <?= e((string) ($formula['title'] ?? 'Formel')) ?>
+                </h3>
+
+                <span class="status-badge">
+                    <?= e(glossary_status_label((string) ($formula['sourceStatus'] ?? 'belegt'))) ?>
+                </span>
+            </div>
+
+            <div class="formula glossary-formula-display" aria-label="Formel">
+                <?= e((string) ($formula['formula'] ?? '')) ?>
+            </div>
+
+            <p class="glossary-definition">
+                <?= e((string) ($formula['description'] ?? '')) ?>
+            </p>
+
+            <?php if (!empty($formula['variables'])): ?>
+                <dl class="formula-variables">
+                    <?php foreach ($formula['variables'] as $symbol => $meaning): ?>
+                        <div>
+                            <dt><?= e((string) $symbol) ?></dt>
+                            <dd><?= e((string) $meaning) ?></dd>
+                        </div>
+                    <?php endforeach; ?>
+                </dl>
+            <?php endif; ?>
+
+            <?php if ($area !== null): ?>
+                <p class="glossary-area">
+                    Lernbereich:
+                    <a href="<?= e(page_url('learning-area.php', ['area' => $area['slug']])) ?>">
+                        <?= e((string) $area['title']) ?>
+                    </a>
+                </p>
+            <?php endif; ?>
+
+            <?php
+            render_source_refs(
+                $formula['sourceRefs'] ?? [],
+                $formula['sourceNote'] ?? null,
+                $formula['sourceStatus'] ?? 'unklar'
+            );
+            ?>
+        </article>
+    <?php endforeach;
+}
+
 require __DIR__ . '/includes/header.php';
 ?>
 
@@ -186,19 +254,20 @@ require __DIR__ . '/includes/header.php';
 
         <p>
             <?= e((string) count($termItems)) ?> Fachbegriffe und
-            <?= e((string) count($commandItems)) ?> Befehle mit Definitionen,
+            <?= e((string) count($commandItems)) ?> Befehle sowie
+            <?= e((string) count($formulas)) ?> Formeln mit Erklärungen,
             Lernbereichen und Quellenhinweisen.
         </p>
     </header>
 
     <div class="filter-bar filter-bar-wide">
-        <label for="glossary-search">Begriff oder Befehl suchen</label>
+        <label for="glossary-search">Begriff, Befehl oder Formel suchen</label>
 
         <input
             id="glossary-search"
             type="search"
             data-filter-input="glossary-list"
-            placeholder="Zum Beispiel: Routing, TCP, XML oder keytool"
+            placeholder="Zum Beispiel: Routing, TCP, CRC oder RTT"
         >
 
         <label for="glossary-area">Lernbereich</label>
@@ -214,12 +283,15 @@ require __DIR__ . '/includes/header.php';
         </select>
     </div>
 
-    <?php if ($termLetters !== [] || $commandLetters !== []): ?>
+    <?php if ($termLetters !== [] || $commandLetters !== [] || $formulas !== []): ?>
         <nav class="glossary-jump-nav" aria-label="Alphabetische Glossarnavigation">
             <span>Springe zu:</span>
 
             <a href="#glossary-terms">Fachbegriffe</a>
             <a href="#glossary-commands">Befehle</a>
+            <?php if ($formulas !== []): ?>
+                <a href="#glossary-formulas">Formelsammlung</a>
+            <?php endif; ?>
 
             <?php foreach ($termLetters as $letter): ?>
                 <a href="#glossary-term-letter-<?= e($letter) ?>">
@@ -263,9 +335,21 @@ require __DIR__ . '/includes/header.php';
                 <?php render_glossary_entries($commandItems, $areaById, $itemById, 'glossary-command-letter-'); ?>
             </div>
         </section>
+
+        <section class="glossary-section" id="glossary-formulas">
+            <header class="glossary-section-header">
+                <p class="eyebrow">Rechenhilfe</p>
+                <h2>Formelsammlung</h2>
+                <p>Wichtige Formeln aus Netzwerktechnik, Transport, Fehlerkontrolle und Digitalisierung.</p>
+            </header>
+
+            <div class="glossary-list glossary-formula-list">
+                <?php render_formula_entries($formulas, $areaById); ?>
+            </div>
+        </section>
     </div>
 
-    <?php if ($items === []): ?>
+    <?php if ($items === [] && $formulas === []): ?>
         <p class="empty-state">
             Noch keine Glossarbegriffe vorhanden.
         </p>

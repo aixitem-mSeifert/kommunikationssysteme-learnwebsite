@@ -106,6 +106,13 @@ h2 { font-size: clamp(1.7rem, 3vw, 2.6rem); }
 .content-subsection .content-example { margin-inline: 0; }
 .formula { margin: 1rem 1.3rem; padding: 1rem; overflow-x: auto; background: var(--ink); color: white; font-family: Consolas, monospace; }
 .content-code { margin: 1rem 1.3rem; padding: 1rem; overflow-x: auto; background: #202b2b; color: #f4f7f2; border-left: 4px solid var(--accent); font: 0.9rem/1.5 Consolas, 'Courier New', monospace; white-space: pre; }
+.content-table-wrap { margin: 1rem 0; overflow-x: auto; border: 1px solid var(--line); background: var(--surface); }
+.content-table { width: 100%; min-width: 640px; border-collapse: collapse; font: 0.88rem/1.45 'Trebuchet MS', sans-serif; }
+.content-table th, .content-table td { padding: 0.7rem 0.8rem; border-top: 1px solid var(--line); vertical-align: top; text-align: left; }
+.content-table th { color: var(--accent-dark); background: #e9eee9; font-weight: 700; white-space: nowrap; }
+.content-table td { background: var(--surface); }
+.content-table tbody tr:nth-child(even) td { background: #fbfbf7; }
+.content-table strong { color: var(--accent-dark); }
 .source-box { margin-top: 1.2rem; padding: 0.9rem 1.3rem; background: #f3f4f0; border-top: 1px solid var(--line); font-family: 'Trebuchet MS', sans-serif; font-size: 0.85rem; }
 .status-badge { display: inline-block; padding: 0.2rem 0.45rem; color: white; background: var(--accent); border-radius: 3px; font-weight: 700; }
 .source-unklar .status-badge, .source-mehrdeutig .status-badge, .source-Ged-chtnisprotokoll .status-badge, .source-historisch-vereinfacht .status-badge { background: var(--warning); }
@@ -131,6 +138,13 @@ h2 { font-size: clamp(1.7rem, 3vw, 2.6rem); }
 .glossary-entry h4 { margin: 0; font-size: 1.25rem; }
 .glossary-command-entry { border-left: 4px solid var(--signal); }
 .glossary-command-term { padding: 0.1rem 0.3rem; color: var(--accent-dark); background: #eef1eb; font: 700 1rem/1.4 Consolas, 'Courier New', monospace; }
+.glossary-formula-list { grid-template-columns: 1fr; gap: 1rem; }
+.glossary-formula-entry { grid-column: 1; }
+.glossary-formula-display { margin: 1rem 0; font-size: 1.1rem; white-space: pre-wrap; }
+.formula-variables { display: grid; gap: 0.4rem; margin: 1rem 0; }
+.formula-variables div { display: grid; grid-template-columns: minmax(90px, 0.25fr) 1fr; gap: 0.8rem; padding: 0.45rem 0.6rem; background: var(--paper); }
+.formula-variables dt { color: var(--accent-dark); font: 700 0.95rem/1.4 Consolas, 'Courier New', monospace; }
+.formula-variables dd { margin: 0; }
 .quiz-setup, .card-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 0.8rem; margin-block: 1.5rem; padding: 1rem; background: var(--surface); border: 1px solid var(--line); }
 .quiz-stage, .quiz-result { max-width: 780px; margin: 2rem auto; padding: 1.5rem; background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); }
 .quiz-meta { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 1rem; font-family: 'Trebuchet MS', sans-serif; }
@@ -144,6 +158,13 @@ h2 { font-size: clamp(1.7rem, 3vw, 2.6rem); }
 .quiz-answer-text { width: 100%; min-height: 8rem; padding: 0.85rem; resize: vertical; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; color: var(--ink); font: inherit; line-height: 1.5; }
 .quiz-answer-text.is-code { font: 0.95rem/1.5 Consolas, 'Courier New', monospace; }
 .quiz-answer-text:focus { outline: 2px solid var(--accent); outline-offset: 2px; }
+.quiz-table-wrap { overflow-x: auto; border: 1px solid var(--line); }
+.quiz-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.quiz-table th, .quiz-table td { padding: 0.6rem 0.7rem; border-top: 1px solid var(--line); text-align: left; vertical-align: middle; }
+.quiz-table th { color: var(--accent-dark); background: #e9eee9; white-space: nowrap; }
+.quiz-table tbody tr:nth-child(even) td { background: #fbfbf7; }
+.quiz-table-input { width: 5rem; min-width: 4rem; padding: 0.35rem 0.45rem; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; color: var(--ink); font: inherit; }
+.quiz-table-input:focus { outline: 2px solid var(--accent); outline-offset: 2px; }
 .quiz-feedback { margin-block: 1rem; padding: 1rem; border-left: 5px solid var(--accent); background: #e9eee9; }
 .quiz-feedback.is-wrong { border-color: var(--warning); background: #fff4d1; }
 .expected-answer code { display: block; margin-top: 0.35rem; padding: 0.65rem; overflow-x: auto; background: #202b2b; color: #f4f7f2; font: 0.9rem/1.5 Consolas, 'Courier New', monospace; white-space: pre-wrap; }

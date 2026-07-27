@@ -20,13 +20,17 @@ $qa = static function (string $id, string $areaId, string $topicId, string $diff
     $question['competency'] = 'application';
     return $question;
 };
-$text = static function (string $id, string $areaId, string $topicId, string $difficulty, string $prompt, string $expectedAnswer, array $answerGroups, string $explanation, string $sourceId, string $locator, string $inputMode = 'text', string $status = 'belegt', ?string $note = null): array {
-    return [
+$text = static function (string $id, string $areaId, string $topicId, string $difficulty, string $prompt, string $expectedAnswer, array $answerGroups, string $explanation, string $sourceId, string $locator, string $inputMode = 'text', string $status = 'belegt', ?string $note = null, ?array $table = null): array {
+    $question = [
         'id' => $id, 'areaId' => $areaId, 'topicId' => $topicId, 'difficulty' => $difficulty, 'type' => 'text', 'inputMode' => $inputMode, 'prompt' => $prompt,
         'options' => [], 'expectedAnswer' => $expectedAnswer, 'answerGroups' => $answerGroups, 'explanation' => $explanation, 'points' => 1, 'competency' => 'application', 'derivation' => 'Aus den angegebenen Praktikumsunterlagen erstellt.',
         'sourceStatus' => $status, 'sourceNote' => $note,
         'sourceRefs' => [['sourceId' => $sourceId, 'locatorType' => 'document', 'locator' => $locator, 'sourceStatus' => $status]],
     ];
+    if ($table !== null) {
+        $question['table'] = $table;
+    }
+    return $question;
 };
 
 return [
@@ -296,4 +300,20 @@ return [
     $text('q252','a7','t7','schwer','Nenne die drei wesentlichen Schritte der schriftlichen CRC-Berechnung.','Nullbits anhängen, per XOR in Modulo-2-Arithmetik durch das Generatorpolynom teilen und den Rest an die Daten anhängen.',[['Nullbits'],['XOR'],['Rest'],['anhängen']],'Die Nullbits reservieren Platz für den Rest; die Division verwendet XOR und der Rest wird zum Codewort.','p18','CRC.md: Generatorpolynom und XOR-Rechnung'),
     $text('q253','a2','t2','schwer','Warum startet der asynchrone Server im CompletionHandler nach einer erfolgreichen Verbindung erneut accept?','Damit der Server nach der Bearbeitung einer Verbindung weitere Clients annehmen kann.',[['accept'],['weitere'],['client']],'Der Handler nimmt die aktuelle Verbindung entgegen und startet anschließend den nächsten Accept-Vorgang.','p16','01_asynchroner_server.md: CompletionHandler.completed'),
     $text('q254','a5','t5','schwer','Nenne die TLS-Klassen beziehungsweise Factory-Paare für Server und Client aus dem Praktikum.','SSLServerSocketFactory / SSLServerSocket sowie SSLSocketFactory / SSLSocket.',[['SSLServerSocketFactory'],['SSLServerSocket'],['SSLSocketFactory'],['SSLSocket']],'Die TLS-Unterlagen stellen die Server- und Client-Factories mit ihren jeweiligen Socket-Klassen gegenüber.','p12','03_tls-serverclient.md: SSLServerSocketFactory, SSLServerSocket, SSLSocketFactory und SSLSocket'),
+    $text('q255','a3','t3','mittel','Gib die allgemeine Formel für die Anzahl nutzbarer IPv4-Hostadressen an, wenn h Hostbits vorhanden sind.','2^h - 2',[['2^h - 2','2 hoch h minus 2','2h - 2']],'Zwei Hostbitbelegungen sind reserviert: die Netzadresse mit nur Nullen und die Broadcastadresse mit nur Einsen.','s05','Subnetting und Hostanzahl'),
+    $text('q256','a3','t3','schwer','Welche Netzadresse hat 172.20.18.173/27? Gib die Adresse in Dezimalschreibweise an.','172.20.18.160',[['172.20.18.160']],'Ein /27-Netz hat im letzten Oktett eine Blockgröße von 32. Die Adresse 173 liegt damit im Bereich 160 bis 191.','s05','Subnetting und Netzadresse'),
+    $text('q257','a3','t3','schwer','Vier direkt aufeinanderfolgende /24-Netze beginnen bei 10.40.8.0 und haben denselben Next Hop. Welches Sammelpräfix beschreibt sie?','10.40.8.0/22',[['10.40.8.0/22','10.40.8.0 22']],'Vier aufeinanderfolgende /24-Netze lassen sich zu einem /22-Netz zusammenfassen, sofern die Netzgrenze ausgerichtet ist.','s06','CIDR und Routenaggregation'),
+    $text('q258','a3','t3','schwer','Ein IPv4-Paket ist 3000 Byte groß, besitzt einen 20-Byte-Header und wird über eine MTU von 1200 Byte übertragen. Welchen Fragment Offset erhält das zweite Fragment?','147',[['147','147 8-byte units','147 acht byte']],'Pro Nicht-Endfragment werden 1176 Nutzdaten übertragen, damit die Nutzlast durch acht teilbar bleibt. Der Offset des zweiten Fragments ist daher 1176 / 8 = 147.','s09','IPv4-Fragmentierung und Fragment Offset'),
+    $text('q259','a4','t4','mittel','Welche allgemeine Formel beschreibt den Stop-and-Wait-Nutzungsgrad mit Sendedauer L/R und RTT?','(L/R) / (L/R + RTT)',[['(L/R) / (L/R + RTT)','sendedauer / (sendedauer + RTT)','(L durch R) durch (L durch R plus RTT)']],'Die Leitung wird während der Sendedauer genutzt und wartet danach im Modell auf die Rückmeldung. Deshalb wird die Sendedauer durch Sendedauer plus RTT geteilt.','s10','Stop-and-Wait-Nutzungsgrad'),
+    $text('q260','a4','t4','mittel','Im Go-Back-N-Fenster ist Paket 7 das nächste erwartete Paket. Paket 7 geht verloren, Paket 8 trifft danach ein. Welche kumulative ACK-Nummer trägt der Empfänger in die letzte Tabellenzelle ein?','ACK 7',[['7','ACK 7']], 'Go-Back-N verwirft Paket 8 wegen der Lücke und bestätigt kumulativ weiterhin das nächste erwartete Paket 7.', 's11', 'Go-Back-N und kumulative ACKs', 'table', 'belegt', null, [
+        'headers' => ['Schritt', 'Ereignis', 'Empfängerreaktion'],
+        'rows' => [
+            ['1', 'Paket 6 trifft ein', 'liefert Paket 6 aus; ACK 7'],
+            ['2', 'Paket 7 geht verloren', 'wartet auf Paket 7'],
+            ['3', 'Paket 8 trifft ein', ['prefix' => 'verwirft Paket 8; sendet erneut', 'input' => true, 'label' => 'kumulative ACK-Nummer']],
+        ],
+    ]),
+    $text('q261','a4','t4','schwer','Eine Verbindung hat 50 Mbit/s und 40 ms RTT. Welche Mindestfenstergröße ist nötig, um das Bandwidth-Delay-Produkt in Bits abzudecken?','2.000.000 Bit',[['2000000','2.000.000','2 Mbit','2 Megabit']],'Das Bandwidth-Delay-Produkt ist Bandbreite mal RTT: 50.000.000 bit/s · 0,04 s = 2.000.000 Bit.','s11','Bandwidth-Delay-Produkt und Fenstergröße'),
+    $text('q262','a4','t4','mittel','Receiver Window und Congestion Window betragen 12 KB beziehungsweise 7 KB. Wie viel darf der TCP-Sender höchstens gleichzeitig ausstehen lassen?','7 KB',[['7 KB','7KB','7']],'Die wirksame Grenze ist das kleinere Fenster: min(12 KB, 7 KB) = 7 KB.','s12','TCP-Fluss- und Staukontrolle'),
+    $text('q263','a4','t4','leicht','Welche drei Flag-Kombinationen bilden den normalen TCP-Verbindungsaufbau?','SYN, SYN+ACK, ACK',[['SYN'],['SYN ACK','SYN+ACK'],['ACK']],'Beim Three-Way-Handshake synchronisiert der Client mit SYN, der Server antwortet mit SYN+ACK und der Client bestätigt mit ACK.','s12','TCP-Three-Way-Handshake'),
 ];

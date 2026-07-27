@@ -1,0 +1,129 @@
+# Beispiel: Go-Back-N
+
+Bei Go-Back-N akzeptiert der Empfänger nur Pakete in der richtigen Reihenfolge. Fehlt ein Paket, werden alle folgenden verworfen. Nach einem Timeout sendet der Sender das verlorene Paket und alle danach gesendeten Pakete erneut.
+
+## Aufgabe
+
+Gegeben:
+
+- Fenstergröße = 4
+- Paket 2 geht verloren.
+- Es werden kumulative ACKs verwendet.
+
+| Schritt | Sender | Kommentar | Empfänger |
+|---------:|--------|-----------|-----------|
+| 1 | Sendet Paket 1 | | Empfängt Paket 1 → ACK 2 |
+| 2 | Sendet Paket 2 | Geht verloren | - |
+| 3 | Sendet Paket 3 | Fenster ist noch nicht voll | Verwirft Paket 3 (Paket 2 fehlt), sendet erneut ACK 2 |
+| 4 | Sendet Paket 4 | | Verwirft Paket 4, sendet erneut ACK 2 |
+| 5 | Sender erhält wiederholt ACK 2 | Paket 2 wurde offenbar nicht bestätigt | |
+| 6 | Timeout für Paket 2 | Wiederholung beginnt | |
+| 7 | Sendet Paket 2 erneut | | Empfängt Paket 2 → ACK 3 |
+| 8 | Sendet Paket 3 erneut | | Empfängt Paket 3 → ACK 4 |
+| 9 | Sendet Paket 4 erneut | | Empfängt Paket 4 → ACK 5 |
+
+### Ergebnis
+
+- Der Empfänger verwirft alle Pakete hinter der Lücke.
+- Nach dem Timeout werden **Paket 2 sowie alle folgenden Pakete erneut übertragen**.
+
+---
+
+# Beispiel: Selective Repeat
+
+Selective Repeat speichert korrekt empfangene Pakete zwischen, auch wenn ein früheres Paket fehlt. Nach einem Timeout wird nur das fehlende Paket erneut übertragen.
+
+## Aufgabe
+
+Gegeben:
+
+- Fenstergröße = 4
+- Paket 2 geht verloren.
+- Der Empfänger besitzt einen Empfangspuffer.
+
+| Schritt | Sender | Kommentar | Empfänger |
+|---------:|--------|-----------|-----------|
+| 1 | Sendet Paket 1 | | Empfängt Paket 1 → ACK 1 |
+| 2 | Sendet Paket 2 | Geht verloren | - |
+| 3 | Sendet Paket 3 | | Speichert Paket 3 → ACK 3 |
+| 4 | Sendet Paket 4 | | Speichert Paket 4 → ACK 4 |
+| 5 | Sender erhält ACK 3 und ACK 4 | Erkennt: Nur Paket 2 fehlt noch | |
+| 6 | Timeout für Paket 2 | | |
+| 7 | Sendet **nur Paket 2** erneut | | Empfängt Paket 2 |
+| 8 | Empfänger fügt Pakete 2, 3 und 4 zusammen | Alle Daten liegen vollständig vor | Sendet ACK 5 |
+
+### Ergebnis
+
+- Bereits empfangene Pakete bleiben im Puffer.
+- **Nur das fehlende Paket wird erneut übertragen.**
+
+---
+
+# Beispiel: Selective Reject
+
+Selective Reject arbeitet ähnlich wie Selective Repeat. Der Unterschied besteht darin, dass der Empfänger das fehlende Paket sofort gezielt anfordert und nicht erst auf einen Timeout wartet.
+
+## Aufgabe
+
+Gegeben:
+
+- Fenstergröße = 4
+- Paket 2 geht verloren.
+- Der Empfänger unterstützt Selective Reject (SREJ).
+
+| Schritt | Sender | Kommentar | Empfänger |
+|---------:|--------|-----------|-----------|
+| 1 | Sendet Paket 1 | | Empfängt Paket 1 |
+| 2 | Sendet Paket 2 | Geht verloren | - |
+| 3 | Sendet Paket 3 | | Speichert Paket 3 |
+| 4 | | | Erkennt die Lücke und sendet **SREJ(2)** |
+| 5 | Sender erhält SREJ(2) | Keine Wartezeit bis zum Timeout | |
+| 6 | Sendet Paket 2 erneut | Nur das angeforderte Paket wird wiederholt | Empfängt Paket 2 |
+| 7 | Empfänger kann nun Pakete 2 und 3 in der richtigen Reihenfolge weitergeben | Kommunikation läuft normal weiter | ACK 4 |
+
+### Ergebnis
+
+- Der Empfänger fordert **gezielt das fehlende Paket** an.
+- Es muss **nicht auf einen Timeout** gewartet werden.
+
+---
+
+# Beispiel: TCP-Fluss- und Staukontrolle
+
+TCP wird sowohl durch den freien Empfangspuffer (**Receiver Window**) als auch durch die aktuelle Netzbelastung (**Congestion Window**) begrenzt.
+
+## Aufgabe
+
+Gegeben:
+
+- Receiver Window (rwnd) = 8 KB
+- Congestion Window (cwnd) = 1 KB
+- MSS = 1 KB
+
+Der Sender startet eine neue TCP-Verbindung.
+
+| Runde | cwnd | Sender darf gleichzeitig senden | Ereignis |
+|-------:|-----:|--------------------------------:|----------|
+| Start | 1 KB | 1 Segment | Slow Start beginnt |
+| 1 | 2 KB | 2 Segmente | ACKs treffen ein |
+| 2 | 4 KB | 4 Segmente | cwnd verdoppelt sich |
+| 3 | 8 KB | 8 Segmente | rwnd und cwnd sind gleich groß |
+| 4 | 9 KB | **Nur 8 Segmente** | rwnd begrenzt nun den Sender |
+
+Während der nächsten Übertragung geht **Segment 7** verloren.
+
+| Schritt | Ereignis | Folge |
+|---------:|----------|-------|
+| 1 | Empfänger erhält Segment 8, 9 und 10 | Sendet mehrfach ACK 7 (Duplicate ACKs) |
+| 2 | Sender erhält drei Duplicate ACKs | Fast Retransmit startet |
+| 3 | Segment 7 wird sofort erneut gesendet | Kein Timeout erforderlich |
+| 4 | Fast Recovery | cwnd wird verkleinert |
+| 5 | Congestion Avoidance | cwnd wächst anschließend langsam weiter |
+
+### Ergebnis
+
+- Der Sender darf höchstens **min(rwnd, cwnd)** gleichzeitig senden.
+- **Slow Start** verdoppelt das Congestion Window anfangs.
+- Nach Erreichen der Schwelle wächst das Fenster in der **Congestion Avoidance** langsamer.
+- Nach **3 Duplicate ACKs** wird das fehlende Segment durch **Fast Retransmit** sofort erneut gesendet.
+- Anschließend reduziert **Fast Recovery** das Congestion Window und der Verbindungsaufbau setzt sich vorsichtiger fort.

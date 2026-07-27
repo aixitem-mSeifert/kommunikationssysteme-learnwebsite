@@ -10,6 +10,7 @@ $areas = $load('learning-areas');
 $topics = $load('topics');
 $questions = $load('questions');
 $glossary = $load('glossary');
+$formulas = $load('formulas');
 $flashcards = $load('flashcards');
 $exams = $load('exams');
 $exercises = $load('exercises');
@@ -27,6 +28,7 @@ $areaIds = $ids($areas, 'Lernbereiche');
 $topicIds = $ids($topics, 'Themen');
 $ids($questions, 'Fragen');
 $ids($glossary, 'Glossar');
+$ids($formulas, 'Formeln');
 $ids($flashcards, 'Lernkarten');
 $ids($exams, 'Klausuren');
 $ids($exercises, 'Übungen');
@@ -126,6 +128,12 @@ foreach ($questions as $question) {
 foreach ($glossary as $item) {
     $validateRefs($item['sourceRefs'], $item['id']);
 }
+foreach ($formulas as $formula) {
+    if (!isset($areaIds[$formula['areaId'] ?? ''])) {
+        $errors[] = $formula['id'] . ': unbekannter Lernbereich';
+    }
+    $validateRefs($formula['sourceRefs'] ?? [], $formula['id']);
+}
 foreach ($flashcards as $card) {
     if (($card['front'] ?? '') === '' || ($card['back'] ?? '') === '') {
         $errors[] = $card['id'] . ': leere Kartenseite';
@@ -190,4 +198,4 @@ if ($errors !== []) {
 }
 
 echo 'Datenprüfung erfolgreich' . PHP_EOL;
-echo count($areas) . ' Lernbereiche, ' . count($topics) . ' Themen, ' . count($questions) . ' Quizfragen, ' . count($glossary) . ' Glossareinträge, ' . count($flashcards) . ' Lernkarten, ' . count($lectureAndExamSources) . ' Fachquellen.' . PHP_EOL;
+echo count($areas) . ' Lernbereiche, ' . count($topics) . ' Themen, ' . count($questions) . ' Quizfragen, ' . count($glossary) . ' Glossareinträge, ' . count($formulas) . ' Formeln, ' . count($flashcards) . ' Lernkarten, ' . count($lectureAndExamSources) . ' Fachquellen.' . PHP_EOL;

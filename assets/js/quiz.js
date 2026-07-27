@@ -35,14 +35,33 @@ document.addEventListener('DOMContentLoaded', () => {
         return question.answerGroups.every((group) => group.some((keyword) => normalized.includes(normalizeAnswer(keyword))));
     };
 
+    const renderTextAnswer = (question) => {
+        if (question.inputMode === 'table' && question.table) {
+            const headers = question.table.headers || [];
+            const rows = question.table.rows || [];
+            const tableHead = headers.map((header) => `<th scope="col">${escapeHtml(String(header))}</th>`).join('');
+            const tableRows = rows.map((row) => `<tr>${row.map((cell) => {
+                if (cell && typeof cell === 'object' && cell.input) {
+                    const label = cell.label || 'Antwort';
+                    const prefix = cell.prefix ? `${escapeHtml(String(cell.prefix))} ` : '';
+                    return `<td>${prefix}<label><span class="sr-only">${escapeHtml(label)}</span><input class="quiz-table-input" id="quiz-text-answer" name="answer" type="text" aria-label="${escapeHtml(label)}" required></label></td>`;
+                }
+                return `<td>${escapeHtml(String(cell ?? ''))}</td>`;
+            }).join('')}</tr>`).join('');
+            return `<div class="quiz-table-wrap"><table class="quiz-table"><thead><tr>${tableHead}</tr></thead><tbody>${tableRows}</tbody></table></div>`;
+        }
+
+        const mode = question.inputMode === 'code' ? 'Code/Befehl' : 'Freitext';
+        return `<label class="text-answer-label" for="quiz-text-answer"><span class="quiz-answer-mode">${mode}</span><textarea class="quiz-answer-text${question.inputMode === 'code' ? ' is-code' : ''}" id="quiz-text-answer" name="answer" rows="5" required></textarea></label>`;
+    };
+
     const render = () => {
         const question = active[current];
         document.getElementById('quiz-position').textContent = `Frage ${current + 1} von ${active.length}`;
         document.getElementById('quiz-progress').style.width = `${(current / active.length) * 100}%`;
         document.getElementById('quiz-prompt').textContent = question.prompt;
         if (question.type === 'text') {
-            const mode = question.inputMode === 'code' ? 'Code/Befehl' : 'Freitext';
-            optionsContainer.innerHTML = `<label class="text-answer-label" for="quiz-text-answer"><span class="quiz-answer-mode">${mode}</span><textarea class="quiz-answer-text${question.inputMode === 'code' ? ' is-code' : ''}" id="quiz-text-answer" name="answer" rows="5" required></textarea></label>`;
+            optionsContainer.innerHTML = renderTextAnswer(question);
         } else {
             const options = shuffle(question.options.map((option, index) => ({ option, index })));
             optionsContainer.innerHTML = options.map(({ option, index }) => `<label><input type="radio" name="answer" value="${index}" required><span>${option}</span></label>`).join('');
