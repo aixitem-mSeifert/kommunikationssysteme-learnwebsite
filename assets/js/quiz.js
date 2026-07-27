@@ -14,7 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('quiz-position').textContent = `Frage ${current + 1} von ${active.length}`;
         document.getElementById('quiz-progress').style.width = `${(current / active.length) * 100}%`;
         document.getElementById('quiz-prompt').textContent = question.prompt;
-        document.getElementById('quiz-options').innerHTML = question.options.map((option, index) => `<label><input type="radio" name="answer" value="${index}" required><span>${option}</span></label>`).join('');
+        const options = question.options.map((option, index) => ({ option, index })).sort(() => Math.random() - 0.5);
+        document.getElementById('quiz-options').innerHTML = options.map(({ option, index }) => `<label><input type="radio" name="answer" value="${index}" required><span>${option}</span></label>`).join('');
         document.getElementById('quiz-feedback').hidden = true;
         document.getElementById('quiz-submit').hidden = false;
         document.getElementById('quiz-next').hidden = true;
