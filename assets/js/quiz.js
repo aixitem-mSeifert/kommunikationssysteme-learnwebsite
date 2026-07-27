@@ -4,6 +4,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const stage = document.getElementById('quiz-stage');
     const result = document.getElementById('quiz-result');
     const form = document.getElementById('quiz-form');
+    const optionsContainer = document.getElementById('quiz-options');
+    const feedback = document.getElementById('quiz-feedback');
+    const submitButton = document.getElementById('quiz-submit');
+    const nextButton = document.getElementById('quiz-next');
     let active = [];
     let current = 0;
     let score = 0;
@@ -18,15 +22,60 @@ document.addEventListener('DOMContentLoaded', () => {
         return items;
     };
 
+    const normalizeAnswer = (value) => value.toLocaleLowerCase('de-DE').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '').replace(/[()[\]{}"'`;,.]/g, '');
+
+    const escapeHtml = (value) => {
+        const element = document.createElement('div');
+        element.textContent = value;
+        return element.innerHTML;
+    };
+
+    const checkTextAnswer = (question, value) => {
+        const normalized = normalizeAnswer(value);
+        return question.answerGroups.every((group) => group.some((keyword) => normalized.includes(normalizeAnswer(keyword))));
+    };
+
     const render = () => {
         const question = active[current];
         document.getElementById('quiz-position').textContent = `Frage ${current + 1} von ${active.length}`;
         document.getElementById('quiz-progress').style.width = `${(current / active.length) * 100}%`;
         document.getElementById('quiz-prompt').textContent = question.prompt;
-        const options = shuffle(question.options.map((option, index) => ({ option, index })));
-        document.getElementById('quiz-options').innerHTML = options.map(({ option, index }) => `<label><input type="radio" name="answer" value="${index}" required><span>${option}</span></label>`).join('');
-        document.getElementById('quiz-feedback').hidden = true;
-        document.getElementById('quiz-next').hidden = true;
+        if (question.type === 'text') {
+            const mode = question.inputMode === 'code' ? 'Code/Befehl' : 'Freitext';
+            optionsContainer.innerHTML = `<label class="text-answer-label" for="quiz-text-answer"><span class="quiz-answer-mode">${mode}</span><textarea class="quiz-answer-text${question.inputMode === 'code' ? ' is-code' : ''}" id="quiz-text-answer" name="answer" rows="5" required></textarea></label>`;
+        } else {
+            const options = shuffle(question.options.map((option, index) => ({ option, index })));
+            optionsContainer.innerHTML = options.map(({ option, index }) => `<label><input type="radio" name="answer" value="${index}" required><span>${option}</span></label>`).join('');
+        }
+        feedback.hidden = true;
+        submitButton.hidden = question.type !== 'text';
+        nextButton.hidden = true;
+    };
+
+    const evaluateCurrent = () => {
+        if (answers[current]) {
+            return;
+        }
+
+        const question = active[current];
+        const value = question.type === 'text' ? new FormData(form).get('answer')?.toString().trim() || '' : new FormData(form).get('answer');
+        if (question.type === 'text' && value === '') {
+            form.reportValidity();
+            return;
+        }
+
+        const correct = question.type === 'text' ? checkTextAnswer(question, value) : Number(value) === question.correctAnswer;
+        answers[current] = { prompt: question.prompt, correct };
+        if (correct) {
+            score += question.points;
+            correctIds.push(question.id);
+        }
+        form.querySelectorAll('input, textarea').forEach((input) => { input.disabled = true; });
+        feedback.className = `quiz-feedback ${correct ? 'is-correct' : 'is-wrong'}`;
+        feedback.innerHTML = `<strong>${correct ? 'Richtig' : 'Nicht richtig'}</strong><p>${question.explanation}</p>${question.expectedAnswer ? `<p class="expected-answer"><strong>Musterlösung:</strong> <code>${escapeHtml(question.expectedAnswer)}</code></p>` : ''}${question.sourceNote ? `<p class="source-note">${question.sourceNote}</p>` : ''}`;
+        feedback.hidden = false;
+        submitButton.hidden = true;
+        nextButton.hidden = false;
     };
 
     document.getElementById('quiz-start').addEventListener('click', () => {
@@ -44,28 +93,18 @@ document.addEventListener('DOMContentLoaded', () => {
         render();
     });
 
-    document.getElementById('quiz-options').addEventListener('change', () => {
-        if (answers[current]) {
-            return;
+    optionsContainer.addEventListener('change', () => {
+        if (active[current]?.type !== 'text') {
+            evaluateCurrent();
         }
-
-        const choice = Number(new FormData(form).get('answer'));
-        const question = active[current];
-        const correct = choice === question.correctAnswer;
-        answers[current] = { prompt: question.prompt, correct };
-        if (correct) {
-            score += question.points;
-            correctIds.push(question.id);
-        }
-        form.querySelectorAll('input').forEach((input) => { input.disabled = true; });
-        const feedback = document.getElementById('quiz-feedback');
-        feedback.className = `quiz-feedback ${correct ? 'is-correct' : 'is-wrong'}`;
-        feedback.innerHTML = `<strong>${correct ? 'Richtig' : 'Nicht richtig'}</strong><p>${question.explanation}</p>${question.sourceNote ? `<p class="source-note">${question.sourceNote}</p>` : ''}`;
-        feedback.hidden = false;
-        document.getElementById('quiz-next').hidden = false;
     });
 
-    document.getElementById('quiz-next').addEventListener('click', () => {
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        evaluateCurrent();
+    });
+
+    nextButton.addEventListener('click', () => {
         current += 1;
         if (current < active.length) {
             render();

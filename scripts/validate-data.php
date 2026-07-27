@@ -98,8 +98,24 @@ foreach ($questions as $question) {
     if (!isset($areaIds[$question['areaId']]) || !isset($topicIds[$question['topicId']])) {
         $errors[] = $question['id'] . ': ungültige Bereichs-/Themenbeziehung';
     }
-    if (!array_key_exists($question['correctAnswer'], $question['options'])) {
-        $errors[] = $question['id'] . ': Antwortindex ungültig';
+    if (($question['type'] ?? 'single-choice') === 'single-choice') {
+        if (!array_key_exists($question['correctAnswer'] ?? null, $question['options'] ?? [])) {
+            $errors[] = $question['id'] . ': Antwortindex ungültig';
+        }
+    } elseif (($question['type'] ?? '') === 'text') {
+        if (($question['expectedAnswer'] ?? '') === '') {
+            $errors[] = $question['id'] . ': keine Musterlösung';
+        }
+        if (($question['answerGroups'] ?? []) === []) {
+            $errors[] = $question['id'] . ': keine Antwortschlüssel';
+        }
+        foreach ($question['answerGroups'] ?? [] as $group) {
+            if (!is_array($group) || $group === []) {
+                $errors[] = $question['id'] . ': leere Antwortschlüsselgruppe';
+            }
+        }
+    } else {
+        $errors[] = $question['id'] . ': unbekannter Fragentyp';
     }
     if (($question['sourceStatus'] ?? 'belegt') !== 'belegt' && ($question['sourceNote'] ?? '') === '') {
         $errors[] = $question['id'] . ': unsichere Frage ohne Hinweis';

@@ -40,4 +40,27 @@ foreach (['01_grungerüst.md', '02_inhaltfuellen.md', '03_glossar_und_training.m
     $sources[] = ['id' => 'p0' . ($index + 1), 'type' => 'requirement', 'filename' => 'propmts/' . $filename, 'title' => 'Anforderung ' . ($index + 1), 'reliability' => 'Verbindliche Projektanforderung', 'coverageStatus' => 'eingearbeitet', 'knownIssues' => []];
 }
 
+$practicumSources = [
+    ['p11', 'praktikum/1-echo-server', 'Praktikum: TCP-Echoserver, Multi-Client und Broadcast', 'TCP-Sockets, blockierende Streams, Verbindungs- und Receiver-Threads'],
+    ['p12', 'praktikum/2-sslt_tls', 'Praktikum: TLS-Echoserver und Zertifikatsspeicher', 'TLS, Zertifikate, Keystore und Truststore'],
+    ['p13', 'praktikum/3-jaxb', 'Praktikum: XML-Echoserver mit JAXB', 'XML-Serialisierung mit XSD, Marshaller und Unmarshaller'],
+    ['p14', 'praktikum/4.1-udp_mockup-dns', 'Praktikum: UDP-DNS-Mockup', 'DatagramSocket, DatagramPacket und Empfangsthreads'],
+    ['p15', 'praktikum/4.2-udp_videostream', 'Praktikum: UDP-Videostreaming', 'Frame-Versand, Steuerdatagramme und Streamingverhalten'],
+    ['p16', 'praktikum/5-asynchron', 'Praktikum: Asynchrone Kommunikation mit Java NIO', 'AsynchronousSocketChannel, Futures und CompletionHandler'],
+    ['p17', 'praktikum/6-e2e-verschluesselung', 'Praktikum: Ende-zu-Ende-Verschlüsselung', 'Asymmetrische Schlüssel, Nachrichtenrouting und E2E/TLS-Abgrenzung'],
+    ['p18', 'praktikum/x-uebungen', 'Praktikum: Vertiefungs- und Rechenübungen', 'CIDR, MTU, Sliding Window, CRC, Hamming-Abstand und Leitungscodes'],
+];
+
+foreach ($practicumSources as [$id, $filename, $title, $focus]) {
+    $sources[] = [
+        'id' => $id,
+        'type' => 'practicum',
+        'filename' => $filename,
+        'title' => $title,
+        'reliability' => 'Praktikumsunterlage und Implementierungsbeispiel',
+        'coverageStatus' => 'eingearbeitet',
+        'knownIssues' => ['Konkrete Java- und Bibliotheksdetails sind als Implementierungsbeispiele zu verstehen. Schwerpunkt: ' . $focus . '.'],
+    ];
+}
+
 return $sources;
