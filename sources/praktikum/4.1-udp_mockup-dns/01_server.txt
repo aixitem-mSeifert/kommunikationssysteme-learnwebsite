@@ -1,0 +1,44 @@
+Server
+Aufgabe
+In diesem Praktikum wollen wir einen UDP-DNS-Mockup-Server erstellen. (Natürlich wird der DNS-Server nicht ausprogrammiert, sondern nur angedeutet.)
+
+Der Server läuft wie folgt:
+
+Start des UDP-Servers auf einem freien Port mit DatagramSocket(int) mit anschließender Endlosschleife.
+
+Einlesen eines DatagramPackets mit DatagramPacket(byte[], int) und DatagramSocket.receive(DatagramPacket), die Paketgröße sei 1024.
+
+Aus diesem DatagramPacket folgendes auslesen:
+
+übermittelter String (getData())
+übermittelter Client-Port (getPort())
+übermittelte Client-Adresse (getAddress())
+oder direkt SocketAddress (getSocketAddress())
+Aus einer vorher erstellten und befüllten HashMap<String, String> (Key: DNS-Name, Value: IP-Adresse) mit dem übermittelten String (DNS-Name) die entsprechende IP ermitteln.
+Unbekannte Namen liefern null zurück, in dem Fall soll die IP "unbekannt" lauten.
+
+Die ermittelte IP-Adresse als neues DatagramPacket zurück schicken.
+
+Die folgenden Konstruktoren und Methoden werden dafür benötigt.
+
+API
+java.net.DatagramSocket
+
+public DatagramSocket​(int port) throws SocketException
+
+public void send​(DatagramPacket p) throws IOException
+
+public void receive​(DatagramPacket p) throws IOException
+
+java.net.DatagramPacket
+
+DatagramPacket​(byte[] buf, int length)
+
+DatagramPacket​(byte[] buf, int length, InetAddress address, int port)
+
+public byte[] getData()
+
+public int getPort()
+
+public InetAddress getAddress()
+

@@ -1,0 +1,61 @@
+VideoStream
+Hinweis: Erstellen Sie für diese Aufgabe einen neuen Branch in Ihrem Git-Repo und bauen Sie Ihren UDP-EchoClient und -Server folgendermaßen um.
+
+Einfache Chat-Nachrichten per UDP zu übertragen ist kein typischer Anwendungsfall von UDP, da es ungünstig ist, wenn Pakete (Nachrichten) verloren gehen können.
+
+Ein besser Anwendungsfall ist die Übertragung von Media-Inhalten, z.B. einer Video-Datei, da es hierbei auf Geschwindigkeit ankommt und verlorene Pakete in einem Video-Stream verzeihbar sind.
+
+Grundidee:
+
+In dieser Aufgabe soll eine Video-Datei, in einzelnen Bildern (Frames), vom Server an den Client geschickt werden. Der Client soll die einzelnen Frames in einer simplen UI anzeigen. Der Client hat die Möglichkeit die Übertragung abzuspielen oder zu pausieren.
+
+Server ToDo's:
+
+UDP-Socket mit festem Port erstellen.
+Auf dem Socket auf Nachrichten der Form PLAY_STREAM oder PAUSE_STREAM warten.
+PLAY_STREAM ruft timer.start() auf
+PAUSE_STREAM ruft timer.stop() auf
+Der Server benötigt zum Senden einen Timer (https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/Timer.html), der in einem bestimmten Zeitintervall an den Client sendet.
+Das Zeitintervall soll die Zeit sein, bis das nächste Bild an den Client geschickt wird. Hier kann ein sinnvoller Wert zwischen 10 und 100 gewählt werden (ausprobieren).
+Zum Senden wird dem Timer ein ActionListener mitgegeben. Die Methode actionPerformed des ActionListeners wird immer nach Ablauf des Zeitintervalls ausgeführt und soll das Senden per UDP beinhalten.
+Gesendet werden einzelne Frames eines Videos. Die Datei movie.mjpeg (siehe unten) ist bereits eine streaming-geeignete Video-Datei. Die Klasse MjpegVideoStream ist eine Hilfsklasse, um aus der gegebenen Video-Datei einzelne Frames zu holen und in einem byte-Array zu speichern. Das byte-Array kann dann einfach per UDP verschickt werden. Als Array-Größe reicht 15.000 für das gegebene Beispielvideo aus.
+Üblicherweise würde man im real life keinen Timer einsetzen um die Pakete verzögert zum Client zu senden. Sondern man würde möglichst schnell senden und der Client puffert die empfangenen Daten dann. Diesen Puffer dann in der korrekten Taktung (Framerate) auszugeben wäre dann Aufgabe des Clients.
+Dient hier lediglich der Vereinfachung der Aufgabe. Wir brauchen uns beim Client also nicht um die Pufferung zu kümmern.
+Server Dateien
+movie.mjpeg (4.27 MB)
+MjpegVideoStream.java (1.10 KB)
+Client ToDo's:
+
+Der Client benötigt einen UPD-Socket auf dem er die Befehle PLAY_STREAM und PAUSE_STREAM an den Server senden kann und auf dem er die Video-Frames empfangen kann.
+Der Receiver soll, wie in der vorherigen Aufgabe, in einem eigenen Thread eingehende Pakete vom Server empfangen. Die eingehenden Pakete sind jetzt die einzelnen Bilder des Videos. Wir benötigen hier also auch ein Byte-Array der Größe 15.000 und müssen das empfangene Byte-Array in ein Image umwandeln.
+Verwenden Sie dazu die folgenden Zeilen:
+Toolkit toolkit = Toolkit.getDefaultToolkit();
+Image image = toolkit.createImage(receivedDatagramPacket.getData(), 0, receivedDatagramPacket.getData().length);
+videoLabel.setIcon(new ImageIcon(image));
+Die einzelnen Bilder werden hier ganz simpel als ImageIcons in der UI dargestellt.
+
+Für die UI des Clients verwenden wir ein paar ganz einfache Swing-Elemente. Verwenden Sie dazu einfach die folgende Methode buildGui():
+PlayButtonListener und PauseButtonListener müssen noch als ActionListener implementiert werden und versenden jeweils die Befehle PLAY_STREAM oder PAUSE_STREAM.
+iconLabel ist das JLabel, das an den Receiver übergeben und mit den Bildern befüllt wird.
+private void buildGui() {
+  // GUI
+  JFrame frame = new JFrame("Client");
+  frame.addWindowListener(new WindowAdapter() {
+    @Override
+     public void windowClosing(WindowEvent e) {
+      System.exit(0);
+     }
+  });
+ 
+  // Buttons
+  JPanel buttonPanel = new JPanel();
+  buttonPanel.setLayout(new GridLayout(1, 0));
+  JButton playButton = new JButton("Play");
+  buttonPanel.add(playButton);
+  JButton pauseButton = new JButton("Pause");
+  buttonPanel.add(pauseButton);
+  playButton.addActionListener(new PlayButtonListener());
+  pauseButton.addActionListener(new PauseButtonListener());
+ 
+  // Image display label
+  iconLabel.setIcon(null);

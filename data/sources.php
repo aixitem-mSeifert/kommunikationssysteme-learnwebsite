@@ -36,25 +36,6 @@ $sources[] = ['id' => 'e2015', 'type' => 'memory-exam', 'filename' => 'klausuren
 $sources[] = ['id' => 'e2016', 'type' => 'mock-exam', 'filename' => 'klausuren/2016 SoSe Rechnernetze Probeklausur.txt', 'title' => 'Probeklausur 2016', 'reliability' => 'Primäre Prüfungsformatquelle', 'coverageStatus' => 'eingearbeitet', 'knownIssues' => []];
 $sources[] = ['id' => 'e2018', 'type' => 'memory-exam', 'filename' => 'klausuren/2018-07-20 Rechnernetze Gedächtnisprotokoll.txt', 'title' => 'Klausur 2018 (Gedächtnisprotokoll)', 'reliability' => 'Nur Relevanz und Aufgabenstil', 'coverageStatus' => 'eingearbeitet', 'knownIssues' => ['Keine autorisierten Lösungen oder Punkte; zusätzliche TLS-/Serialisierungsbegriffe.']];
 
-$exerciseSources = [
-    ['id' => 'u-bitfolgen', 'filename' => 'klausuren/uebungen/Bitfolgen.txt', 'title' => 'Übung: Bitfolgen und Leitungscodes'],
-    ['id' => 'u-cidr', 'filename' => 'klausuren/uebungen/CIDR.txt', 'title' => 'Übung: CIDR und Subnetting'],
-    ['id' => 'u-crc', 'filename' => 'klausuren/uebungen/CRC.txt', 'title' => 'Übung: CRC-Prüfsumme'],
-    ['id' => 'u-osi', 'filename' => 'klausuren/uebungen/ISO_OSI-Schichtenmodell.txt', 'title' => 'Übung: ISO/OSI-Schichtenmodell'],
-    ['id' => 'u-mtu', 'filename' => 'klausuren/uebungen/MTU.txt', 'title' => 'Übung: MTU und IP-Fragmentierung'],
-    ['id' => 'u-mtu-programm', 'filename' => 'klausuren/uebungen/MTU (Programm).txt', 'title' => 'Übung: MTU-Fragmentierung programmieren'],
-    ['id' => 'u-sliding-window', 'filename' => 'klausuren/uebungen/SlidingWindow.txt', 'title' => 'Übung: Sliding Window'],
-    ['id' => 'u-selective-repeat', 'filename' => 'klausuren/uebungen/TCPKommunikation1-Selective Repeat.txt', 'title' => 'Übung: TCP Selective Repeat'],
-    ['id' => 'u-go-back-n', 'filename' => 'klausuren/uebungen/TCPKommunikation2-Go-Back-N.txt', 'title' => 'Übung: TCP Go-Back-N'],
-];
-
-foreach ($exerciseSources as $source) {
-    $sources[] = [
-        'id' => $source['id'], 'type' => 'exercise', 'filename' => $source['filename'], 'title' => $source['title'],
-        'reliability' => 'Bereitgestellte Übungsquelle', 'coverageStatus' => 'direkt angezeigt', 'knownIssues' => [],
-    ];
-}
-
 foreach (['01_grungerüst.md', '02_inhaltfuellen.md', '03_glossar_und_training.md', '04_check.md'] as $index => $filename) {
     $sources[] = ['id' => 'p0' . ($index + 1), 'type' => 'requirement', 'filename' => 'propmts/' . $filename, 'title' => 'Anforderung ' . ($index + 1), 'reliability' => 'Verbindliche Projektanforderung', 'coverageStatus' => 'eingearbeitet', 'knownIssues' => []];
 }

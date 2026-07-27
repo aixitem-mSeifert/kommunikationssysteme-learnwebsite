@@ -1,0 +1,26 @@
+Client
+Aufgabe
+Zur Kommunikation mit dem UDP-DNS-Server sollen Sie nun den dazu passenden UDP-Client nach folgendem Muster schreiben:
+
+Starten eines UDP-Sockets mit DatagramSocket()
+
+Solange Tastatureingaben (DNS-Namen) vorhanden sind, Senden mit DatagramPacket(byte[], int, InetAddress, int) und DatagramSocket.send(DatagramPacket)
+
+Empfangen des vom Server zurückgeschickten Pakets und Ausgabe des Inhalts (passende IP-Adresse) mit DatagramPacket(byte[], int) und DatagramSocket.receive(DatagramPacket)
+
+Lassen Sie sich die Längen der versendeten Strings anzeigen und vollziehen diese nach.
+
+API
+java.net.DatagramSocket
+
+public DatagramSocket() throws SocketException
+
+public void send​(DatagramPacket p) throws IOException
+
+public void receive​(DatagramPacket p) throws IOException
+
+java.net.DatagramPacket
+
+DatagramPacket​(byte[] buf, int length)
+
+DatagramPacket​(byte[] buf, int length, InetAddress address, int port)

@@ -1,0 +1,40 @@
+Aufgabe
+Solch eine E2E-Verschlüsselung wollen wir nun nachbauen (ganz rudimentär natürlich).
+
+Dazu gibt es eine Javadoc-API, die implementiert werden soll. Diese ist zu finden unter:
+JavaDoc API Asymmetric
+
+Um E2E zu verschlüsseln benötigt jeder Kommunikationsteilnehmer ein asymmetrisches Schlüsselpaar, einen private und einen public key.
+Diese können sich ausschließlich wechselseitig ver- und entschlüsseln.
+Alice verschlüsselt also mit Bobs Public Key eine Nachricht, diesen Public Key soll und darf, wie der Name schon sagt, jeder haben.
+Der einzige, der diese Nachricht entschlüsseln kann, ist der dazu passende Private Key von Bob. (Deshalb ist es auch so wichtig, dass er seinen private Key für sich behält.)
+
+Als allererstes schreiben wir eine main in de.fhac.kosy.crypto mit der man einmalig zwei Key Pairs für die beiden Kommunikationsteilnehmer erstellt. Dies einzeln und autark vor der eigentlichen Aufgabe zu machen, vereinfacht diese. So was wird bei fertigen Produkten natürlich automatisch im Hintergrund auf dem jeweiligen Gerät des Nutzers gemacht.
+
+Anschließend beginnt man mit der eigentlichen Aufgabe. Bei einem Server sollen sich Clients mit Namen anmelden können und dann an andere Clients (unter Angabe des Namens) E2E-verschlüsselte Nachrichten verschicken, deren Inhalt dem Server unbekannt ist. Der Einfachheit halber gehen wir davon aus, dass die Namen dann einzigartig sind.
+
+de.fhac.kosy.client
+
+Client
+wie bereits in einer alten Aufgabe wird hier ein TCP-Client gestartet, der Verbindung zum Server aufnimmt und sich dort mit seinem Namen registriert.
+Receiver
+ähnlich wie bekannt werden im Receiver-Thread ausschließlich eingehende (in diesem Fall verschlüsselte) Nachrichten verarbeitet, also entschlüsselt (dafür wird der eigene private key benötigt) und ausgegeben.
+
+de.fhac.kosy.crypto
+
+Crypto
+hier werden einmal autark die Schlüsselpaare statisch in der main generiert. Zusätzlich werden die anderen statischen Methoden dieser Klasse natürlich auch im weiteren Programmverlauf benutzt zur Ver- und Entschlüsselung.
+
+de.fhac.kosy.messaging
+
+Message
+Diese Klasse dient lediglich als Wrapper-Klasse zur Datenhaltung. Diese wird über das Netz als JSON-String (https://github.com/google/gson/blob/master/UserGuide.md) verschickt. Neben Sender und Empfänger enthält sie auch den (in diesem Fall verschlüsselten) Content.
+Die Verwendung von JSON bietet sich aufgrund der Plattformunabhängigkeit an und wir können einfach die uns bekannten Methoden readUTF() und writeUTF() verwenden.
+
+de.fhac.kosy.server
+
+Server
+Wie bekannt wird hier ein TCP-ServerSocket aufgemacht, der dafür zuständig ist die Anmeldung vom Client vorzunehmen.
+Connection
+Dieser Thread ist dafür da einen einmal verbundenen Socket (Verbindung zwischen dem Server und einem Client) zu verwalten.
+Zunächst wird die Anmeldung des Clients mit Namen entgegen genommen und danach werden die von Client A eingehenden Message-Objekte an den entsprechenden Client B weitergeleitet.

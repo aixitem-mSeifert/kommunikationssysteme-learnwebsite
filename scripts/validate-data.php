@@ -133,11 +133,20 @@ foreach ($exams as $exam) {
 }
 foreach ($exercises as $exercise) {
     $validateRefs($exercise['sourceRefs'], $exercise['id']);
-    if (!is_file($root . '/' . ltrim((string) $exercise['filename'], '/\\'))) {
-        $errors[] = $exercise['id'] . ': Originaldatei fehlt';
-    }
     if (($exercise['tasks'] ?? []) === []) {
         $errors[] = $exercise['id'] . ': keine Aufgabenfolge';
+    }
+    foreach ($exercise['tasks'] as $taskIndex => $task) {
+        $context = $exercise['id'] . '/Aufgabe ' . ($taskIndex + 1);
+        if (($task['title'] ?? '') === '' || ($task['prompt'] ?? '') === '') {
+            $errors[] = $context . ': Titel oder Aufgabenstellung fehlt';
+        }
+        if (($task['solution'] ?? []) === []) {
+            $errors[] = $context . ': keine Musterlösung';
+        }
+        if (($task['table'] ?? null) !== null && count($task['table']['headers'] ?? []) === 0) {
+            $errors[] = $context . ': Tabelle ohne Spalten';
+        }
     }
 }
 

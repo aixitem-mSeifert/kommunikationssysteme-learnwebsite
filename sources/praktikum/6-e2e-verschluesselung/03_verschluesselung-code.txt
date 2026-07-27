@@ -1,0 +1,49 @@
+Verschlüsselung - Code
+Als Hilfestellung wird hier skizziert wie man...
+... Keypairs erstellt
+... verschlüsselt
+... und entschlüsselt
+Über die optimale Wahl der Algorithmen lassen sich Doktorarbeiten schreiben, darum soll es hier im Detail nicht gehen.
+Man sollte aber beachten, dass man bei einem tatsächlichen Produktivsystem sehr genau recherchieren sollte welche Algorithmen noch als State Of The Art gelten.
+
+Keypair generieren
+1
+2
+3
+4
+5
+KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
+generator.initialize(2048);
+KeyPair pair = generator.generateKeyPair();
+PublicKey pub = pair.getPublic();
+PrivateKey priv = pair.getPrivate();
+Verschlüsselung
+1
+2
+3
+4
+5
+6
+7
+PublicKey pub;
+byte[] msg;
+ 
+Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+cipher.init(Cipher.ENCRYPT_MODE, pub);
+cipher.update(msg);
+cipher.doFinal();
+Entschlüsselung
+1
+2
+3
+4
+5
+6
+7
+PrivateKey priv;
+byte[] encrypted;
+ 
+Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+cipher.init(Cipher.DECRYPT_MODE, priv);
+cipher.update(encrypted);
+cipher.doFinal();

@@ -1,0 +1,18 @@
+Client-Thread
+Frage
+Überlegen Sie sich zunächst für welches Szenario ein Client-Thread, der für das Einlesen der Serverantworten zuständig ist, sinnvoll sein könnte.
+
+Notieren Sie die Begründung als Kommentar im Quellcode.
+
+Aufgabe
+Lagern Sie das Einlesen der Serverantworten in einen eigenen Thread Receiver aus.
+
+Achten Sie dabei darauf, ob Sie dem Thread etwas übergeben müssen.
+
+Testen Sie z.B. folgendes Szenario:
+Clientstart
+Text-Eingabe und Senden im Client
+Server-Start
+erneute Text-Eingabe und Senden im Client
+Wann erhalten Sie Antworten? Und wie hätte es sich verhalten, wenn Sie keinen Client-Thread erstellt hätten?
+

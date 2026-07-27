@@ -1,0 +1,62 @@
+# TCP Kommunikation 1 – Selective Repeat
+
+## Aufgabenstellung
+
+Angenommen zwei TCP-Kommunikationspartner haben sich zur Fehlerkontrolle auf das Verfahren **Selective Repeat** verständigt. Vereinfachend gehen wir von folgenden Annahmen aus:
+
+* Alle Datenpakete haben dieselbe Länge und benötigen dieselbe Übertragungszeit.
+* Gehen Sie davon aus, dass Sie nicht an die Grenze der Window-Size kommen.
+* Wenn der Sender Paket $n$ sendet, kommt gleichzeitig Paket $n-1$ beim Empfänger an.
+* Die Quittung für Paket $n$ trifft gleichzeitig mit dem Senden von Paket $n+5$ ein.
+* Der Timer zum Warten auf die Quittung für Paket $n$ läuft nach dem Senden von Paket $n+6$ ab.
+
+Skizzieren Sie den Ablauf der Kommunikation für die folgenden Fälle:
+
+1. Paket 3 kommt nicht an
+2. Die Quittung für Paket 3 geht verloren
+
+Das erste Paket trage die Paket#1; Neuübertragungen werden ausschließlich durch ein Timeout angestoßen.
+
+> **Hinweis:** In die mittlere Spalte können Sie Kommentare eintragen (z.B. ACK3, timeout #x); Sie können aber auch einfach, wie in den Vorlesungsunterlagen, Pfeile zur Verdeutlichung des Ablaufes in die Tabellen einzeichnen. Achten Sie in jedem Fall darauf, dass ein korrektes Timing erkennbar bleibt!
+
+---
+
+## Lösung
+
+### Fall 1: Paket 3 geht verloren
+
+| Sender Paket# | Kommentar | Empfänger Paket# |
+| :---: | :--- | :---: |
+| 1 | | |
+| 2 | | 1 |
+| 3 | lost packet $ightarrow$ | 2 |
+| 4 | | - |
+| 5 | | 4 |
+| 6 | $\leftarrow$ ACK2 | 5 |
+| 7 | $\leftarrow$ ACK3 | 6 |
+| 8 | missing ACK4 | 7 |
+| 9 | missing ACK4, **timeout #3** | 8 |
+| 3 | | 9 |
+| 4 | | 3 |
+| 5 | | - |
+| 6 | | - |
+| 7 | | - |
+| 8 | $\leftarrow$ **ACK10** (kumulativ) | - |
+| 10 | | |
+
+---
+
+### Fall 2: Quittung für Paket 3 geht verloren
+
+| Sender Paket# | Kommentar | Empfänger Paket# |
+| :---: | :--- | :---: |
+| 1 | | |
+| 2 | | 1 |
+| 3 | | 2 |
+| 4 | | 3 |
+| 5 | | 4 |
+| 6 | $\leftarrow$ ACK2 | 5 |
+| 7 | $\leftarrow$ ACK3 | 6 |
+| 8 | **(ACK4 lost)** | 7 |
+| 9 | $\leftarrow$ ACK5; kill Timer for #3 | 8 |
+| 10 | $\leftarrow$ ACK6 | 9 |

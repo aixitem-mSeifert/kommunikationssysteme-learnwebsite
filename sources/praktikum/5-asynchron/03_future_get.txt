@@ -1,0 +1,18 @@
+Future.get?
+Wir haben immer noch an einigen Stellen in unserem Programm Aufrufe von get() auf einem Future. Diese Aufrufe sind blockierend. 🫣
+
+Teste dein aktuelles Programm mit einer AsynchronousChannelGroup und einer festen Thread-Anzahl im Server:
+
+AsynchronousChannelGroup group = AsynchronousChannelGroup.withThreadPool(Executors.newFixedThreadPool(2));
+// Group muss beim Öffnen mit übergeben werden
+AsynchronousServerSocketChannel server = AsynchronousServerSocketChannel.open(group);
+Verbinde nun mehrere Clients mit deinem Server und teste das Versenden der Nachrichten. Was fällt auf?
+
+Verbesserung
+Unser Programm soll nun "noch asynchroner" arbeiten. Das erreichen wir, wenn wir in unserem Programm komplett auf blockierende get()-Aufrufe verzichten.
+
+Die Methoden, die die Future zurück liefern, wie zB connect, write, read haben alle auch einen überladenen Aufruf mit (Attachment null und) CompletionHandler.
+
+Ersetze alle diese get-Aufrufe durch die CompletionHandler-Variante und teste dein Programm erneut mit fester Thread-Anzahl.
+
+Unser Programm ist danach nicht mehr blockierend, aber natürlich wird dann in tieferen Ebenen im Betriebssystem an irgendwelchen Stellen gewartet (aka blockiert) werden müssen.

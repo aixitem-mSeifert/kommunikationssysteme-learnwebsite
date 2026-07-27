@@ -1,0 +1,8 @@
+Transportwegverschlüsselung (TLS)
+Durch die E2E-Verschlüsselung schützen wir unsere Nachrichteninhalte, sowohl gegenüber dem Server, als auch anderen, die unsere Kommunikation ggf. aufzeichnen und mitlesen wollen.
+
+Was sich nicht vermeiden lässt, ist, dass der Server wissen muss, wohin er eingehende Nachrichten schicken muss. Daher werden, sowohl das from-, als auch das to-Attribut des Message-Objekts, nicht verschlüsselt übertragen.
+
+So wäre es jedoch für einen Außenstehenden (z.B. NSA) sehr leicht möglich einzusehen, wer mit wem kommuniziert. Um diese Informationen zusätzlich zu verbergen, soll die Kommunikation mit dem Server per TLS verschlüsselt werden.
+
+Greifen Sie dazu auf das Gelernte in der alten TLS-Aufgabe zurück und sichern Sie Ihre Verbindungen mit dem Server per TLS.
