@@ -2,7 +2,9 @@
 
 $examRef = static fn (string $sourceId, string $locator, string $status = 'belegt'): array => ['sourceId' => $sourceId, 'locatorType' => 'examTask', 'locator' => $locator, 'sourceStatus' => $status];
 
-return [
+$generatedExams = require __DIR__ . '/generated-exams.php';
+
+return array_merge($generatedExams, [
     [
         'id' => 'exam-2016', 'title' => 'Probeklausur 2016: vollständige Simulation', 'durationMinutes' => 120, 'totalPoints' => 85,
         'sourceBasis' => 'Offizielle Probeklausur 2016', 'sourceStatus' => 'belegt',
@@ -38,4 +40,4 @@ return [
             ['id' => 'm18-05', 'title' => 'Block 5: Bridge, Ethernet und CRC', 'type' => 'open', 'prompt' => 'Beurteilen Sie eine Kommunikation über eine Bridge ohne Broadcast anhand des Lern- und ARP-Ablaufs. Begründen Sie die Fast-Ethernet-Ausdehnung, berechnen Sie aus Rate und Laufzeit eine erforderliche Rahmenlänge und führen Sie die überlieferte CRC-Aufgabe mit 10110101110 und x^4+x^3+1 durch.', 'points' => 0, 'autoGradable' => false, 'rubric' => ['Bridge/Broadcast/ARP-Abhängigkeit', 'Fast-Ethernet-Begründung', 'Rate-mal-Round-Trip-Rechnung', 'CRC mit Generator 11001'], 'solution' => 'Erwartungshorizont aus Folien 9, 16 bis 19; die konkrete Kombination stammt aus dem Gedächtnisprotokoll.', 'sourceRefs' => [$examRef('e2018', 'Aufgabe 5', 'Gedächtnisprotokoll')], 'derivation' => 'Aus einem Gedächtnisprotokoll abgeleitet; keine autorisierte Lösung.', 'authoritativeSolution' => false],
         ],
     ],
-];
+]);
