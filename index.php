@@ -32,6 +32,7 @@ require __DIR__ . '/includes/header.php';
             <a href="quiz.php"><strong>Quiz</strong><span>Verständnis prüfen</span></a>
             <a href="flashcards.php"><strong>Lernkarten</strong><span>Wissen wiederholen</span></a>
             <a href="exam-training.php"><strong>Klausurtraining</strong><span>Aufgaben bearbeiten</span></a>
+            <a href="exercises.php"><strong>Übungen</strong><span>Bereitgestellte Aufgaben</span></a>
         </div>
     </section>
 </main>

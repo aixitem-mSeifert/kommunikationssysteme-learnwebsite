@@ -12,6 +12,7 @@ $questions = $load('questions');
 $glossary = $load('glossary');
 $flashcards = $load('flashcards');
 $exams = $load('exams');
+$exercises = $load('exercises');
 
 $ids = static function (array $items, string $name) use (&$errors): array {
     $values = array_column($items, 'id');
@@ -28,6 +29,7 @@ $ids($questions, 'Fragen');
 $ids($glossary, 'Glossar');
 $ids($flashcards, 'Lernkarten');
 $ids($exams, 'Klausuren');
+$ids($exercises, 'Übungen');
 
 $validateRefs = static function (array $refs, string $context) use (&$errors, $sourceIds, $allowedStatuses): void {
     if ($refs === []) {
@@ -127,6 +129,15 @@ foreach ($exams as $exam) {
             $errors[] = $task['id'] . ': Gedächtnisprotokoll mit autoritativer Lösung';
         }
         $validateRefs($task['sourceRefs'], $task['id']);
+    }
+}
+foreach ($exercises as $exercise) {
+    $validateRefs($exercise['sourceRefs'], $exercise['id']);
+    if (!is_file($root . '/' . ltrim((string) $exercise['filename'], '/\\'))) {
+        $errors[] = $exercise['id'] . ': Originaldatei fehlt';
+    }
+    if (($exercise['tasks'] ?? []) === []) {
+        $errors[] = $exercise['id'] . ': keine Aufgabenfolge';
     }
 }
 

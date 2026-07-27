@@ -58,7 +58,7 @@ h2 { font-size: clamp(1.7rem, 3vw, 2.6rem); }
 .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 1rem; }
 .section-heading h2 { margin: 0.2rem 0; }
 .tool-band { padding-block: 2.5rem; background: #e9eee9; border-block: 1px solid var(--line); }
-.tool-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+.tool-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
 .tool-grid a { display: grid; min-height: 130px; align-content: center; gap: 0.25rem; padding: 1.2rem; color: var(--ink); background: var(--surface); text-decoration: none; }
 .tool-grid a:hover { box-shadow: inset 0 -4px var(--accent); }
 .tool-grid strong { font-size: 1.1rem; }
@@ -146,6 +146,25 @@ h2 { font-size: clamp(1.7rem, 3vw, 2.6rem); }
 .exam-solution { margin-top: 1rem; padding: 1rem; background: #e9eee9; border-left: 5px solid var(--accent); }
 .exam-solution h4 { margin-top: 0; }
 .exam-submit { display: flex; align-items: center; gap: 1rem; }
+.exercise-list { display: grid; gap: 1.25rem; padding-bottom: 3rem; }
+.exercise-paper { scroll-margin-top: 90px; }
+.exercise-file-link { flex: 0 0 auto; font-family: 'Trebuchet MS', sans-serif; font-size: 0.9rem; }
+.exercise-summary { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(220px, 0.65fr); gap: 1.5rem; margin-block: 1.5rem; }
+.exercise-summary h3 { margin-top: 0; font-size: 1.25rem; }
+.exercise-summary ol, .exercise-summary ul { padding-left: 1.3rem; }
+.exercise-summary p { color: var(--muted); }
+.exercise-tables { display: grid; gap: 1.2rem; margin-block: 1.5rem; }
+.exercise-tables > h3 { margin: 0; font-size: 1.35rem; }
+.exercise-table-wrap { overflow-x: auto; border: 1px solid var(--line); }
+.exercise-table-wrap table { width: 100%; min-width: 500px; border-collapse: collapse; background: var(--surface); }
+.exercise-table-wrap caption { padding: 0.8rem 1rem; color: var(--ink); background: #e9eee9; font-weight: 700; text-align: left; }
+.exercise-table-wrap th, .exercise-table-wrap td { padding: 0.7rem 0.8rem; border-top: 1px solid var(--line); vertical-align: top; text-align: left; }
+.exercise-table-wrap th { color: var(--accent-dark); background: #f3f4f0; font: 700 0.82rem 'Trebuchet MS', sans-serif; }
+.exercise-table-wrap td { font-family: Consolas, 'Courier New', monospace; font-size: 0.9rem; }
+.exercise-table-note { margin: 0; padding: 0.7rem 1rem; color: var(--muted); background: #fbfbf7; border-top: 1px solid var(--line); }
+.exercise-original { border-top: 1px solid var(--line); }
+.exercise-original summary { padding: 1rem 0; cursor: pointer; font-weight: 700; }
+.exercise-text { max-height: 70vh; margin: 0; padding: 1.2rem; overflow: auto; color: var(--ink); background: #fbfbf7; border: 1px solid var(--line); font: 0.9rem/1.5 Consolas, 'Courier New', monospace; white-space: pre-wrap; }
 .site-footer { margin-top: 4rem; color: #d8e5e2; background: var(--ink); }
 .footer-inner { display: flex; justify-content: space-between; gap: 2rem; padding-block: 2rem; }
 .footer-inner p { margin: 0; }
@@ -157,6 +176,7 @@ h2 { font-size: clamp(1.7rem, 3vw, 2.6rem); }
     .site-nav > ul { display: grid; }
     .nav-dropdown { position: static; width: auto; max-height: 45vh; margin: 0.2rem 0 0.5rem 0.65rem !important; overflow-y: auto; background: transparent; border: 0; border-left: 1px solid var(--line); box-shadow: none; }
     .intro-layout, .content-grid, .source-entry { grid-template-columns: 1fr; }
+    .exercise-summary { grid-template-columns: 1fr; }
     .filter-bar-wide { grid-template-columns: 1fr; }
     .home-area-grid { grid-template-columns: repeat(2, 1fr); }
     .tool-grid { grid-template-columns: repeat(2, 1fr); }

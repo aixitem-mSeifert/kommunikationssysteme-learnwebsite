@@ -42,7 +42,7 @@ Zum Beenden des Webservers im laufenden PowerShell-Fenster `Ctrl+C` drücken.
 ## Daten prüfen
 
 Die Datenprüfung stellt sicher, dass IDs, Quellenreferenzen, Lerninhalte,
-Quizfragen, Lernkarten und Klausurpunkte konsistent sind. Sie wird aus dem
+Quizfragen, Lernkarten, Übungen und Klausurpunkte konsistent sind. Sie wird aus dem
 Projektverzeichnis heraus gestartet:
 
 ```powershell

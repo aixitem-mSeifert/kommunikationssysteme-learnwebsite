@@ -5,6 +5,7 @@ $navigation = [
     'quiz.php' => 'Quiz',
     'flashcards.php' => 'Lernkarten',
     'exam-training.php' => 'Klausurtraining',
+    'exercises.php' => 'Übungen',
     'sources.php' => 'Quellen',
 ];
 $learningAreas = load_data('learning-areas');
